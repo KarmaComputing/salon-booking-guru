@@ -1,0 +1,20 @@
+
+*** These modified files were found in JOE when it aborted on Tue May  8 21:12:40 2012
+*** JOE was aborted by UNIX signal 1
+
+*** File '.git/COMMIT_EDITMSG'
+=
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   test/test2
+#
+
+*** File '(Unnamed)'
+practice
+/tmp/mutt-chris-HP-1000-21890-18554024162057266642
+/tmp/mutt-chris-HP-1000-21890-2081318071780738232
+.git/COMMIT_EDITMSG
