@@ -1,0 +1,11 @@
+site_name: Salon Booking Guru
+site_url: https://example.com/
+repo_url: https://github.com/KarmaComputing/salon-booking-guru
+edit_uri: edit/main/docs
+site_description: Online salon client booking and management system
+
+nav:
+    - 'Home': 'index.md'
+    - 'Quick-Start Guide': 'quick-start-guide.md'
+theme:
+  name: material
