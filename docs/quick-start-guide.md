@@ -1,4 +1,4 @@
-# Quick-Start Guide
+# Quick-start guide
 
 This guide will help you quickly configure and launch an instance of the Salon
 Booking Guru with the intent of developing on the codebase.

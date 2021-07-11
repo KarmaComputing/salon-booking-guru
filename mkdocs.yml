@@ -7,6 +7,7 @@ site_description: Online salon client booking and management system
 nav:
     - 'Home': 'index.md'
     - 'Quick-Start Guide': 'quick-start-guide.md'
-    - 'Code of conduct': 'CODE_OF_CONDUCT.md'
+    - 'Code of Conduct': 'CODE_OF_CONDUCT.md'
+    - 'Contributing': 'CONTRIBUTING.md'
 theme:
   name: material
