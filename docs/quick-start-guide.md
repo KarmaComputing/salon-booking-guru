@@ -12,12 +12,12 @@ Booking Guru web API.
 To get started with a docker container, you must first build an image with the
 following command:
 ```bash
-docker build . -t KarmaComputing/salon-booking-guru
+docker build . -t karmacomputing/salon-booking-guru
 ```
 
 Once this is complete you will be able to run a container:
 ```bash
-docker run -it KarmaComputing/salon-booking-guru
+docker run -it karmacomputing/salon-booking-guru
 ```
 
 ### Golang
