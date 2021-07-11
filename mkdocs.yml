@@ -7,5 +7,6 @@ site_description: Online salon client booking and management system
 nav:
     - 'Home': 'index.md'
     - 'Quick-Start Guide': 'quick-start-guide.md'
+    - 'Contributing': 'CONTRIBUTING.md'
 theme:
   name: material
