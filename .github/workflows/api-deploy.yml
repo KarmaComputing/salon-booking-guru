@@ -1,0 +1,10 @@
+---
+# When a pull request is made to the main branch, deploy an
+# instance of the API
+
+name: Deploy API
+on:
+  pull_request:
+    branches:
+    - main
+...
