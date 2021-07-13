@@ -9,5 +9,6 @@ nav:
     - 'Quick-Start Guide': 'quick-start-guide.md'
     - 'Code of Conduct': 'CODE_OF_CONDUCT.md'
     - 'Contributing': 'CONTRIBUTING.md'
+    - 'Wireframes': 'WIREFRAMES.md'
 theme:
   name: material
