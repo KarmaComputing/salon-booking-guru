@@ -1,0 +1,26 @@
+---
+# When a pull request is made to the main branch, deploy an
+# instance of the API
+
+name: Deploy API
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - id: deploy
+      name: Deploy to Dokku
+      uses: idoberko2/dokku-deploy-github-action@v1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        dokku-host: ${{ secrets.DOKKU_HOST }}
+        app-name: ${{ secrets.DOKKU_APP_NAME }}
+        remote-branch: main
+...

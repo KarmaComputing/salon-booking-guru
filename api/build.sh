@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build . -t deltabrot/clere-coding-challenge-api:latest
+docker build . -t karmacomputing/api-salon-booking-guru:latest
