@@ -10,5 +10,6 @@ nav:
     - 'Code of Conduct': 'CODE_OF_CONDUCT.md'
     - 'Contributing': 'CONTRIBUTING.md'
     - 'Database': 'DATABASE.md'
+    - 'Wireframes': 'WIREFRAMES.md'
 theme:
   name: material
