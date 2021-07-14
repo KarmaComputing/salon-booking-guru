@@ -22,6 +22,7 @@ Automatic deployment using Dokku and GitHub Actions
 
 - Use the ```actions/checkout@v2``` to fetch the code from the main branch that we specified
     - You should specify ```fetch-depth: 0``` to fetch all history
+    - Tell it which dockerfile you want used by specifiying a path, in this case `api/`
 
 - Now make the first job! You must give the job an id and optionally a name
 - We are using ```idoberko2/dokku-deploy-github-action@v1``` for this job
