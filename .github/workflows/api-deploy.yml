@@ -13,7 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        path: api/
         fetch-depth: 0
     - id: deploy
       name: Deploy to Dokku
