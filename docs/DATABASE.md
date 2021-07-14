@@ -1,5 +1,11 @@
 # Database
 
+## Current entity relationship diagram
+
+![Screenshot](uml/db-erd.png)
+
+## Summary
+
 In the root of the repository there is a directory named `uml/`, which contains
 a `.uml` file. This markdown is written in [PlantUML](https://plantuml.com/) and
 it should describe the most up to date version of the database schema required
