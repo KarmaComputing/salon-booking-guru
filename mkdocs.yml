@@ -6,9 +6,10 @@ site_description: Online salon client booking and management system
 
 nav:
     - 'Home': 'index.md'
-    - 'Quick-Start Guide': 'quick-start-guide.md'
+    - 'Quick-Start Guide': 'QUICK_START_GUIDE.md'
     - 'Code of Conduct': 'CODE_OF_CONDUCT.md'
     - 'Contributing': 'CONTRIBUTING.md'
+    - 'Database': 'DATABASE.md'
     - 'Wireframes': 'WIREFRAMES.md'
 theme:
   name: material
