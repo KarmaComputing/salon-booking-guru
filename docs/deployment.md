@@ -31,7 +31,7 @@ On a web browser:
 ## Quick Security
 
 - Now that you have added your SSH public key you may disable password access
-    - Open `/etc/ssh/sshd_config in a text editor and change the line `#PasswordAuthentication yes` to `PasswordAuthentication no`
+    - Open `/etc/ssh/sshd_config` in a text editor and change the line `#PasswordAuthentication yes` to `PasswordAuthentication no`
 
 ## Deploy Dokku
 
