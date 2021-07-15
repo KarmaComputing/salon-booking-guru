@@ -3,7 +3,7 @@ FROM golang:alpine AS build
 ENV PROJECT_DIR="/go/src/github.com/deltabrot/salon-booking-guru"
 WORKDIR $PROJECT_DIR
 
-COPY . $PROJECT_DIR
+COPY ./api $PROJECT_DIR
 
 RUN go get -d -v ./... && \
     go install -v ./...
