@@ -20,6 +20,7 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
+          branch: main
           # create a review app
           command: review-apps:create
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru'
@@ -35,6 +36,7 @@ jobs:
       - name: Destroy the review app
         uses: dokku/github-action@master
         with:
+          branch: main
           # destroy a review app
           command: review-apps:destroy
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru'
