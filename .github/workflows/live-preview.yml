@@ -46,18 +46,16 @@ jobs:
           echo The url will be ${{ github.event.pull_request.user.login }}-${{ github.head_ref }}.dokku.karmacomputing.co.uk
           ssh dokku@$DOKKU_HOST -C "git:initialize ${{ env.SUBDOMAIN }}-${{ github.head_ref }}"
           ssh dokku@$DOKKU_HOST -C "git:set ${{ env.SUBDOMAIN }}-${{ github.head_ref }} deploy-branch ${{ github.head_ref }}"
-          # set Stripe test keys as env vars dor dokku/docker
-      - uses: actions/checkout@v2
+          - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Deploy branch ${{ github.head_ref }} to dokku
-        uses: idoberko2/dokku-deploy-github-action@v1
+      uses: dokku/github-action@v1.0.1
+      with:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          dokku-host: ${{ secrets.DOKKU_HOST }}
-          app-name: ${{ env.SUBDOMAIN }}-${{ github.head_ref }}
-          git-push-flags: '--force'
-          remote-branch: ${{ github.head_ref }}
+          git_remote_url: ssh://${{ secrets.DOKKU_HOST }}:22/${{ env.SUBDOMAIN }}-${{ github.head_ref }}
+          git_push_flags: '--force'
       - name: Click to see your PR web address
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
