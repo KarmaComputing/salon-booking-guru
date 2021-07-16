@@ -11,5 +11,6 @@ nav:
     - 'Contributing': 'CONTRIBUTING.md'
     - 'Database': 'DATABASE.md'
     - 'Wireframes': 'WIREFRAMES.md'
+    - 'Deploy': 'deployment.md'
 theme:
   name: material
