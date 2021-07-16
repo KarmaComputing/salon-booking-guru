@@ -45,7 +45,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "🙌 Live preview is here: http://review-appname-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk"
-
+            })
 
   destroy_review_app:
     runs-on: ubuntu-latest
