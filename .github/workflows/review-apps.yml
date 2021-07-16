@@ -20,7 +20,8 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          branch: main
+          branch: main # TODO is this needed?
+          git_push_flags: --force
           # create a review app
           command: review-apps:create
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru'
