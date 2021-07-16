@@ -29,21 +29,21 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Click to see your PR web address
-            env:
-              SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-              DOKKU_HOST: ${{ secrets.DOKKU_HOST }}
-            run: |
-              echo Visit your pr here: http://review-appname-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk
-          - name: 'Comment PR with web address of application live preview'
-            uses: actions/github-script@v3
-            if: github.event_name == 'pull_request'
-            with:
-              script: |
-                github.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: "🙌 Live preview is here: http://review-appname-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          DOKKU_HOST: ${{ secrets.DOKKU_HOST }}
+        run: |
+          echo Visit your pr here: http://review-appname-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk
+      - name: 'Comment PR with web address of application live preview'
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v3
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🙌 Live preview is here: http://review-appname-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk"
 
 
   destroy_review_app:
