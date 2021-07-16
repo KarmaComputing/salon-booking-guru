@@ -32,21 +32,6 @@ jobs:
           set -x
           echo SUBDOMAIN=`echo "${{ github.event.pull_request.user.login }}" | tr '[:upper:]' '[:lower:]' | cut -c -60` >> $GITHUB_ENV
           echo $GITHUB_ENV
-      - name: Create dokku app for pr branch if dosent already exist using dokku apps:create
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          DOKKU_HOST: ${{ secrets.DOKKU_HOST }}
-        run: |
-          set -x
-          echo The PR was raised by: ${{ github.event.pull_request.user.login }}
-          eval `ssh-agent -s`
-          ssh-add - <<< "$SSH_PRIVATE_KEY"
-          echo Creating dokku app ${{ github.event.pull_request.user.login }}-${{ github.head_ref }}
-          ssh dokku@$DOKKU_HOST -C "apps:create ${{ env.SUBDOMAIN }}-${{ github.head_ref }}" | true
-          echo The url will be ${{ github.event.pull_request.user.login }}-${{ github.head_ref }}.dokku.karmacomputing.co.uk
-          ssh dokku@$DOKKU_HOST -C "git:initialize ${{ env.SUBDOMAIN }}-${{ github.head_ref }}"
-          ssh dokku@$DOKKU_HOST -C "git:set ${{ env.SUBDOMAIN }}-${{ github.head_ref }} deploy-branch ${{ github.head_ref }}"
-          - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Deploy branch ${{ github.head_ref }} to dokku
