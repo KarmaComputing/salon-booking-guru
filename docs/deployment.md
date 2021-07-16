@@ -49,6 +49,14 @@ For this version of dokku (v0.24.10) Dockerfile deployment is only recognised wh
 - The api Dockerfile in this repository is found under `api/`
     - A current workaround means that there is an empty Dockerfile in the root
 
+## Dockerfile Build Context
+
+We must specify the build context for docker during the build phase so all the needed files (like modules) are included during build.
+- Do this by using the COPY instruction to copy the contents of the directory into the workng directory (WORKDIR). ```ENV PROJECT_DIR="/go/src/github.com/deltabrot/salon-booking-guru"
+WORKDIR $PROJECT_DIR
+
+COPY ./api $PROJECT_DIR```
+
 ## Dokku Dockerfile Path
 
 Now that dokku recognises that we want to deploy using Dockerimage we want to now give it the correct path to the api Dockerfile
@@ -57,18 +65,20 @@ Now that dokku recognises that we want to deploy using Dockerimage we want to no
 
 - Run this command to add the correct Dockerfile path for the build phase of deployment `dokku docker-options:add salon-booking-guru build --file=/home/dokku/salon-booking-guru/api/Dockerfile`
 
-- We must also manually add the Dockerfile (outside of version control) to the bare repo within dokku, so that it can build it.
-    - Use `mkdir -p /home/dokku/salon-booking-guru/api/ && cd /home/dokku/salon-booking-guru/api/ && wget https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/api/Dockerfile`
+We have now specified which Dockerfile we want docker to use, however, the Dockerfile does not yet exist on the Dokku server. We also want the Dockerfile to update when changes are made to it.
 
+To do this we must add a pre-recieve hook so that the Dockerfile is copied into the Dokku app before the rest of the deployment is executed.
+- Add this to the file `hooks/pre-recieve` in the project repo on Dokku.
+```mkdir -p /home/dokku/salon-booking-guru/api/ && curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/api/Dockerfile > /home/dokku/salon-booking-guru/api/Dockerfile```
 
 ### Quick Check
-
-**Note:** Still yet to figure out how to set build context in dokku so there will be Go module errors
 
 To make sure everything is in order, you can manually push to Dokku.
 - `git clone` the repository on your local machine
     - Add the dokku remote: `git remote add dokku dokku@<ip/domain>:salon-booking-guru`
     - Now `git push dokku main`
+
+If you get the following error: `remote: unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/dokku/salon-booking-guru/api: no such file or directory`. This means that the Dockerfile is not already on the Dokku servers repository, make sure that its already there and check the pre-recieve hook so that it has the correct URL to the Dockerfile. It must start with `raw.githubusercontent.com`.
 
 ## Set Up GitHub Actions
 
