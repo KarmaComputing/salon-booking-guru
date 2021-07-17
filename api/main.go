@@ -16,7 +16,6 @@ func main() {
 	var s store.Store
 	var err error
 
-	// Initialise instance of store.Store
 	s, err = psqlstore.Open()
 	if err != nil {
 		log.Fatal("Fatal: Can't start the server without a store.")
