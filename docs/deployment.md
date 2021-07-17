@@ -98,7 +98,7 @@ Add a pre-recieve hook on the dokku server to fetch the `Dockerfile` into the re
 #### Front-end
 ```bash
 cd /home/dokku/salon-booking-guru-front-end
-vi ./hooks/pre-recieve
+vi ./hooks/pre-receive
 ```
 
 Add to the file `hooks/pre-recieve`:
@@ -110,7 +110,7 @@ mkdir -p /home/dokku/salon-booking-guru/api/ && curl https://raw.githubuserconte
 
 ```bash
 cd /home/dokku/salon-booking-guru-api
-vi ./hooks/pre-recieve
+vi ./hooks/pre-receive
 ```
 
 Add to the file `hooks/pre-recieve`:
