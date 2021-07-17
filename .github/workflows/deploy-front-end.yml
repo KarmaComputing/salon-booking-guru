@@ -32,5 +32,5 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           branch: 'main'
 
-      - name: app url: http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
+      - name: 'app url: http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk'
         run: echo http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
