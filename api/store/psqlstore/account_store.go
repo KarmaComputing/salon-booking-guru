@@ -28,13 +28,14 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 	rows, err := s.db.Query(`
 		SELECT
 			id,
+			role_id,
 			email,
 			first_name,
 			last_name,
-			role_id
+			mobile_number
 		FROM
 			account
-		LIMIT 1000
+		LIMIT 10000
 		;`,
 	)
 	if err != nil {
@@ -48,10 +49,11 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 		var account model.Account
 		err = rows.Scan(
 			&account.Id,
+			&account.RoleId,
 			&account.Email,
 			&account.FirstName,
 			&account.LastName,
-			&account.RoleId,
+			&account.MobileNumber,
 		)
 		if err != nil {
 			log.Println("Error: Failed to populate Account structs'")
