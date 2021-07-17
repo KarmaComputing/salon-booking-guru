@@ -33,5 +33,4 @@ jobs:
           branch: 'main'
 
       - name: app url: http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
-        run: |
-          echo http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
+        run: echo http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
