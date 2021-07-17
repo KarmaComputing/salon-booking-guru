@@ -5,7 +5,7 @@ name: 'Deploy Front-end'
 on:
   push:
     branches:
-      - main
+      - 89-frontend-deploy-dokku
 
 jobs:
   deploy:
