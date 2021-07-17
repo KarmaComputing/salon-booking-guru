@@ -21,6 +21,6 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         dokku-host: ${{ secrets.DOKKU_HOST }}
-        app-name: api-salon-booking-guru
+        app-name: salon-booking-guru-api
         remote-branch: main
 ...

@@ -115,7 +115,13 @@ vi ./hooks/pre-recieve
 
 Add to the file `hooks/pre-recieve`:
 ```bash 
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+
 mkdir -p /home/dokku/salon-booking-guru/api/ && curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/api/Dockerfile > /home/dokku/salon-booking-guru/api/Dockerfile
+
+cat | DOKKU_ROOT="/home/dokku" dokku git-hook salon-booking-guru-api
 ```
 ### Quick Check
 
