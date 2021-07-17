@@ -3,6 +3,7 @@ name: 'Deploy Front-end'
 
 # yamllint disable-line rule:truthy
 on:
+  workflow_dispatch:
   push:
     branches:
       - 89-frontend-deploy-dokku
@@ -25,6 +26,6 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@v1.0.2
         with:
-          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           branch: 'main'
