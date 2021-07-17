@@ -1,0 +1,26 @@
+---
+# When a pull request is made to the main branch, deploy an
+# instance of the API
+
+name: Deploy Front-end
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - id: deploy
+      name: Deploy to Dokku
+      uses: idoberko2/dokku-deploy-github-action@v1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        dokku-host: ${{ secrets.DOKKU_HOST }}
+        app-name: salon-booking-guru-frontend
+        remote-branch: main
+...
