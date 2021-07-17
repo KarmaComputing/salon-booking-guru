@@ -6,10 +6,12 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 89-frontend-deploy-dokku
+      - main
 
 jobs:
   deploy:
+    name: Deploy Front-end
+    environment: production
     runs-on: ubuntu-20.04
     steps:
       # third-party action that cancels previous runs
@@ -29,3 +31,7 @@ jobs:
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           branch: 'main'
+
+      - name: app url: http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
+        run: |
+          echo http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
