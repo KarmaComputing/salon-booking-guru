@@ -184,3 +184,31 @@ jobs:
 ...
 ```
 
+## Automatic Let's Encrypt TLS Certificate
+
+> Via [dokku-letsencrypt](https://github.com/dokku/dokku-letsencrypt)
+
+
+### Install Let's Encrypt plugin
+```
+# as root on dokku
+sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+```
+## Setup automatic certs for api and frontend
+
+> Must use a valid email address
+```
+sudo -iu dokku
+dokku config:set --global DOKKU_LETSENCRYPT_EMAIL=your@email.tld
+```
+
+### Certificate generation
+```
+# API
+dokku letsencrypt:enable salon-booking-guru-front-end
+# Front-end
+dokku proxy:ports-add salon-booking-guru-api http:80:8085
+dokku letsencrypt:enable salon-booking-guru-api
+dokku proxy:ports-add salon-booking-guru-api https:443:8085
+
+```
