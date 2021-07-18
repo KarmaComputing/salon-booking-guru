@@ -5,8 +5,8 @@ docker run -it \
     --rm \
     -d \
     --name postgres-salon-booking-guru \
-    -e POSTGRES_PASSWORD="veryinsecure" \
-    -e POSTGRES_DB="postgres" \
+    -e POSTGRES_PASSWORD="changeme" \
+    -e POSTGRES_DB="salon_booking_guru" \
     -e PGDATA=/var/lib/postgresql/data/pgdata \
     -v postgres:/var/lib/postgresql/data \
     -p 5432:5432 \
