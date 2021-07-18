@@ -53,12 +53,14 @@ Complete the Dokku installation from your web browser.
 ```bash
 dokku apps:create salon-booking-guru-front-end;
 dokku apps:create salon-booking-guru-api;
+dokku apps:create salon-booking-guru-database;
 ```
 ### Set deploy branch to `main`: 
 
 ```bash
 dokku git:set salon-booking-guru-front-end deploy-branch main;
 dokku git:set salon-booking-guru-api deploy-branch main;
+dokku git:set salon-booking-guru-database deploy-branch main;
 ```
 
 ## Dockerfile configuration
@@ -67,6 +69,7 @@ For dokku v0.24.10 Dockerfile deployment is only recognised when there is a `Doc
 
 - [api/Dockerfile](https://github.com/KarmaComputing/salon-booking-guru/blob/main/api/Dockerfile)
 - [front-end/Dockerfile](https://github.com/KarmaComputing/salon-booking-guru/blob/main/front-end/Dockerfile)
+- [database/Dockerfile](https://github.com/KarmaComputing/salon-booking-guru/blob/main/database/Dockerfile)
 
 A current workaround means that there is an empty Dockerfile in the root. This forces dokku to treat the apps as docker 
 deployments (Dokku supports multiple deployment types).
@@ -77,6 +80,7 @@ Configure api app `Dockerfile` location
 ```bash
 dokku docker-options:add salon-booking-guru-api build --file=/home/dokku/salon-booking-guru-api/Dockerfile;
 dokku docker-options:add salon-booking-guru-front-end build --file=/home/dokku/salon-booking-guru/front-end/Dockerfile;
+dokku docker-options:add salon-booking-guru-database build --file=/home/dokku/salon-booking-guru-database/Dockerfile;
 ```
 
 > If you make a mistake, you can check  the docker-options. `dokku docker-options:report salon-booking-guru-front-end`
@@ -119,9 +123,20 @@ Add to the file `hooks/pre-recieve`:
 set -e
 set -o pipefail
 
-mkdir -p /home/dokku/salon-booking-guru/api/ && curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/api/Dockerfile > /home/dokku/salon-booking-guru/api/Dockerfile
+mkdir -p /home/dokku/salon-booking-guru-api/ && curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/api/Dockerfile > /home/dokku/salon-booking-guru-api/Dockerfile
 
 cat | DOKKU_ROOT="/home/dokku" dokku git-hook salon-booking-guru-api
+```
+
+#### Database
+```bash
+cd /home/dokku/salon-booking-guru-database
+vi ./hooks/pre-receive
+```
+
+Add to the file `hooks/pre-recieve`:
+```bash
+mkdir -p /home/dokku/salon-booking-guru-database && curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/database/Dockerfile > /home/dokku/salon-booking-guru-database/Dockerfile
 ```
 ### Quick Check
 
