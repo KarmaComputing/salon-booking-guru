@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto px-6 pt-8">
-        <div class="mb-4">Welcome home!</div>
+        <div class="mb-4">Axel test!</div>
         <Button>PrimeVue Button!</Button>
     </div>
 </template>
