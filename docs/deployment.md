@@ -78,9 +78,9 @@ deployments (Dokku supports multiple deployment types).
 
 Configure api app `Dockerfile` location
 ```bash
-dokku docker-options:add salon-booking-guru-api build --file=/home/dokku/salon-booking-guru-api/Dockerfile;
-dokku docker-options:add salon-booking-guru-front-end build --file=/home/dokku/salon-booking-guru/front-end/Dockerfile;
-dokku docker-options:add salon-booking-guru-database build --file=/home/dokku/salon-booking-guru-database/Dockerfile;
+dokku docker-options:add salon-booking-guru-api build --file=/home/dokku/salon-booking-guru-api/api/Dockerfile;
+dokku docker-options:add salon-booking-guru-front-end build --file=/home/dokku/salon-booking-guru-front-end/front-end/Dockerfile;
+dokku docker-options:add salon-booking-guru-database build --file=/home/dokku/salon-booking-guru-database/database/Dockerfile;
 ```
 
 > If you make a mistake, you can check  the docker-options. `dokku docker-options:report salon-booking-guru-front-end`
