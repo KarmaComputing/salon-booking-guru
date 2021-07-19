@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Push to dokku
+      - name: Push api to dokku
         uses: dokku/github-action@master
         with:
           branch: main # TODO is this needed?
@@ -25,6 +25,30 @@ jobs:
           # create a review app
           command: review-apps:create
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-api'
+          # specify a name for the review app
+          review_app_name: review-appname-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Push database to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: main # TODO is this needed?
+          git_push_flags: --force
+          # create a review app
+          command: review-apps:create
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-database'
+          # specify a name for the review app
+          review_app_name: review-appname-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Push front-end to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: main # TODO is this needed?
+          git_push_flags: --force
+          # create a review app
+          command: review-apps:create
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
           # specify a name for the review app
           review_app_name: review-appname-${{ github.event.pull_request.number }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
