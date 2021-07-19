@@ -1,13 +1,15 @@
 ---
 # When a pull request is made to the main branch, deploy an
-# instance of the API
+# instance of the database
 
-name: Deploy API
+name: Deploy Database
 on:
   workflow_dispatch:
   push:
     branches:
     - main
+    paths-ignore:
+      - 'docs/**'
 jobs:
   deploy:
     runs-on: ubuntu-20.04
@@ -21,6 +23,6 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         dokku-host: ${{ secrets.DOKKU_HOST }}
-        app-name: ${{ secrets.DOKKU_APP_NAME }}
+        app-name: salon-booking-guru-database
         remote-branch: main
 ...

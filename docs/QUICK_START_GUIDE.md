@@ -13,6 +13,10 @@ instance using docker:
 ```bash
 postgres/run.sh
 ```
+### Database logs
+```
+docker logs -f postgres
+```
 
 **Note:** This database configuration should only ever be used for the purpose
 of local development, since all credentials are stored in this public

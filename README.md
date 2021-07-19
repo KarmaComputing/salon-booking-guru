@@ -1,12 +1,18 @@
 # Salon Booking Guru
 
-## Requirements
+Online salon client booking and management system.
 
-To get started with Salon Booking Guru you must have docker installed.
+- Take deposits
+- Online bookings
+- Reminders to clients
 
-## Get started with documentation
+# Documentation
 
-To serve the documentation for this project locally, you may use our helper
+[Read Documentation](https://karmacomputing.github.io/salon-booking-guru/)
+
+## Contribte to the docs
+
+To edit documentation locally
 script:
 ```bash
 ./mkdocs.sh
