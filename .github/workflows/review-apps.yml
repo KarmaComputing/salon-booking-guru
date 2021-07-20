@@ -29,6 +29,30 @@ jobs:
           review_app_name: review-appname-${{ github.event.pull_request.number }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Push api to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: main # TODO is this needed?
+          git_push_flags: --force
+          # create a review app
+          command: review-apps:create
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-api'
+          # specify a name for the review app
+          review_app_name: review-appname-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Push database to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: main # TODO is this needed?
+          git_push_flags: --force
+          # create a review app
+          command: review-apps:create
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-database'
+          # specify a name for the review app
+          review_app_name: review-appname-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Click to see your PR web address
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
