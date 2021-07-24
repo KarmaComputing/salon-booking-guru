@@ -94,7 +94,6 @@ entity "booking" as booking {
     *customer_email : string
     *customer_mobile : string
     *date : date
-    *time : time
     *duration : real
 }
 
@@ -102,8 +101,8 @@ entity "availability" as availability {
     *id : integer <<generate>>
     --
     *account_id : integer <<FK>>
-    *start_date_time : date
-    *end_date_time : date
+    *start_date : date
+    *end_date : date
 }
 
 ' ** Entity Relationships **

@@ -7,6 +7,7 @@ import (
 	"salon-booking-guru/handler"
 	"salon-booking-guru/store"
 	"salon-booking-guru/store/psqlstore"
+	"salon-booking-guru/validation"
 
 	ghandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -16,7 +17,6 @@ func main() {
 	var s store.Store
 	var err error
 
-	// Initialise instance of store.Store
 	s, err = psqlstore.Open()
 	if err != nil {
 		log.Fatal("Fatal: Can't start the server without a store.")
@@ -27,6 +27,7 @@ func main() {
 	router.Use(handler.CommonMiddleware)
 
 	handler.InitRouter(router, s)
+	validation.Init(s)
 
 	log.Println("Listening on :8085")
 	log.Println(http.ListenAndServe(":8085", ghandlers.CORS(

@@ -14,10 +14,12 @@ import (
 
 var router *mux.Router
 var s store.Store
+var v1 *mux.Router
 
 func InitRouter(r *mux.Router, mainStore store.Store) {
 	s = mainStore
 	router = r
+	v1 = router.PathPrefix("/v1").Subrouter()
 	accountRoutes()
 }
 

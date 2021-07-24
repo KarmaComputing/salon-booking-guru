@@ -1,6 +1,8 @@
 package psqlstore
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -28,13 +30,14 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 	rows, err := s.db.Query(`
 		SELECT
 			id,
+			role_id,
 			email,
 			first_name,
 			last_name,
-			role_id
+			mobile_number
 		FROM
 			account
-		LIMIT 1000
+		LIMIT 10000
 		;`,
 	)
 	if err != nil {
@@ -48,10 +51,11 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 		var account model.Account
 		err = rows.Scan(
 			&account.Id,
+			&account.RoleId,
 			&account.Email,
 			&account.FirstName,
 			&account.LastName,
-			&account.RoleId,
+			&account.MobileNumber,
 		)
 		if err != nil {
 			log.Println("Error: Failed to populate Account structs'")
@@ -76,7 +80,8 @@ func (s *PsqlAccountStore) Get(id int) (model.Account, error) {
 			email,
 			first_name,
 			last_name,
-			role_id
+			role_id,
+			mobile_number
 		FROM
 			account
 		WHERE
@@ -92,6 +97,7 @@ func (s *PsqlAccountStore) Get(id int) (model.Account, error) {
 	}
 	defer rows.Close()
 
+	counter := 0
 	for rows.Next() {
 		err = rows.Scan(
 			&account.Id,
@@ -99,12 +105,22 @@ func (s *PsqlAccountStore) Get(id int) (model.Account, error) {
 			&account.FirstName,
 			&account.LastName,
 			&account.RoleId,
+			&account.MobileNumber,
 		)
 		if err != nil {
 			log.Println("Error: Failed to populate Account struct'")
 			log.Println(err)
 			return model.Account{}, err
 		}
+		counter++
+	}
+
+	if counter == 0 {
+		err = errors.New(
+			fmt.Sprintf("Error: Failed to find 'account' with id '%d'", id),
+		)
+		log.Println(err)
+		return model.Account{}, err
 	}
 
 	return account, nil
@@ -127,34 +143,25 @@ func (s *PsqlAccountStore) Create(account *model.Account) error {
 			first_name,
 			last_name,
 			password,
-			role_id
-		)
-		SELECT
-			email
-		FROM
-			account
-		UNION
-		VALUES (
+			role_id,
+			mobile_number
+		) VALUES (
 			$1,
 			$2,
 			$3,
 			$4,
-			$5
+			$5,
+			$6
 		)
-		EXCEPT
-		SELECT
-			email
-		FROM
-			account
 		RETURNING id
 		;`,
 		account.Email,
 		account.FirstName,
 		account.LastName,
-		hashedPass,
+		string(hashedPass),
 		account.RoleId,
+		account.MobileNumber,
 	).Scan(&id)
-
 	if err != nil {
 		log.Println("Error: Failed to create 'account' row")
 		log.Println(err)
@@ -185,6 +192,7 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 				last_name = $4,
 				password = $5,
 				role_id = $6,
+				mobile_number = $7,
 			WHERE
 				id = $1
 			;`,
@@ -194,8 +202,8 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 			account.LastName,
 			hashedPass,
 			account.RoleId,
+			account.MobileNumber,
 		)
-
 		if err != nil {
 			log.Println("Error: Failed to update 'account' row")
 			log.Println(err)
@@ -210,6 +218,7 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 				first_name = $3,
 				last_name = $4,
 				role_id = $5,
+				mobile_number = $6,
 			WHERE
 				id = $1
 			;`,
@@ -218,8 +227,8 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 			account.FirstName,
 			account.LastName,
 			account.RoleId,
+			account.MobileNumber,
 		)
-
 		if err != nil {
 			log.Println("Error: Failed to update 'account' row")
 			log.Println(err)
