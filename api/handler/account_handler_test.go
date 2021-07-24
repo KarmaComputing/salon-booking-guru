@@ -3,8 +3,11 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"salon-booking-guru/store/model"
 	"salon-booking-guru/store/psqlstore"
 	"testing"
@@ -92,6 +95,53 @@ func TestAccountCreate(t *testing.T) {
 			http.StatusOK,
 		)
 	}
+
+	bodyBytes, err := ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var originalAccount model.Account
+	json.Unmarshal(bodyBytes, &originalAccount)
+
+	req, err = http.NewRequest(
+		"GET",
+		fmt.Sprintf("/v1/account/%d", originalAccount.Id),
+		nil,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr = httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err = ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var responseAccount model.Account
+	json.Unmarshal(bodyBytes, &responseAccount)
+
+	responseAccount.Password = ""
+	originalAccount.Password = ""
+
+	if !reflect.DeepEqual(responseAccount, originalAccount) {
+		t.Fatal(
+			fmt.Sprintf(
+				"%v is not equal to %v",
+				responseAccount,
+				originalAccount,
+			),
+		)
+	}
 }
 
 func TestAccountCreateInvalidEmail(t *testing.T) {
@@ -166,6 +216,53 @@ func TestAccountUpdate(t *testing.T) {
 			"Handler returned wrong status code: got %v, want %v",
 			status,
 			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err := ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var originalAccount model.Account
+	json.Unmarshal(bodyBytes, &originalAccount)
+
+	req, err = http.NewRequest(
+		"GET",
+		fmt.Sprintf("/v1/account/%d", originalAccount.Id),
+		nil,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr = httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err = ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var responseAccount model.Account
+	json.Unmarshal(bodyBytes, &responseAccount)
+
+	responseAccount.Password = ""
+	originalAccount.Password = ""
+
+	if !reflect.DeepEqual(responseAccount, originalAccount) {
+		t.Fatal(
+			fmt.Sprintf(
+				"%v is not equal to %v",
+				responseAccount,
+				originalAccount,
+			),
 		)
 	}
 }

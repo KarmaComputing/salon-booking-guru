@@ -156,7 +156,7 @@ func OpenTest() (*PsqlStore, error) {
 	}
 
 	s.Up()
-	s.GenerateSeedData()
+	s.GenerateTestSeedData()
 	s.DefineFunctions()
 	s.InitTriggers()
 
