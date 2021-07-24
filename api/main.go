@@ -7,6 +7,7 @@ import (
 	"salon-booking-guru/handler"
 	"salon-booking-guru/store"
 	"salon-booking-guru/store/psqlstore"
+	"salon-booking-guru/validation"
 
 	ghandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -26,6 +27,7 @@ func main() {
 	router.Use(handler.CommonMiddleware)
 
 	handler.InitRouter(router, s)
+	validation.Init(s)
 
 	log.Println("Listening on :8085")
 	log.Println(http.ListenAndServe(":8085", ghandlers.CORS(

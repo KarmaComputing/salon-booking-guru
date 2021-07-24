@@ -2,9 +2,9 @@
 go get -d -v ./... && \
 go install -v ./... && \
 go build && \
-SBG_DB_HOST="localhost" \
-SBG_DB_PORT="5432" \
-SBG_DB_USER="postgres" \
-SBG_DB_PASSWORD="veryinsecure" \
-SBG_DB_DBNAME="postgres" \
+SALON_BOOKING_GURU_DB_HOST="localhost" \
+SALON_BOOKING_GURU_DB_PORT="5432" \
+SALON_BOOKING_GURU_DB_USER="postgres" \
+SALON_BOOKING_GURU_DB_PASSWORD="veryinsecure" \
+SALON_BOOKING_GURU_DB_DBNAME="salon_booking_guru" \
 ./salon-booking-guru

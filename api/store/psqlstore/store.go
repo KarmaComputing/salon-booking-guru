@@ -22,13 +22,37 @@ type PsqlStore struct {
 // Open a connection to a psql database and return a pointer to a PsqlStore
 // struct with a pointer to the db connection.
 func Open() (*PsqlStore, error) {
-	host := os.Getenv("SBG_DB_HOST")
-	port := os.Getenv("SBG_DB_PORT")
-	user := os.Getenv("SBG_DB_USER")
-	password := os.Getenv("SBG_DB_PASSWORD")
-	dbname := os.Getenv("SBG_DB_DBNAME")
+	host := os.Getenv("SALON_BOOKING_GURU_DB_HOST")
+	port := os.Getenv("SALON_BOOKING_GURU_DB_PORT")
+	user := os.Getenv("SALON_BOOKING_GURU_DB_USER")
+	password := os.Getenv("SALON_BOOKING_GURU_DB_PASSWORD")
+	dbname := os.Getenv("SALON_BOOKING_GURU_DB_DBNAME")
 
 	connectionString := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s sslmode=disable",
+		host,
+		port,
+		user,
+		password,
+	)
+
+	var s PsqlStore
+	var err error
+	s.db, err = sql.Open("postgres", connectionString)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer s.db.Close()
+
+	_, err = s.db.Exec(fmt.Sprintf("CREATE DATABASE %s;", dbname))
+	if err != nil &&
+		err.Error() != fmt.Sprintf("pq: database \"%s\" already exists", dbname) {
+		log.Println(err)
+		os.Exit(1)
+	}
+
+	connectionString = fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host,
 		port,
@@ -37,8 +61,6 @@ func Open() (*PsqlStore, error) {
 		dbname,
 	)
 
-	var s PsqlStore
-	var err error
 	s.db, err = sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Println(err)
@@ -52,6 +74,7 @@ func Open() (*PsqlStore, error) {
 	}
 
 	s.Up()
+	s.GenerateSeedData()
 	s.DefineFunctions()
 	s.InitTriggers()
 
@@ -61,10 +84,10 @@ func Open() (*PsqlStore, error) {
 // Open a connection to a psql database and return a pointer to a PsqlStore
 // struct with a pointer to the db connection.
 func OpenTest() (*PsqlStore, error) {
-	host := os.Getenv("SBG_DB_HOST")
-	port := os.Getenv("SBG_DB_PORT")
-	user := os.Getenv("SBG_DB_USER")
-	password := os.Getenv("SBG_DB_PASSWORD")
+	host := os.Getenv("SALON_BOOKING_GURU_DB_HOST")
+	port := os.Getenv("SALON_BOOKING_GURU_DB_PORT")
+	user := os.Getenv("SALON_BOOKING_GURU_DB_USER")
+	password := os.Getenv("SALON_BOOKING_GURU_DB_PASSWORD")
 
 	connectionString := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s sslmode=disable",
@@ -133,6 +156,7 @@ func OpenTest() (*PsqlStore, error) {
 	}
 
 	s.Up()
+	s.GenerateSeedData()
 	s.DefineFunctions()
 	s.InitTriggers()
 
