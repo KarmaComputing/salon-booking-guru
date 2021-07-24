@@ -72,7 +72,7 @@ Then change into the `front-end/` directory:
 cd front-end/
 ```
 
-Then install all dependencies using :
+Then install all dependencies using:
 
 ```bash
 yarn

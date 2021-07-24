@@ -4,12 +4,18 @@
             <RouterLink class="text-2xl py-4" to="/"
                 >Salon Booking Guru</RouterLink
             >
-            <nav class="space-x-8">
-                <RouterLink class="hover:underline" to="/">Home</RouterLink>
-                <RouterLink class="hover:underline" to="/about"
-                    >About</RouterLink
-                >
-            </nav>
+            <SideNavigation />
         </div>
     </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import SideNavigation from '../components/SideNavigation.vue';
+
+export default defineComponent({
+    components: {
+        SideNavigation,
+    },
+});
+</script>
