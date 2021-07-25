@@ -29,7 +29,7 @@ func Open() (*PsqlStore, error) {
 	dbname := os.Getenv("SALON_BOOKING_GURU_DB_DBNAME")
 
 	connectionString := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s sslmode=disable",
+		"host=%s port=%s user=%s password='%s' sslmode=disable",
 		host,
 		port,
 		user,
