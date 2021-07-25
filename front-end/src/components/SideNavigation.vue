@@ -17,10 +17,11 @@
                 <RouterLink v-for="(link, i) in linkConfig" :key="i" to="/">
                     <Button
                         class="p-button-text w-full"
-                        :icon="link.icon"
-                        :label="link.label"
                         @click="isNavVisible = false"
-                    />
+                    >
+                        <i :class="link.icon" class="mr-3 w-5 h-5" />
+                        <span class="">{{ link.label }}</span>
+                    </Button>
                 </RouterLink>
             </div>
         </Sidebar>
@@ -42,6 +43,7 @@ export default {
     setup() {
         const isNavVisible = ref(false);
 
+        // add this to a config file
         const linkConfig = [
             {
                 icon: 'pi pi-user',
@@ -80,9 +82,3 @@ export default {
     },
 };
 </script>
-
-<style>
-.p-button-label {
-    flex: none;
-}
-</style>
