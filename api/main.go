@@ -19,8 +19,7 @@ func main() {
 
 	s, err = psqlstore.Open()
 	if err != nil {
-		log.Fatal("Fatal: Can't start the server without a store.")
-		return
+		log.Println("Error: Store has not been initialised")
 	}
 
 	router := mux.NewRouter()
