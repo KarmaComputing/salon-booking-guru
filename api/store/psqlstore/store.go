@@ -45,12 +45,15 @@ func InitDatabase(s *PsqlStore) {
 	password := os.Getenv("SALON_BOOKING_GURU_DB_PASSWORD")
 	dbName := os.Getenv("SALON_BOOKING_GURU_DB_DBNAME")
 
-	waitPeriod := time.Second * 1
-	maxWaitPeriod := time.Minute * 5
+	const initialWaitPeriod = time.Second * 5
+	const maxWaitPeriod = time.Second * 30
+
+	waitPeriod := initialWaitPeriod
+	isDatabaseConnected := false
 
 	for {
-		if waitPeriod != time.Second*1 {
-			log.Printf("Attempting to reconnect in %ds", waitPeriod/2000000000)
+		if waitPeriod != initialWaitPeriod {
+			log.Printf("Attempting to reconnect to the database in %ds", waitPeriod/2000000000)
 			time.Sleep(waitPeriod)
 		}
 		waitPeriod *= 2
@@ -58,58 +61,68 @@ func InitDatabase(s *PsqlStore) {
 			waitPeriod = maxWaitPeriod
 		}
 
-		connectionString := fmt.Sprintf(
-			"host=%s port=%s user=%s password='%s' sslmode=disable",
-			host,
-			port,
-			user,
-			password,
-		)
+		if !isDatabaseConnected {
+			connectionString := fmt.Sprintf(
+				"host=%s port=%s user=%s password='%s' sslmode=disable",
+				host,
+				port,
+				user,
+				password,
+			)
 
-		db, err := sql.Open("postgres", connectionString)
-		if err != nil {
-			log.Println(err)
-			continue
+			db, err := sql.Open("postgres", connectionString)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			s.db = db
+			defer s.db.Close()
+
+			_, err = s.db.Exec(fmt.Sprintf("CREATE DATABASE %s;", dbName))
+			if err != nil &&
+				err.Error() != fmt.Sprintf("pq: database \"%s\" already exists", dbName) {
+				log.Println(err)
+				continue
+			}
+
+			connectionString = fmt.Sprintf(
+				"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+				host,
+				port,
+				user,
+				password,
+				dbName,
+			)
+
+			db, err = sql.Open("postgres", connectionString)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			s.db = db
+
+			err = s.db.Ping()
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+
+			s.Up()
+			s.GenerateSeedData()
+			s.DefineFunctions()
+			s.InitTriggers()
+
+			waitPeriod = initialWaitPeriod
+			isDatabaseConnected = true
+			log.Println("Connection to the database established")
+		} else {
+			time.Sleep(maxWaitPeriod)
+			err := s.db.Ping()
+			if err != nil {
+				isDatabaseConnected = false
+				log.Println("Lost connection to the database")
+			}
 		}
-		s.db = db
-		defer s.db.Close()
-
-		_, err = s.db.Exec(fmt.Sprintf("CREATE DATABASE %s;", dbName))
-		if err != nil &&
-			err.Error() != fmt.Sprintf("pq: database \"%s\" already exists", dbName) {
-			log.Println(err)
-			continue
-		}
-
-		connectionString = fmt.Sprintf(
-			"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-			host,
-			port,
-			user,
-			password,
-			dbName,
-		)
-
-		db, err = sql.Open("postgres", connectionString)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-		s.db = db
-
-		err = s.db.Ping()
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-
-		s.Up()
-		s.GenerateSeedData()
-		s.DefineFunctions()
-		s.InitTriggers()
-
-		log.Println("Connection to the database successfully established")
-		break
 	}
 }
 
