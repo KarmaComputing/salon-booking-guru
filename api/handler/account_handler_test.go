@@ -15,6 +15,25 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func authorizeAsAdmin(t *testing.T, roleName string, req *http.Request) {
+	credentials := model.Credentials{
+		Email:    "admin@example.com",
+		Password: "password",
+	}
+
+	authenticateResponse, err := s.Authenticate().AuthenticateCredentials(
+		credentials,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req.Header.Set(
+		"Authorization",
+		fmt.Sprintf("Bearer %s", authenticateResponse.Token.Token),
+	)
+}
+
 func TestAccountGetAll(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
@@ -24,6 +43,8 @@ func TestAccountGetAll(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	authorizeAsAdmin(t, "Administrator", req)
 
 	rr := httptest.NewRecorder()
 
@@ -46,6 +67,8 @@ func TestAccountGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	authorizeAsAdmin(t, "Administrator", req)
 
 	rr := httptest.NewRecorder()
 
@@ -85,6 +108,8 @@ func TestAccountCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	authorizeAsAdmin(t, "Administrator", req)
+
 	rr := httptest.NewRecorder()
 
 	router.ServeHTTP(rr, req)
@@ -111,6 +136,8 @@ func TestAccountCreate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	authorizeAsAdmin(t, "Administrator", req)
 
 	rr = httptest.NewRecorder()
 
@@ -170,6 +197,8 @@ func TestAccountCreateInvalidEmail(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	authorizeAsAdmin(t, "Administrator", req)
+
 	rr := httptest.NewRecorder()
 
 	router.ServeHTTP(rr, req)
@@ -208,6 +237,8 @@ func TestAccountUpdate(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	authorizeAsAdmin(t, "Administrator", req)
+
 	rr := httptest.NewRecorder()
 
 	router.ServeHTTP(rr, req)
@@ -234,6 +265,8 @@ func TestAccountUpdate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	authorizeAsAdmin(t, "Administrator", req)
 
 	rr = httptest.NewRecorder()
 
@@ -293,6 +326,8 @@ func TestAccountUpdateInvalidEmail(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	authorizeAsAdmin(t, "Administrator", req)
+
 	rr := httptest.NewRecorder()
 
 	router.ServeHTTP(rr, req)
@@ -318,6 +353,8 @@ func TestAccountDelete(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	authorizeAsAdmin(t, "Administrator", req)
 
 	rr := httptest.NewRecorder()
 

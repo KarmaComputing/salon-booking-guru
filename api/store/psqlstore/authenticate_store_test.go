@@ -14,7 +14,7 @@ func TestAuthenticateCredentials(t *testing.T) {
 	}
 
 	credentials := model.Credentials{
-		Email:    "admin@example.com",
+		Email:    "permissiontest@example.com",
 		Password: "password",
 	}
 
@@ -25,14 +25,14 @@ func TestAuthenticateCredentials(t *testing.T) {
 
 	authenticateResponse := model.AuthenticateResponse{
 		AccountInfo: model.AccountInfo{
-			Email:       "admin@example.com",
-			FirstName:   "Adam",
-			LastName:    "Appleby",
-			RoleName:    "Administrator",
-			Permissions: []string{"Administrator"},
+			Email:       "permissiontest@example.com",
+			FirstName:   "Edgar",
+			LastName:    "Evans",
+			RoleName:    "PermissionTest",
+			Permissions: []string{"canPermissionTest"},
 		},
 		Token: model.Token{
-			AccountId: 1,
+			AccountId: 5,
 			Token:     "",
 		},
 	}

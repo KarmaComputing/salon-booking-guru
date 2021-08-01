@@ -141,9 +141,13 @@ func (s *PsqlAccountStore) GetInfo(id int) (model.AccountInfo, error) {
 			role.name,
 			ARRAY(
 				SELECT
-					name
+					permission.name
 				FROM
 					role_permission_link
+				INNER JOIN
+					permission
+				ON
+					permission.id = role_permission_link.permission_id
 				WHERE
 					role_id = role.id
 			)
