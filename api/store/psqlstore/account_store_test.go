@@ -19,7 +19,7 @@ func TestAccountGetAll(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(accounts) != 4 {
+	if len(accounts) != 5 {
 		t.Fatal(errors.New("Number of accounts returned is invalid"))
 	}
 }
@@ -55,14 +55,14 @@ func TestAccountGetInfo(t *testing.T) {
 	}
 
 	accountInfo := model.AccountInfo{
-		Email:       "owner@example.com",
-		FirstName:   "Beatrice",
-		LastName:    "Brown",
-		RoleName:    "Owner",
-		Permissions: []string{"Owner"},
+		Email:       "permissiontest@example.com",
+		FirstName:   "Edgar",
+		LastName:    "Evans",
+		RoleName:    "PermissionTest",
+		Permissions: []string{"canPermissionTest"},
 	}
 
-	accountInfoGet, err := s.Account().GetInfo(2)
+	accountInfoGet, err := s.Account().GetInfo(5)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -156,7 +156,7 @@ func TestAccountDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(accounts) != 3 {
+	if len(accounts) != 4 {
 		t.Fatal(errors.New("Number of accounts returned is invalid"))
 	}
 }

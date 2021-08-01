@@ -7,6 +7,7 @@ var store Store
 type Store interface {
 	Account() AccountStore
 	Authenticate() AuthenticateStore
+	Authorize() AuthorizeStore
 	Token() TokenStore
 }
 
@@ -22,6 +23,10 @@ type AccountStore interface {
 
 type AuthenticateStore interface {
 	AuthenticateCredentials(credentials model.Credentials) (model.AuthenticateResponse, error)
+}
+
+type AuthorizeStore interface {
+	AuthorizeToken(bearerToken string, requiredPermissions []string) error
 }
 
 type TokenStore interface {
