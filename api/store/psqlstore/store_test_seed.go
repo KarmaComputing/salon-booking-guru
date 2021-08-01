@@ -21,28 +21,32 @@ var testSeeds = []string{
 		"admin@example.com",
 		"Adam",
 		"Appleby",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Administrator",
 	),
 	seedAccount(
 		"owner@example.com",
 		"Beatrice",
 		"Brown",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Owner",
 	),
 	seedAccount(
 		"staff1@example.com",
 		"Cameron",
 		"Callaway",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Staff",
 	),
 	seedAccount(
 		"staff2@example.com",
 		"Dahlia",
 		"Davidson",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Staff",
 	),
 }
