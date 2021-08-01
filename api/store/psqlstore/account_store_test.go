@@ -48,6 +48,29 @@ func TestAccountGet(t *testing.T) {
 	}
 }
 
+func TestAccountGetInfo(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	accountInfo := model.AccountInfo{
+		Email:     "owner@example.com",
+		FirstName: "Beatrice",
+		LastName:  "Brown",
+		RoleName:  "Owner",
+	}
+
+	accountInfoGet, err := s.Account().GetInfo(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(accountInfo, accountInfoGet) {
+		t.Fatal(fmt.Sprintf("%v is not equal to %v", accountInfo, accountInfoGet))
+	}
+}
+
 func TestAccountCreate(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {

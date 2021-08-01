@@ -50,7 +50,7 @@ func createAccount(w http.ResponseWriter, r *http.Request) {
 
 	err = validation.ValidateAccount(account)
 	if err != nil {
-		respond(w, "Error: Invalid account data", http.StatusBadRequest)
+		respondMsg(w, "Error: Invalid account data", http.StatusBadRequest)
 		return
 	}
 
@@ -73,7 +73,7 @@ func updateAccount(w http.ResponseWriter, r *http.Request) {
 
 	err = validation.ValidateAccount(account)
 	if err != nil {
-		respond(w, "Error: Invalid account data", http.StatusBadRequest)
+		respondMsg(w, "Error: Invalid account data", http.StatusBadRequest)
 		return
 	}
 

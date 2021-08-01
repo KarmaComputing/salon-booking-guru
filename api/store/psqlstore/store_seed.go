@@ -23,7 +23,7 @@ var seeds = []string{
 		"jamie@scollay.uk",
 		"Jamie",
 		"Scollay",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Administrator",
 	),
 }

@@ -1,10 +1,10 @@
 package psqlstore
 
 import (
-	"errors"
 	"log"
 	"strconv"
 
+	"salon-booking-guru/crypto"
 	"salon-booking-guru/store"
 	"salon-booking-guru/store/model"
 )
@@ -17,6 +17,39 @@ type PsqlTokenStore struct {
 // Returns the a pointer to a PsqlTokenStore.
 func (s *PsqlStore) Token() store.TokenStore {
 	return &PsqlTokenStore{s}
+}
+
+// Generates a token and inserts it into the database.
+//
+// Returns the token and any errors encountered.
+func (s *PsqlTokenStore) Generate(accountId int) (model.Token, error) {
+	token, err := crypto.GenerateToken()
+	if err != nil {
+		return model.Token{}, err
+	}
+
+	_, err = s.db.Exec(`
+		INSERT INTO token (
+			token,
+			account_id
+		) VALUES (
+			$1,
+			$2
+		)
+		;`,
+		token,
+		accountId,
+	)
+	if err != nil {
+		log.Println("Error: Failed to insert 'token' row")
+		log.Println(err)
+		return model.Token{}, err
+	}
+
+	return model.Token{
+		Token:     token,
+		AccountId: accountId,
+	}, nil
 }
 
 // Deletes a row from the 'token' pg table where there is a match in the passed
@@ -59,42 +92,6 @@ func (s *PsqlTokenStore) DeleteAllByAccountId(accountId int) error {
 		log.Println("Error: Failed to delete 'token' rows with account_id '" + strconv.Itoa(accountId) + "'")
 		log.Println(err)
 		return err
-	}
-
-	return nil
-}
-
-// Check the passed token exists in the database.
-//
-// Returns any errors encountered.
-func (s *PsqlTokenStore) Check(token *model.Token) error {
-	row, err := s.db.Query(`
-		SELECT
-			null
-		FROM
-			token
-		WHERE
-			token = $1
-		AND
-			account_id = $2
-		;`,
-		token.Token,
-		token.AccountId,
-	)
-	defer row.Close()
-
-	if err != nil {
-		log.Println("Error: Failed to retrieve 'token' row")
-		log.Println(err)
-		return err
-	}
-
-	count := 0
-	for row.Next() {
-		count++
-	}
-	if count <= 0 {
-		return errors.New("Token not found")
 	}
 
 	return nil
