@@ -19,11 +19,33 @@ func (s *PsqlStore) Authorize() store.AuthorizeStore {
 	return &PsqlAuthorizeStore{s}
 }
 
-// Authorizes a set of credentials.
+// Authorizes a bearer token by checking it exists in the database, and that the
+// associated account has the required permissions, if no required permissions
+// are specified it will simply check the token is found.
 //
-// Returns a AuthorizeResponse struct, and any errors encountered.
+// Returns any errors encountered.
 func (s *PsqlAuthorizeStore) AuthorizeToken(bearerToken string, requiredPermissions []string) error {
 	if len(requiredPermissions) == 0 {
+		var accountId int
+		err := s.db.QueryRow(`
+			SELECT
+				account.id
+			FROM
+				account
+			INNER JOIN
+				token
+			ON
+				account.id = token.account_id
+			WHERE
+				'Bearer ' || token.token = $1
+			;`,
+			bearerToken,
+		).Scan(
+			&accountId,
+		)
+		if err != nil {
+			return err
+		}
 		return nil
 	}
 
