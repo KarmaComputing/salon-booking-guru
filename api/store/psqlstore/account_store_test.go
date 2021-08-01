@@ -55,10 +55,11 @@ func TestAccountGetInfo(t *testing.T) {
 	}
 
 	accountInfo := model.AccountInfo{
-		Email:     "owner@example.com",
-		FirstName: "Beatrice",
-		LastName:  "Brown",
-		RoleName:  "Owner",
+		Email:       "owner@example.com",
+		FirstName:   "Beatrice",
+		LastName:    "Brown",
+		RoleName:    "Owner",
+		Permissions: []string{"Owner"},
 	}
 
 	accountInfoGet, err := s.Account().GetInfo(2)

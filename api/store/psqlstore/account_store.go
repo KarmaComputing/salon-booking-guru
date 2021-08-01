@@ -9,6 +9,7 @@ import (
 	"salon-booking-guru/store"
 	"salon-booking-guru/store/model"
 
+	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -137,7 +138,15 @@ func (s *PsqlAccountStore) GetInfo(id int) (model.AccountInfo, error) {
 			account.email,
 			account.first_name,
 			account.last_name,
-			role.name
+			role.name,
+			ARRAY(
+				SELECT
+					name
+				FROM
+					role_permission_link
+				WHERE
+					role_id = role.id
+			)
 		FROM
 			account
 		INNER JOIN
@@ -164,6 +173,7 @@ func (s *PsqlAccountStore) GetInfo(id int) (model.AccountInfo, error) {
 			&accountInfo.FirstName,
 			&accountInfo.LastName,
 			&accountInfo.RoleName,
+			pq.Array(&accountInfo.Permissions),
 		)
 		if err != nil {
 			log.Println("Error: Failed to populate AccountInfo struct")
