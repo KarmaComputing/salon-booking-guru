@@ -15,12 +15,8 @@ import (
 
 func main() {
 	var s store.Store
-	var err error
 
-	s, err = psqlstore.Open()
-	if err != nil {
-		log.Println("Error: Store has not been initialised")
-	}
+	s = psqlstore.Open()
 
 	router := mux.NewRouter()
 	router.Use(handler.CommonMiddleware)
