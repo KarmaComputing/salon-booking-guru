@@ -20,10 +20,10 @@ type PsqlStore struct {
 
 // Open a connection to a psql database and return a pointer to a PsqlStore
 // struct with a pointer to the db connection.
-func Open() (*PsqlStore, error) {
+func Open() *PsqlStore {
 	var s PsqlStore
 	go InitDatabase(&s)
-	return &s, nil
+	return &s
 }
 
 // Open a connection to a psql database and return a pointer to a PsqlStore
@@ -52,16 +52,16 @@ func InitDatabase(s *PsqlStore) {
 	isDatabaseConnected := false
 
 	for {
-		if waitPeriod != initialWaitPeriod {
-			log.Printf("Attempting to reconnect to the database in %ds", waitPeriod/2000000000)
-			time.Sleep(waitPeriod)
-		}
-		waitPeriod *= 2
-		if waitPeriod > maxWaitPeriod {
-			waitPeriod = maxWaitPeriod
-		}
-
 		if !isDatabaseConnected {
+			if waitPeriod != initialWaitPeriod {
+				log.Printf("Attempting to reconnect to the database in %ds", waitPeriod/2000000000)
+				time.Sleep(waitPeriod)
+			}
+			waitPeriod *= 2
+			if waitPeriod > maxWaitPeriod {
+				waitPeriod = maxWaitPeriod
+			}
+
 			connectionString := fmt.Sprintf(
 				"host=%s port=%s user=%s password='%s' sslmode=disable",
 				host,
