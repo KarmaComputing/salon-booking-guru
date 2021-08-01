@@ -378,6 +378,32 @@ cat ~/.ssh/id_rsa.pub | ssh root@<your-vps-ip-address> dokku ssh-keys:add myloca
 If you get the following error: `remote: unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/dokku/salon-booking-guru/api: no such file or directory`. This means that the Dockerfile is not already on the Dokku servers repository, make sure that its already there and check the pre-recieve hook so that it has the correct URL to the Dockerfile. It must start with `raw.githubusercontent.com`.
 
 
+## Github Actions setup
+
+### Credentials
+
+The Github Dokku action needs to be able to ssh into the Dokku server.
+
+On the dokku server, generate a keypaid for Github to use;
+```
+su dokku
+ssh-keygen # Press enter, generate key without passphrase
+```
+
+Allow the key to be used by Github
+```
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+```
+
+Copy the private key to Gituub secrets e.g. `https://github.com/<org>/<repo>/settings/secrets/actions`
+as `SSH_PRIVATE_KEY`.
+
+```
+cat ~/.ssh/id_rsa # Copy into GitHub secrets as SSH_PRIVATE_KEY
+```
+
+Also set `DOKKU_HOST` to the ip address or hostname of your dokku server.
+
 ## Hardening
 #### Disable Password based authentication
 - Verify your ssh access working with key based access (`ssh root@<your-ip>`) # login without a password
