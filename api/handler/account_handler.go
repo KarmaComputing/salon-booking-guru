@@ -7,11 +7,33 @@ import (
 )
 
 func accountRoutes() {
-	v1.HandleFunc("/account", getAllAccount).Methods("GET")
-	v1.HandleFunc("/account/{id}", getAccount).Methods("GET")
-	v1.HandleFunc("/account", createAccount).Methods("POST")
-	v1.HandleFunc("/account", updateAccount).Methods("PUT")
-	v1.HandleFunc("/account/{id}", deleteAccount).Methods("DELETE")
+	// GET
+	v1.HandleFunc(
+		"/account",
+		authorize(getAllAccount, "canReadAccount"),
+	).Methods("GET")
+	v1.HandleFunc(
+		"/account/{id}",
+		authorize(getAccount, "canReadAccount"),
+	).Methods("GET")
+
+	// POST
+	v1.HandleFunc(
+		"/account",
+		authorize(createAccount, "canCreateAccount"),
+	).Methods("POST")
+
+	// PUT
+	v1.HandleFunc(
+		"/account",
+		authorize(updateAccount, "canUpdateAccount"),
+	).Methods("PUT")
+
+	// DELETE
+	v1.HandleFunc(
+		"/account/{id}",
+		authorize(deleteAccount, "canDeleteAccount"),
+	).Methods("DELETE")
 }
 
 func getAllAccount(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +72,7 @@ func createAccount(w http.ResponseWriter, r *http.Request) {
 
 	err = validation.ValidateAccount(account)
 	if err != nil {
-		respond(w, "Error: Invalid account data", http.StatusBadRequest)
+		respondMsg(w, "Error: Invalid account data", http.StatusBadRequest)
 		return
 	}
 
@@ -73,7 +95,7 @@ func updateAccount(w http.ResponseWriter, r *http.Request) {
 
 	err = validation.ValidateAccount(account)
 	if err != nil {
-		respond(w, "Error: Invalid account data", http.StatusBadRequest)
+		respondMsg(w, "Error: Invalid account data", http.StatusBadRequest)
 		return
 	}
 

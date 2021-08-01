@@ -21,6 +21,7 @@ func InitRouter(r *mux.Router, mainStore store.Store) {
 	router = r
 	v1 = router.PathPrefix("/v1").Subrouter()
 	accountRoutes()
+	authenticateRoutes()
 }
 
 func CommonMiddleware(next http.Handler) http.Handler {

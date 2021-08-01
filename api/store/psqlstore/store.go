@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"salon-booking-guru/store"
+
+	_ "github.com/lib/pq"
 )
 
 // assert store implementation

@@ -19,7 +19,7 @@ func TestAccountGetAll(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(accounts) != 4 {
+	if len(accounts) != 5 {
 		t.Fatal(errors.New("Number of accounts returned is invalid"))
 	}
 }
@@ -45,6 +45,30 @@ func TestAccountGet(t *testing.T) {
 
 	if !reflect.DeepEqual(account, accountGet) {
 		t.Fatal(fmt.Sprintf("%v is not equal to %v", account, accountGet))
+	}
+}
+
+func TestAccountGetInfo(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	accountInfo := model.AccountInfo{
+		Email:       "permissiontest@example.com",
+		FirstName:   "Edgar",
+		LastName:    "Evans",
+		RoleName:    "PermissionTest",
+		Permissions: []string{"canPermissionTest"},
+	}
+
+	accountInfoGet, err := s.Account().GetInfo(5)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(accountInfo, accountInfoGet) {
+		t.Fatal(fmt.Sprintf("%v is not equal to %v", accountInfo, accountInfoGet))
 	}
 }
 
@@ -132,7 +156,7 @@ func TestAccountDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(accounts) != 3 {
+	if len(accounts) != 4 {
 		t.Fatal(errors.New("Number of accounts returned is invalid"))
 	}
 }

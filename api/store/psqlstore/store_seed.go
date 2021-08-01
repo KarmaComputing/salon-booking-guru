@@ -9,22 +9,38 @@ var seeds = []string{
 	seedRole("Staff"),
 
 	// permissions
-	seedPermission("Administrator"),
-	seedPermission("Owner"),
-	seedPermission("Staff"),
+	seedPermission("canReadAccount"),
+	seedPermission("canCreateAccount"),
+	seedPermission("canUpdateAccount"),
+	seedPermission("canDeleteAccount"),
 
 	// role permission links
-	seedRolePermissionLink("Administrator", "Administrator"),
-	seedRolePermissionLink("Owner", "Owner"),
-	seedRolePermissionLink("Staff", "Staff"),
+	seedRolePermissionLink("Administrator", "canReadAccount"),
+	seedRolePermissionLink("Administrator", "canCreateAccount"),
+	seedRolePermissionLink("Administrator", "canUpdateAccount"),
+	seedRolePermissionLink("Administrator", "canDeleteAccount"),
+
+	seedRolePermissionLink("Owner", "canReadAccount"),
+	seedRolePermissionLink("Owner", "canCreateAccount"),
+	seedRolePermissionLink("Owner", "canUpdateAccount"),
+	seedRolePermissionLink("Owner", "canDeleteAccount"),
+
+	seedRolePermissionLink("Staff", "canReadAccount"),
 
 	// accounts
 	seedAccount(
 		"jamie@scollay.uk",
 		"Jamie",
 		"Scollay",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Administrator",
+	),
+	seedAccount(
+		"changeme@owner.com",
+		"Owner",
+		"Name",
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
+		"Owner",
 	),
 }
 

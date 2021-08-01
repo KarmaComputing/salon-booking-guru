@@ -5,45 +5,71 @@ var testSeeds = []string{
 	seedRole("Administrator"),
 	seedRole("Owner"),
 	seedRole("Staff"),
+	seedRole("PermissionTest"),
 
 	// permissions
-	seedPermission("Administrator"),
-	seedPermission("Owner"),
-	seedPermission("Staff"),
+	seedPermission("canReadAccount"),
+	seedPermission("canCreateAccount"),
+	seedPermission("canUpdateAccount"),
+	seedPermission("canDeleteAccount"),
+
+	seedPermission("canPermissionTest"),
 
 	// role permission links
-	seedRolePermissionLink("Administrator", "Administrator"),
-	seedRolePermissionLink("Owner", "Owner"),
-	seedRolePermissionLink("Staff", "Staff"),
+	seedRolePermissionLink("Administrator", "canReadAccount"),
+	seedRolePermissionLink("Administrator", "canCreateAccount"),
+	seedRolePermissionLink("Administrator", "canUpdateAccount"),
+	seedRolePermissionLink("Administrator", "canDeleteAccount"),
+
+	seedRolePermissionLink("Owner", "canReadAccount"),
+	seedRolePermissionLink("Owner", "canCreateAccount"),
+	seedRolePermissionLink("Owner", "canUpdateAccount"),
+	seedRolePermissionLink("Owner", "canDeleteAccount"),
+
+	seedRolePermissionLink("Staff", "canReadAccount"),
+
+	seedRolePermissionLink("PermissionTest", "canPermissionTest"),
 
 	// accounts
 	seedAccount(
 		"admin@example.com",
 		"Adam",
 		"Appleby",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Administrator",
 	),
 	seedAccount(
 		"owner@example.com",
 		"Beatrice",
 		"Brown",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Owner",
 	),
 	seedAccount(
 		"staff1@example.com",
 		"Cameron",
 		"Callaway",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Staff",
 	),
 	seedAccount(
 		"staff2@example.com",
 		"Dahlia",
 		"Davidson",
-		"$2y$10$FdhRrvtzETtcFsezkFlX.ujOc9H6v3LnmOd8ITZ7mWPIjRIEvgDa.",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Staff",
+	),
+	seedAccount(
+		"permissiontest@example.com",
+		"Edgar",
+		"Evans",
+		// This is a bcrypt hash for the string "password"
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
+		"PermissionTest",
 	),
 }
 

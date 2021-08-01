@@ -9,6 +9,7 @@ import (
 	"salon-booking-guru/store"
 	"salon-booking-guru/store/model"
 
+	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -124,6 +125,77 @@ func (s *PsqlAccountStore) Get(id int) (model.Account, error) {
 	}
 
 	return account, nil
+}
+
+// Get a single row from the 'account' pg table where 'id' matches the passed
+// id.
+//
+// Returns a AccountInfo struct, and any errors encountered.
+func (s *PsqlAccountStore) GetInfo(id int) (model.AccountInfo, error) {
+	var accountInfo model.AccountInfo
+	rows, err := s.db.Query(`
+		SELECT
+			account.email,
+			account.first_name,
+			account.last_name,
+			role.name,
+			ARRAY(
+				SELECT
+					permission.name
+				FROM
+					role_permission_link
+				INNER JOIN
+					permission
+				ON
+					permission.id = role_permission_link.permission_id
+				WHERE
+					role_id = role.id
+			)
+		FROM
+			account
+		INNER JOIN
+			role
+		ON
+			account.role_id = role.id
+		WHERE
+			account.id = $1
+		LIMIT 1
+		;`,
+		id,
+	)
+	if err != nil {
+		log.Println("Error: Failed to find 'account' with id '" + strconv.Itoa(id) + "'")
+		log.Println(err)
+		return model.AccountInfo{}, err
+	}
+	defer rows.Close()
+
+	counter := 0
+	for rows.Next() {
+		err = rows.Scan(
+			&accountInfo.Email,
+			&accountInfo.FirstName,
+			&accountInfo.LastName,
+			&accountInfo.RoleName,
+			pq.Array(&accountInfo.Permissions),
+		)
+		if err != nil {
+			log.Println("Error: Failed to populate AccountInfo struct")
+			log.Println(err)
+			return model.AccountInfo{}, err
+		}
+		counter++
+	}
+
+	if counter == 0 {
+		err = errors.New(
+			fmt.Sprintf("Error: Failed to find 'account' with id '%d'", id),
+		)
+		log.Println(err)
+		return model.AccountInfo{}, err
+	}
+
+	return accountInfo, nil
 }
 
 // Creates a row in the 'account' pg table using data from the passed Account
