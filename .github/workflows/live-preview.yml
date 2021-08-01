@@ -1,5 +1,5 @@
 ---
-name: 'review-app'
+name: 'Live Preview'
 
 # yamllint disable-line rule:truthy
 on:
