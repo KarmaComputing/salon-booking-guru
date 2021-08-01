@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Push database to dokku
-        uses: dokku/github-action@master
+        uses: dokku/github-action@v1.0.2
         with:
           command: review-apps:create
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-database'
@@ -26,7 +26,7 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Push api to dokku
-        uses: dokku/github-action@master
+        uses: dokku/github-action@v1.0.2
         with:
           command: review-apps:create
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-api'
@@ -34,7 +34,7 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Push to front-end to dokku
-        uses: dokku/github-action@master
+        uses: dokku/github-action@v1.0.2
         with:
           command: review-apps:create
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
@@ -47,7 +47,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     steps:
       - name: Destroy the database review app
-        uses: dokku/github-action@master
+        uses: dokku/github-action@v1.0.2
         with:
           command: review-apps:destroy
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-database'
@@ -55,7 +55,7 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Destroy the api review app
-        uses: dokku/github-action@master
+        uses: dokku/github-action@v1.0.2
         with:
           command: review-apps:destroy
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-api'
@@ -63,7 +63,7 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Destroy the front-end review app
-        uses: dokku/github-action@master
+        uses: dokku/github-action@v1.0.2
         with:
           command: review-apps:destroy
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
