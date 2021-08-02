@@ -1,13 +1,15 @@
-name: Delete Review App
+name: Destory Live Preview
 
 # only trigger on pull request closed events
 on:
   pull_request:
     types: [ closed ]
 
-  destroy_review_app:
+jobs:
+  destroy_live_preview:
     runs-on: ubuntu-20.04
     # only run when a pull request is closed
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
     steps:
       - name: Destroy the database review app
         uses: dokku/github-action@v1.0.2
