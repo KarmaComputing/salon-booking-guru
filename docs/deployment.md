@@ -332,8 +332,15 @@ dokku proxy:ports-add salon-booking-guru-api https:443:8085
 
 
 
-#### Troubleshooting
+## Troubleshooting
 
+
+#### Dokku `apps command not found`
+
+Check ~/.ssh/authorized keys / root to ensure the ssh command includes
+```
+command="`cat /home/dokku/.sshcommand` $SSH_ORIGINAL_COMMAND" ssh-rsa <the key>
+```
 
 #### How do I know the database is connected OK
 
