@@ -26,5 +26,6 @@ jobs:
         app-name: salon-booking-guru-api
         remote-branch: main
 
-      - name: Smoketest
-        run: curl --fail -H "Content-Type: application/json" -X POST -d '{"email":"jamie@scollay.uk", "password":"password"}' https://salon-booking-guru-api.dokku.karmacomputing.co.uk/v1/authenticate
+    - name: Smoketest
+      run: |
+        curl --fail -H "Content-Type: application/json" -X POST -d '{"email":"jamie@scollay.uk", "password":"password"}' https://salon-booking-guru-api.dokku.karmacomputing.co.uk/v1/authenticate
