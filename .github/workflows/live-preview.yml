@@ -23,6 +23,7 @@ jobs:
           command: review-apps:create
           branch: 'main'
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-database'
+          git_push_flags: '--force'
           review_app_name: review-salon-booking-guru-database-${{ github.event.pull_request.number }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -32,6 +33,7 @@ jobs:
           command: review-apps:create
           branch: 'main'
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-api'
+          git_push_flags: '--force'
           review_app_name: review-salon-booking-guru-api-${{ github.event.pull_request.number }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -41,6 +43,7 @@ jobs:
           command: review-apps:create
           branch: 'main'
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
+          git_push_flags: '--force'
           review_app_name: review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
