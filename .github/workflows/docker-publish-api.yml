@@ -9,12 +9,10 @@ on:
     tags: [ 'v*.*.*' ]
     paths:
       - 'api/**'
-      - 'front-end/**'
   pull_request:
     branches: [ main ]
     paths:
       - 'api/**'
-      - 'front-end/**'
 
 env:
   REGISTRY: ghcr.io
