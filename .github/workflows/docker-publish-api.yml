@@ -19,7 +19,6 @@ on:
       - '!api/**'
       - '!front-end/**'
 
-
 env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
