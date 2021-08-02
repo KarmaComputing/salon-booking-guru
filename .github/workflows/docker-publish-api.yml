@@ -16,9 +16,8 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'docs/**'
-    paths:
-      - 'api/**'
-      - 'front-end/**'
+      - '!api/**'
+      - '!front-end/**'
 
 env:
   REGISTRY: ghcr.io
