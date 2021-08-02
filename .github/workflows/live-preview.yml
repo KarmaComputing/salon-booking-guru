@@ -43,3 +43,14 @@ jobs:
           git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
           review_app_name: review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: 'Comment PR with preview URL'
+        uses: actions/github-script@v3
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🙌 Live preview ready! http://review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk/
+            })
