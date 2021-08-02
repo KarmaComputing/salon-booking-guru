@@ -7,16 +7,14 @@ on:
     branches: [ main ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
-    paths-ignore:
-      - 'docs/**'
-      - '!api/**'
-      - '!front-end/**'
+    paths:
+      - 'api/**'
+      - 'front-end/**'
   pull_request:
     branches: [ main ]
-    paths-ignore:
-      - 'docs/**'
-      - '!api/**'
-      - '!front-end/**'
+    paths:
+      - 'api/**'
+      - 'front-end/**'
 
 env:
   REGISTRY: ghcr.io
