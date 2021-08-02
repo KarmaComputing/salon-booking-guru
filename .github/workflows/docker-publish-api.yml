@@ -9,6 +9,9 @@ on:
     tags: [ 'v*.*.*' ]
     paths-ignore:
       - 'docs/**'
+    paths:
+      - 'api/**'
+      - 'front-end/**'
   pull_request:
     branches: [ main ]
     paths-ignore:
