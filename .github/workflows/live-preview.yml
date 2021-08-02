@@ -48,7 +48,8 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Smoketest
-        run: curl --fail -H "Content-Type: application/json" -X POST -d '{"email":"jamie@scollay.uk", "password":"password"}' https://review-salon-booking-guru-api-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk/v1/authenticate
+        run: |
+          curl --fail -H "Content-Type: application/json" -X POST -d '{"email":"jamie@scollay.uk", "password":"password"}' https://review-salon-booking-guru-api-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk/v1/authenticate
 
       - name: 'Comment PR with preview URL'
         uses: actions/github-script@v3
