@@ -52,5 +52,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "🙌 Live preview ready! http://review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk/
+              body: "🙌 Live preview ready! http://review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk/"
             })
