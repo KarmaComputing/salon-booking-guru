@@ -1,20 +1,16 @@
 <template>
     <div>
         <Button
-            icon="pi pi-bars"
             class="p-button-link"
+            icon="pi pi-bars"
             style="color: white"
             @click="isNavVisible = true"
         />
-        <Sidebar
-            v-model:visible="isNavVisible"
-            :baseZIndex="1000"
-            position="right"
-        >
+        <Sidebar v-model:visible="isNavVisible" position="right">
             <div class="text-3xl">Menu</div>
             <Divider />
             <div class="flex flex-col">
-                <RouterLink v-for="(link, i) in linkConfig" :key="i" to="/">
+                <RouterLink v-for="(link, i) in links" :key="i" to="/">
                     <Button
                         class="p-button-text w-full"
                         @click="isNavVisible = false"
@@ -29,10 +25,16 @@
 </template>
 
 <script lang="ts">
+// vue
 import { ref } from 'vue';
+
+// primevue
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
+
+// config
+import { navLinks } from '../config/navLinks';
 
 export default {
     components: {
@@ -42,42 +44,11 @@ export default {
     },
     setup() {
         const isNavVisible = ref(false);
-
-        // add this to a config file
-        const linkConfig = [
-            {
-                icon: 'pi pi-user',
-                label: 'Account',
-            },
-            {
-                icon: 'pi pi-calendar',
-                label: 'Availability',
-            },
-            {
-                icon: 'pi pi-users',
-                label: 'Accounts',
-            },
-            {
-                icon: 'far fa-user-md',
-                label: 'Treatments',
-            },
-            {
-                icon: 'pi pi-calendar',
-                label: 'Treatment category',
-            },
-            {
-                icon: 'far fa-graduation-cap',
-                label: 'Qualifications',
-            },
-            {
-                icon: 'pi pi-cog',
-                label: 'Settings',
-            },
-        ];
+        const links = navLinks;
 
         return {
             isNavVisible,
-            linkConfig,
+            links,
         };
     },
 };
