@@ -1,0 +1,39 @@
+name: Destory Live Preview
+
+# only trigger on pull request closed events
+on:
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  destroy_live_preview:
+    runs-on: ubuntu-20.04
+    # only run when a pull request is closed
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    steps:
+      - name: Destroy the database review app
+        uses: dokku/github-action@v1.0.2
+        with:
+          command: review-apps:destroy
+          branch: 'main'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-database'
+          review_app_name: review-salon-booking-guru-database-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Destroy the api review app
+        uses: dokku/github-action@v1.0.2
+        with:
+          command: review-apps:destroy
+          branch: 'main'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-api'
+          review_app_name: review-salon-booking-guru-api-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Destroy the front-end review app
+        uses: dokku/github-action@v1.0.2
+        with:
+          command: review-apps:destroy
+          branch: 'main'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
+          review_app_name: review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

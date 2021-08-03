@@ -7,12 +7,12 @@ on:
     branches: [ main ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
-    paths-ignore:
-      - 'docs/**'
+    paths:
+      - 'api/**'
   pull_request:
     branches: [ main ]
-    paths-ignore:
-      - 'docs/**'
+    paths:
+      - 'api/**'
 
 env:
   REGISTRY: ghcr.io

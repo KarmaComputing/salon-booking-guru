@@ -6,6 +6,13 @@ var tableNames = []string{
 	"role_permission_link",
 	"account",
 	"token",
+	"availability",
+	"qualification",
+	"account_qualification_link",
+	"product_category",
+	"product",
+	"product_qualification_link",
+	"booking",
 }
 
 // Executes each function definition query in succession from start to finish.
