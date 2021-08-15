@@ -13,6 +13,11 @@ var testSeeds = []string{
 	seedPermission("canUpdateAccount"),
 	seedPermission("canDeleteAccount"),
 
+	seedPermission("canReadAvailability"),
+	seedPermission("canCreateAvailability"),
+	seedPermission("canUpdateAvailability"),
+	seedPermission("canDeleteAvailability"),
+
 	seedPermission("canPermissionTest"),
 
 	// role permission links
@@ -20,13 +25,22 @@ var testSeeds = []string{
 	seedRolePermissionLink("Administrator", "canCreateAccount"),
 	seedRolePermissionLink("Administrator", "canUpdateAccount"),
 	seedRolePermissionLink("Administrator", "canDeleteAccount"),
+	seedRolePermissionLink("Administrator", "canReadAvailability"),
+	seedRolePermissionLink("Administrator", "canCreateAvailability"),
+	seedRolePermissionLink("Administrator", "canUpdateAvailability"),
+	seedRolePermissionLink("Administrator", "canDeleteAvailability"),
 
 	seedRolePermissionLink("Owner", "canReadAccount"),
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
 	seedRolePermissionLink("Owner", "canDeleteAccount"),
+	seedRolePermissionLink("Owner", "canReadAvailability"),
+	seedRolePermissionLink("Owner", "canCreateAvailability"),
+	seedRolePermissionLink("Owner", "canUpdateAvailability"),
+	seedRolePermissionLink("Owner", "canDeleteAvailability"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
+	seedRolePermissionLink("Staff", "canReadAvailability"),
 
 	seedRolePermissionLink("PermissionTest", "canPermissionTest"),
 
