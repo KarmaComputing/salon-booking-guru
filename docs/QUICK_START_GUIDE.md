@@ -13,6 +13,10 @@ instance using docker:
 ```bash
 postgres/run.sh
 ```
+### Database logs
+```
+docker logs -f postgres
+```
 
 **Note:** This database configuration should only ever be used for the purpose
 of local development, since all credentials are stored in this public
@@ -54,8 +58,8 @@ postgres docker container started by `postgres/run.sh`.
 Similarly to the API, we will eventually use docker to start an instance of the
 front-end, however in the meantime you must use either `npm` or `yarn`.
 
-First ensure you have [Node](https://nodejs.org/en/) installed, and optionally
-yarn. Then change into the `front-end/` directory:
+First ensure you have both [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/getting-started/install) installed.
+Then change into the `front-end/` directory:
 ```bash
 cd front-end/
 ```
@@ -73,6 +77,7 @@ You will then be able to start the front-end server using:
 ```bash
 npm run serve
 ```
+(Needs yarn)
 **OR**
 ```bash
 yarn serve

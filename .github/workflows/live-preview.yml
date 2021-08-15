@@ -1,0 +1,63 @@
+---
+name: 'Live Preview'
+
+# yamllint disable-line rule:truthy
+on:
+  # onl run this workflow on pull request events
+  pull_request
+
+jobs:
+  review_app:
+    runs-on: ubuntu-20.04
+    # only run when a pull request is opened
+    if: github.event_name == 'pull_request' && github.event.action == 'opened' || github.event_name == 'pull_request' && github.event.action == 'reopened'
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Push database to dokku
+        uses: dokku/github-action@v1.0.2
+        with:
+          command: review-apps:create
+          branch: 'main'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-database'
+          git_push_flags: '--force'
+          review_app_name: review-salon-booking-guru-database-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Push api to dokku
+        uses: dokku/github-action@v1.0.2
+        with:
+          command: review-apps:create
+          branch: 'main'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-api'
+          git_push_flags: '--force'
+          review_app_name: review-salon-booking-guru-api-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Push to front-end to dokku
+        uses: dokku/github-action@v1.0.2
+        with:
+          command: review-apps:create
+          branch: 'main'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_HOST }}:22/salon-booking-guru-front-end'
+          git_push_flags: '--force'
+          review_app_name: review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Smoketest
+        run: |
+          curl -k --fail -H "Content-Type: application/json" -X POST -d '{"email":"jamie@scollay.uk", "password":"password"}' https://review-salon-booking-guru-api-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk/v1/authenticate
+
+      - name: 'Comment PR with preview URL'
+        uses: actions/github-script@v3
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🙌 Live preview ready! http://review-salon-booking-guru-front-end-${{ github.event.pull_request.number }}.dokku.karmacomputing.co.uk/"
+            })

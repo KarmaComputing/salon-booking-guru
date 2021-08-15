@@ -6,44 +6,31 @@ var store Store
 
 type Store interface {
 	Account() AccountStore
-	Auth() AuthStore
-	Permission() PermissionStore
-	Role() RoleStore
+	Authenticate() AuthenticateStore
+	Authorize() AuthorizeStore
 	Token() TokenStore
 }
 
 type AccountStore interface {
 	GetAll() ([]model.Account, error)
 	Get(id int) (model.Account, error)
+	GetInfo(id int) (model.AccountInfo, error)
 	Create(product *model.Account) error
 	Update(product *model.Account) error
 	Delete(id int) error
 	IsAuthorized(id int, permissionName string) (bool, error)
 }
 
-type AuthStore interface {
-	LogIn(account *model.Account) (model.Token, error)
+type AuthenticateStore interface {
+	AuthenticateCredentials(credentials model.Credentials) (model.AuthenticateResponse, error)
 }
 
-type PermissionStore interface {
-	Get(id int) (model.Permission, error)
-	GetAll() ([]model.Permission, error)
-	Create(permission *model.Permission) error
-	Update(permission *model.Permission) error
-	Delete(id int) error
-	GetAllNameByAccountId(accountId int) ([]string, error)
-}
-
-type RoleStore interface {
-	Get(id int) (model.Role, error)
-	GetAll() ([]model.Role, error)
-	Create(role *model.Role) error
-	Update(role *model.Role) error
-	Delete(id int) error
+type AuthorizeStore interface {
+	AuthorizeToken(bearerToken string, requiredPermissions []string) error
 }
 
 type TokenStore interface {
+	Generate(accountId int) (model.Token, error)
 	Delete(id int) error
 	DeleteAllByAccountId(accountId int) error
-	Check(token *model.Token) error
 }

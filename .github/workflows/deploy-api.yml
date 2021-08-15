@@ -8,6 +8,8 @@ on:
   push:
     branches:
     - main
+    paths-ignore:
+      - 'docs/**'
 jobs:
   deploy:
     runs-on: ubuntu-20.04
@@ -21,6 +23,9 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         dokku-host: ${{ secrets.DOKKU_HOST }}
-        app-name: ${{ secrets.DOKKU_APP_NAME }}
+        app-name: salon-booking-guru-api
         remote-branch: main
-...
+
+    - name: Smoketest
+      run: |
+        curl -k --fail -H "Content-Type: application/json" -X POST -d '{"email":"jamie@scollay.uk", "password":"password"}' https://salon-booking-guru-api.dokku.karmacomputing.co.uk/v1/authenticate

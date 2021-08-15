@@ -48,7 +48,7 @@ var migrations = []Migration{
 			role_id int NOT NULL,
 			first_name varchar(64) NOT NULL,
 			last_name varchar(64) NOT NULL,
-			email varchar(254) NOT NULL,
+			email varchar(254) NOT NULL UNIQUE,
 			password varchar(64) NOT NULL,
 			mobile_number varchar(32),
 			create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -171,7 +171,6 @@ func (s *PsqlStore) Up() {
 	for _, migration := range migrations {
 		s.Exec(migration.Up)
 	}
-	s.GenerateSeedData()
 }
 
 // Execute each migration.Down query in succession from start to finish.

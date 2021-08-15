@@ -3,14 +3,37 @@ package handler
 import (
 	"net/http"
 	"salon-booking-guru/store/model"
+	"salon-booking-guru/validation"
 )
 
 func accountRoutes() {
-	router.HandleFunc("/account", getAllAccount).Methods("GET")
-	router.HandleFunc("/account/{id}", getAccount).Methods("GET")
-	router.HandleFunc("/account", createAccount).Methods("POST")
-	router.HandleFunc("/account", updateAccount).Methods("PUT")
-	router.HandleFunc("/account/{id}", deleteAccount).Methods("DELETE")
+	// GET
+	v1.HandleFunc(
+		"/account",
+		authorize(getAllAccount, "canReadAccount"),
+	).Methods("GET")
+	v1.HandleFunc(
+		"/account/{id}",
+		authorize(getAccount, "canReadAccount"),
+	).Methods("GET")
+
+	// POST
+	v1.HandleFunc(
+		"/account",
+		authorize(createAccount, "canCreateAccount"),
+	).Methods("POST")
+
+	// PUT
+	v1.HandleFunc(
+		"/account",
+		authorize(updateAccount, "canUpdateAccount"),
+	).Methods("PUT")
+
+	// DELETE
+	v1.HandleFunc(
+		"/account/{id}",
+		authorize(deleteAccount, "canDeleteAccount"),
+	).Methods("DELETE")
 }
 
 func getAllAccount(w http.ResponseWriter, r *http.Request) {
@@ -43,6 +66,13 @@ func createAccount(w http.ResponseWriter, r *http.Request) {
 
 	err := readBytes(w, r, &account)
 	if err != nil {
+		respondMsg(w, "Error: Failed to create account", http.StatusBadRequest)
+		return
+	}
+
+	err = validation.ValidateAccount(account)
+	if err != nil {
+		respondMsg(w, "Error: Invalid account data", http.StatusBadRequest)
 		return
 	}
 
@@ -60,6 +90,12 @@ func updateAccount(w http.ResponseWriter, r *http.Request) {
 
 	err := readBytes(w, r, &account)
 	if err != nil {
+		return
+	}
+
+	err = validation.ValidateAccount(account)
+	if err != nil {
+		respondMsg(w, "Error: Invalid account data", http.StatusBadRequest)
 		return
 	}
 
