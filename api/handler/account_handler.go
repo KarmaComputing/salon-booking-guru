@@ -29,6 +29,11 @@ func accountRoutes() {
 		authorize(updateAccount, "canUpdateAccount"),
 	).Methods("PUT")
 
+	v1.HandleFunc(
+		"/account/{id}/qualification",
+		authorize(upsertAccountQualification, "canUpdateAccount"),
+	).Methods("PUT")
+
 	// DELETE
 	v1.HandleFunc(
 		"/account/{id}",
@@ -106,6 +111,27 @@ func updateAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond(w, account, http.StatusOK)
+}
+
+func upsertAccountQualification(w http.ResponseWriter, r *http.Request) {
+	id, err := getId(w, r, "id")
+	if err != nil {
+		return
+	}
+
+	var qualificationIds []int
+	err = readBytes(w, r, &qualificationIds)
+	if err != nil {
+		return
+	}
+
+	err = s.Account().UpsertQualification(id, qualificationIds)
+	if err != nil {
+		respondMsg(w, "Error: Failed to upsert account qualifications", http.StatusInternalServerError)
+		return
+	}
+
+	respondMsg(w, "Success", http.StatusOK)
 }
 
 func deleteAccount(w http.ResponseWriter, r *http.Request) {

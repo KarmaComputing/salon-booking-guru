@@ -19,6 +19,7 @@ type AccountStore interface {
 	Create(product *model.Account) error
 	Update(product *model.Account) error
 	Delete(id int) error
+	UpsertQualification(id int, qualificationIds []int) error
 }
 
 type AuthenticateStore interface {

@@ -141,6 +141,20 @@ func TestAccountUpdate(t *testing.T) {
 	}
 }
 
+func TestAccountUpsertQualification(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = s.Account().UpsertQualification(2, []int{1, 2})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// check qualifications exists on account here
+}
+
 func TestAccountDelete(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {

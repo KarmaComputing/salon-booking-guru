@@ -165,11 +165,11 @@ func (s *PsqlQualificationStore) Update(qualification *model.Qualification) erro
 // Returns any errors encountered.
 func (s *PsqlQualificationStore) Delete(id int) error {
 	_, err := s.db.Exec(`
-			DELETE FROM
-				qualification
-			WHERE
-				id = $1
-			;`,
+		DELETE FROM
+			qualification
+		WHERE
+			id = $1
+		;`,
 		id,
 	)
 	if err != nil {
