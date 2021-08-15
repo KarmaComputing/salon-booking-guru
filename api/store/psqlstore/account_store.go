@@ -59,7 +59,7 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 			&account.MobileNumber,
 		)
 		if err != nil {
-			log.Println("Error: Failed to populate Account structs'")
+			log.Println("Error: Failed to populate Account structs")
 			log.Println(err)
 			return []model.Account{}, err
 		}
@@ -264,7 +264,7 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 				last_name = $4,
 				password = $5,
 				role_id = $6,
-				mobile_number = $7,
+				mobile_number = $7
 			WHERE
 				id = $1
 			;`,
@@ -290,7 +290,7 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 				first_name = $3,
 				last_name = $4,
 				role_id = $5,
-				mobile_number = $6,
+				mobile_number = $6
 			WHERE
 				id = $1
 			;`,
@@ -330,11 +330,4 @@ func (s *PsqlAccountStore) Delete(id int) error {
 		return err
 	}
 	return nil
-}
-
-// Checks if the role associated to the accountId specified has the permission
-//
-// Returns true if the account does have the permission, false otherwise.
-func (s *PsqlAccountStore) IsAuthorized(id int, permissionName string) (bool, error) {
-	return true, nil
 }

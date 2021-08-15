@@ -114,6 +114,7 @@ func TestAccountUpdate(t *testing.T) {
 
 	mobileNumber := "07123456789"
 	account := model.Account{
+		Id:           2,
 		Email:        "test@example.com",
 		FirstName:    "Test",
 		LastName:     "User",
@@ -122,7 +123,7 @@ func TestAccountUpdate(t *testing.T) {
 		MobileNumber: &mobileNumber,
 	}
 
-	err = s.Account().Create(&account)
+	err = s.Account().Update(&account)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -15,31 +15,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func authorizeAsAdmin(t *testing.T, req *http.Request) {
-	credentials := model.Credentials{
-		Email:    "admin@example.com",
-		Password: "password",
-	}
-
-	authenticateResponse, err := s.Authenticate().AuthenticateCredentials(
-		credentials,
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	req.Header.Set(
-		"Authorization",
-		fmt.Sprintf("Bearer %s", authenticateResponse.Token.Token),
-	)
-}
-
-func TestAccountGetAll(t *testing.T) {
+func TestQualificationGetAll(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
-	req, err := http.NewRequest("GET", "/v1/account", nil)
+	req, err := http.NewRequest("GET", "/v1/qualification", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,12 +39,12 @@ func TestAccountGetAll(t *testing.T) {
 	}
 }
 
-func TestAccountGet(t *testing.T) {
+func TestQualificationGet(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
-	req, err := http.NewRequest("GET", "/v1/account/1", nil)
+	req, err := http.NewRequest("GET", "/v1/qualification/1", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,27 +63,21 @@ func TestAccountGet(t *testing.T) {
 	}
 }
 
-func TestAccountCreate(t *testing.T) {
+func TestQualificationCreate(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
-	mobileNumber := "07123456789"
-	account := model.Account{
-		RoleId:       1,
-		FirstName:    "Test",
-		LastName:     "User",
-		Email:        "test@example.com",
-		Password:     "password",
-		MobileNumber: &mobileNumber,
+	qualification := model.Qualification{
+		Name: "Test Qualification",
 	}
 
-	accountJson, err := json.Marshal(account)
+	qualificationJson, err := json.Marshal(qualification)
 
 	req, err := http.NewRequest(
 		"POST",
-		"/v1/account",
-		bytes.NewBuffer(accountJson),
+		"/v1/qualification",
+		bytes.NewBuffer(qualificationJson),
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -125,12 +100,12 @@ func TestAccountCreate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var originalAccount model.Account
-	json.Unmarshal(bodyBytes, &originalAccount)
+	var originalQualification model.Qualification
+	json.Unmarshal(bodyBytes, &originalQualification)
 
 	req, err = http.NewRequest(
 		"GET",
-		fmt.Sprintf("/v1/account/%d", originalAccount.Id),
+		fmt.Sprintf("/v1/qualification/%d", originalQualification.Id),
 		nil,
 	)
 	if err != nil {
@@ -154,44 +129,35 @@ func TestAccountCreate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var responseAccount model.Account
-	json.Unmarshal(bodyBytes, &responseAccount)
+	var responseQualification model.Qualification
+	json.Unmarshal(bodyBytes, &responseQualification)
 
-	responseAccount.Password = ""
-	originalAccount.Password = ""
-
-	if !reflect.DeepEqual(responseAccount, originalAccount) {
+	if !reflect.DeepEqual(responseQualification, originalQualification) {
 		t.Fatal(
 			fmt.Sprintf(
 				"%v is not equal to %v",
-				responseAccount,
-				originalAccount,
+				responseQualification,
+				originalQualification,
 			),
 		)
 	}
 }
 
-func TestAccountCreateInvalidEmail(t *testing.T) {
+func TestQualificationCreateInvalidName(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
-	mobileNumber := "07123456789"
-	account := model.Account{
-		RoleId:       1,
-		FirstName:    "Test",
-		LastName:     "User",
-		Email:        "testexample.com",
-		Password:     "password",
-		MobileNumber: &mobileNumber,
+	qualification := model.Qualification{
+		Name: "",
 	}
 
-	accountJson, err := json.Marshal(account)
+	qualificationJson, err := json.Marshal(qualification)
 
 	req, err := http.NewRequest(
 		"POST",
-		"/v1/account",
-		bytes.NewBuffer(accountJson),
+		"/v1/qualification",
+		bytes.NewBuffer(qualificationJson),
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -211,28 +177,22 @@ func TestAccountCreateInvalidEmail(t *testing.T) {
 	}
 }
 
-func TestAccountUpdate(t *testing.T) {
+func TestQualificationUpdate(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
-	mobileNumber := "07123456789"
-	account := model.Account{
-		Id:           2,
-		RoleId:       2,
-		FirstName:    "TestUpdated",
-		LastName:     "UserUpdated",
-		Email:        "test@example.com",
-		Password:     "password",
-		MobileNumber: &mobileNumber,
+	qualification := model.Qualification{
+		Id:   2,
+		Name: "Updated Qualification",
 	}
 
-	accountJson, err := json.Marshal(account)
+	qualificationJson, err := json.Marshal(qualification)
 
 	req, err := http.NewRequest(
 		"PUT",
-		"/v1/account",
-		bytes.NewBuffer(accountJson),
+		"/v1/qualification",
+		bytes.NewBuffer(qualificationJson),
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -255,12 +215,12 @@ func TestAccountUpdate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var originalAccount model.Account
-	json.Unmarshal(bodyBytes, &originalAccount)
+	var originalQualification model.Qualification
+	json.Unmarshal(bodyBytes, &originalQualification)
 
 	req, err = http.NewRequest(
 		"GET",
-		fmt.Sprintf("/v1/account/%d", originalAccount.Id),
+		fmt.Sprintf("/v1/qualification/%d", originalQualification.Id),
 		nil,
 	)
 	if err != nil {
@@ -284,44 +244,36 @@ func TestAccountUpdate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var responseAccount model.Account
-	json.Unmarshal(bodyBytes, &responseAccount)
+	var responseQualification model.Qualification
+	json.Unmarshal(bodyBytes, &responseQualification)
 
-	responseAccount.Password = ""
-	originalAccount.Password = ""
-
-	if !reflect.DeepEqual(responseAccount, originalAccount) {
+	if !reflect.DeepEqual(responseQualification, originalQualification) {
 		t.Fatal(
 			fmt.Sprintf(
 				"%v is not equal to %v",
-				responseAccount,
-				originalAccount,
+				responseQualification,
+				originalQualification,
 			),
 		)
 	}
 }
 
-func TestAccountUpdateInvalidEmail(t *testing.T) {
+func TestQualificationUpdateInvalidName(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
-	mobileNumber := "07123456789"
-	account := model.Account{
-		RoleId:       1,
-		FirstName:    "TestUpdated",
-		LastName:     "UserUpdated",
-		Email:        "testexample.com",
-		Password:     "password",
-		MobileNumber: &mobileNumber,
+	qualification := model.Qualification{
+		Id:   2,
+		Name: "",
 	}
 
-	accountJson, err := json.Marshal(account)
+	qualificationJson, err := json.Marshal(qualification)
 
 	req, err := http.NewRequest(
 		"PUT",
-		"/v1/account",
-		bytes.NewBuffer(accountJson),
+		"/v1/qualification",
+		bytes.NewBuffer(qualificationJson),
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -341,14 +293,14 @@ func TestAccountUpdateInvalidEmail(t *testing.T) {
 	}
 }
 
-func TestAccountDelete(t *testing.T) {
+func TestQualificationDelete(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
 	req, err := http.NewRequest(
 		"DELETE",
-		"/v1/account/5",
+		"/v1/qualification/2",
 		nil,
 	)
 	if err != nil {
