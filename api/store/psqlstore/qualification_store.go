@@ -58,6 +58,49 @@ func (s *PsqlQualificationStore) GetAll() ([]model.Qualification, error) {
 	return qualifications, nil
 }
 
+// Get all name fields in the 'qualification' pg table by account_id.
+//
+// Returns a slice of Qualification structs, and any errors encountered.
+func (s *PsqlQualificationStore) GetAllNameByAccountId(accountId int) ([]string, error) {
+	rows, err := s.db.Query(`
+		SELECT
+			name
+		FROM
+			qualification AS q
+		INNER JOIN
+			account_qualification_link AS aql
+		ON
+			aql.qualification_id = q.id
+		WHERE
+			aql.account_id = $1
+		LIMIT 10000
+		;`,
+		accountId,
+	)
+	if err != nil {
+		log.Println("Error: Failed to retrieve 'qualification' names")
+		log.Println(err)
+		return []string{}, err
+	}
+	defer rows.Close()
+
+	var qualificationNames []string = []string{}
+	for rows.Next() {
+		var qualificationName string
+		err = rows.Scan(
+			&qualificationName,
+		)
+		if err != nil {
+			log.Println("Error: Failed to populate Qualification structs")
+			log.Println(err)
+			return []string{}, err
+		}
+		qualificationNames = append(qualificationNames, qualificationName)
+	}
+
+	return qualificationNames, nil
+}
+
 // Get a single row from the 'qualification' pg table where 'id' matches the passed
 // id.
 //

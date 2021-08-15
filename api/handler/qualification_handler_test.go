@@ -300,7 +300,7 @@ func TestQualificationDelete(t *testing.T) {
 
 	req, err := http.NewRequest(
 		"DELETE",
-		"/v1/qualification/2",
+		"/v1/qualification/1",
 		nil,
 	)
 	if err != nil {

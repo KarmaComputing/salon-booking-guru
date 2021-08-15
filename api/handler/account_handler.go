@@ -16,6 +16,10 @@ func accountRoutes() {
 		"/account/{id}",
 		authorize(getAccount, "canReadAccount"),
 	).Methods("GET")
+	v1.HandleFunc(
+		"/account/{id}/qualification",
+		authorize(getAllAccountQualificationName, "canReadAccount"),
+	).Methods("GET")
 
 	// POST
 	v1.HandleFunc(
@@ -49,6 +53,20 @@ func getAllAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond(w, accounts, http.StatusOK)
+}
+
+func getAllAccountQualificationName(w http.ResponseWriter, r *http.Request) {
+	id, err := getId(w, r, "id")
+	if err != nil {
+		return
+	}
+	qualificationNames, err := s.Qualification().GetAllNameByAccountId(id)
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve account qualification names", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, qualificationNames, http.StatusOK)
 }
 
 func getAccount(w http.ResponseWriter, r *http.Request) {
@@ -131,7 +149,13 @@ func upsertAccountQualification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondMsg(w, "Success", http.StatusOK)
+	qualificationNames, err := s.Qualification().GetAllNameByAccountId(id)
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve upserted account qualifications", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, qualificationNames, http.StatusOK)
 }
 
 func deleteAccount(w http.ResponseWriter, r *http.Request) {

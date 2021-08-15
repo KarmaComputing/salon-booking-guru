@@ -19,8 +19,30 @@ func TestQualificationGetAll(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(qualifications) != 3 {
+	if len(qualifications) != 4 {
 		t.Fatal(errors.New("Number of qualifications returned is invalid"))
+	}
+}
+
+func TestQualificationGetAllNameByAccountId(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	qualificationNames, err := s.Qualification().GetAllNameByAccountId(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedOutput := []string{
+		"Qualification 2",
+		"Qualification 3",
+		"Qualification 4",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(errors.New("Qualifications returned are invalid"))
 	}
 }
 
@@ -112,7 +134,7 @@ func TestQualificationDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(qualifications) != 2 {
+	if len(qualifications) != 3 {
 		t.Fatal(errors.New("Number of qualifications returned is invalid"))
 	}
 }

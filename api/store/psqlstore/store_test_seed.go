@@ -90,6 +90,12 @@ var testSeeds = []string{
 	seedQualification("Qualification 1"),
 	seedQualification("Qualification 2"),
 	seedQualification("Qualification 3"),
+	seedQualification("Qualification 4"),
+
+	// account qualification links
+	seedAccountQualificationLink(2, 2),
+	seedAccountQualificationLink(2, 3),
+	seedAccountQualificationLink(2, 4),
 }
 
 // Executes each seed query in succession from start to finish, populating the

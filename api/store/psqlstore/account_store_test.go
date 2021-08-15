@@ -152,7 +152,20 @@ func TestAccountUpsertQualification(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// check qualifications exists on account here
+	qualificationNames, err := s.Qualification().GetAllNameByAccountId(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedOutput := []string{
+		"Qualification 1",
+		"Qualification 2",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(fmt.Sprintf("%v is not equal to %v", qualificationNames, expectedOutput))
+
+	}
 }
 
 func TestAccountDelete(t *testing.T) {

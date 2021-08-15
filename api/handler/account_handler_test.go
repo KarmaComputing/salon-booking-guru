@@ -58,6 +58,53 @@ func TestAccountGetAll(t *testing.T) {
 	}
 }
 
+func TestAccountGetAllQualificationName(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	req, err := http.NewRequest("GET", "/v1/account/2/qualification", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err := ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var qualificationNames []string
+	json.Unmarshal(bodyBytes, &qualificationNames)
+
+	expectedOutput := []string{
+		"Qualification 2",
+		"Qualification 3",
+		"Qualification 4",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(
+			fmt.Sprintf(
+				"%v is not equal to %v",
+				qualificationNames,
+				expectedOutput,
+			),
+		)
+	}
+}
+
 func TestAccountGet(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
@@ -352,7 +399,7 @@ func TestAccountUpsertQualification(t *testing.T) {
 
 	req, err := http.NewRequest(
 		"PUT",
-		"/v1/account/2/qualification",
+		"/v1/account/3/qualification",
 		bytes.NewBuffer(qualificationIdsJson),
 	)
 	if err != nil {
@@ -371,8 +418,6 @@ func TestAccountUpsertQualification(t *testing.T) {
 			http.StatusOK,
 		)
 	}
-
-	// check qualifications exists on account here
 }
 
 func TestAccountDelete(t *testing.T) {
