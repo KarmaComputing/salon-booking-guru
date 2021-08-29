@@ -10,7 +10,11 @@
             <div class="text-3xl">Menu</div>
             <Divider />
             <div class="flex flex-col">
-                <RouterLink v-for="(link, i) in links" :key="i" to="/">
+                <RouterLink
+                    v-for="(link, i) in links"
+                    :key="i"
+                    :to="{ path: link.route }"
+                >
                     <Button
                         class="p-button-text w-full"
                         @click="isNavVisible = false"

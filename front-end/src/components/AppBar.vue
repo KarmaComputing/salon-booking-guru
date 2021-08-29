@@ -1,5 +1,5 @@
 <template>
-    <div class="p-shadow-4 bg-blue-600 text-white">
+    <div class="p-shadow-4 bg-blue-600 text-white z-10 fixed w-full">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <RouterLink class="text-2xl py-4" to="/"
                 >Salon Booking Guru</RouterLink
