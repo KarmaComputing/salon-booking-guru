@@ -24,6 +24,11 @@ var seeds = []string{
 	seedPermission("canUpdateQualification"),
 	seedPermission("canDeleteQualification"),
 
+	seedPermission("canReadProductCategory"),
+	seedPermission("canCreateProductCategory"),
+	seedPermission("canUpdateProductCategory"),
+	seedPermission("canDeleteProductCategory"),
+
 	// role permission links
 	seedRolePermissionLink("Administrator", "canReadAccount"),
 	seedRolePermissionLink("Administrator", "canCreateAccount"),
@@ -40,6 +45,11 @@ var seeds = []string{
 	seedRolePermissionLink("Administrator", "canUpdateQualification"),
 	seedRolePermissionLink("Administrator", "canDeleteQualification"),
 
+	seedRolePermissionLink("Administrator", "canReadProductCategory"),
+	seedRolePermissionLink("Administrator", "canCreateProductCategory"),
+	seedRolePermissionLink("Administrator", "canUpdateProductCategory"),
+	seedRolePermissionLink("Administrator", "canDeleteProductCategory"),
+
 	seedRolePermissionLink("Owner", "canReadAccount"),
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
@@ -55,11 +65,18 @@ var seeds = []string{
 	seedRolePermissionLink("Owner", "canUpdateQualification"),
 	seedRolePermissionLink("Owner", "canDeleteQualification"),
 
-	seedRolePermissionLink("Staff", "canReadAccount"),
-	seedRolePermissionLink("Staff", "canReadAvailability"),
+	seedRolePermissionLink("Owner", "canReadProductCategory"),
+	seedRolePermissionLink("Owner", "canCreateProductCategory"),
+	seedRolePermissionLink("Owner", "canUpdateProductCategory"),
+	seedRolePermissionLink("Owner", "canDeleteProductCategory"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
+
+	seedRolePermissionLink("Staff", "canReadAvailability"),
+
 	seedRolePermissionLink("Staff", "canReadQualification"),
+
+	seedRolePermissionLink("Staff", "canReadProductCategory"),
 
 	// accounts
 	seedAccount(
@@ -236,6 +253,31 @@ func seedAvailability(
 		accountId,
 		startDate,
 		endDate,
+	)
+}
+
+func seedProductCategory(
+	name string,
+) string {
+	return fmt.Sprintf(`
+		INSERT INTO product_category (
+			name
+		)
+		SELECT
+			name
+		FROM
+			product_category
+		UNION
+		VALUES (
+			'%s'
+		)
+		EXCEPT
+		SELECT
+			name
+		FROM
+			product_category
+		;`,
+		name,
 	)
 }
 

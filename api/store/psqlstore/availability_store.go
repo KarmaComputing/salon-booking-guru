@@ -24,7 +24,7 @@ func (s *PsqlStore) Availability() store.AvailabilityStore {
 //
 // Returns a slice of Availability structs, and any errors encountered.
 func (s *PsqlAvailabilityStore) GetAll() ([]model.Availability, error) {
-	var availabilitys []model.Availability = []model.Availability{}
+	var availabilities []model.Availability = []model.Availability{}
 	rows, err := s.db.Query(`
 		SELECT
 			id,
@@ -56,17 +56,17 @@ func (s *PsqlAvailabilityStore) GetAll() ([]model.Availability, error) {
 			log.Println(err)
 			return []model.Availability{}, err
 		}
-		availabilitys = append(availabilitys, availability)
+		availabilities = append(availabilities, availability)
 	}
 
-	return availabilitys, nil
+	return availabilities, nil
 }
 
 // Get all rows in the 'availability' pg table by the given accountId.
 //
 // Returns a slice of Availability structs, and any errors encountered.
 func (s *PsqlAvailabilityStore) GetAllByAccountId(accountId int) ([]model.Availability, error) {
-	var availabilitys []model.Availability = []model.Availability{}
+	var availabilities []model.Availability = []model.Availability{}
 	rows, err := s.db.Query(`
 		SELECT
 			id,
@@ -101,10 +101,10 @@ func (s *PsqlAvailabilityStore) GetAllByAccountId(accountId int) ([]model.Availa
 			log.Println(err)
 			return []model.Availability{}, err
 		}
-		availabilitys = append(availabilitys, availability)
+		availabilities = append(availabilities, availability)
 	}
 
-	return availabilitys, nil
+	return availabilities, nil
 }
 
 // Get a single row from the 'availability' pg table where 'id' matches the passed

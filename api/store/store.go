@@ -9,6 +9,7 @@ type Store interface {
 	Authenticate() AuthenticateStore
 	Authorize() AuthorizeStore
 	Availability() AvailabilityStore
+	ProductCategory() ProductCategoryStore
 	Qualification() QualificationStore
 	Token() TokenStore
 }
@@ -37,6 +38,14 @@ type AvailabilityStore interface {
 	Get(id int) (model.Availability, error)
 	CreateMultiple(availability []model.Availability) error
 	Update(availability *model.Availability) error
+	Delete(id int) error
+}
+
+type ProductCategoryStore interface {
+	GetAll() ([]model.ProductCategory, error)
+	Get(id int) (model.ProductCategory, error)
+	Create(qualification *model.ProductCategory) error
+	Update(qualification *model.ProductCategory) error
 	Delete(id int) error
 }
 

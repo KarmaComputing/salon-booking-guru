@@ -23,6 +23,11 @@ var testSeeds = []string{
 	seedPermission("canUpdateQualification"),
 	seedPermission("canDeleteQualification"),
 
+	seedPermission("canReadProductCategory"),
+	seedPermission("canCreateProductCategory"),
+	seedPermission("canUpdateProductCategory"),
+	seedPermission("canDeleteProductCategory"),
+
 	seedPermission("canPermissionTest"),
 
 	// role permission links
@@ -41,6 +46,11 @@ var testSeeds = []string{
 	seedRolePermissionLink("Administrator", "canUpdateQualification"),
 	seedRolePermissionLink("Administrator", "canDeleteQualification"),
 
+	seedRolePermissionLink("Administrator", "canReadProductCategory"),
+	seedRolePermissionLink("Administrator", "canCreateProductCategory"),
+	seedRolePermissionLink("Administrator", "canUpdateProductCategory"),
+	seedRolePermissionLink("Administrator", "canDeleteProductCategory"),
+
 	seedRolePermissionLink("Owner", "canReadAccount"),
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
@@ -56,11 +66,18 @@ var testSeeds = []string{
 	seedRolePermissionLink("Owner", "canUpdateQualification"),
 	seedRolePermissionLink("Owner", "canDeleteQualification"),
 
-	seedRolePermissionLink("Staff", "canReadAccount"),
-	seedRolePermissionLink("Staff", "canReadAvailability"),
+	seedRolePermissionLink("Owner", "canReadProductCategory"),
+	seedRolePermissionLink("Owner", "canCreateProductCategory"),
+	seedRolePermissionLink("Owner", "canUpdateProductCategory"),
+	seedRolePermissionLink("Owner", "canDeleteProductCategory"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
+
+	seedRolePermissionLink("Staff", "canReadAvailability"),
+
 	seedRolePermissionLink("Staff", "canReadQualification"),
+
+	seedRolePermissionLink("Staff", "canReadProductCategory"),
 
 	seedRolePermissionLink("PermissionTest", "canPermissionTest"),
 
@@ -127,6 +144,11 @@ var testSeeds = []string{
 	seedAvailability(4, "2021-05-12T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
 	seedAvailability(4, "2021-05-13T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
 	seedAvailability(4, "2021-05-14T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+
+	// product categories
+	seedProductCategory("Product Category 1"),
+	seedProductCategory("Product Category 2"),
+	seedProductCategory("Product Category 3"),
 }
 
 // Executes each seed query in succession from start to finish, populating the
