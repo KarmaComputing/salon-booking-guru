@@ -27,7 +27,7 @@ func (s *PsqlStore) Account() store.AccountStore {
 //
 // Returns a slice of Account structs, and any errors encountered.
 func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
-	var accounts []model.Account
+	var accounts []model.Account = []model.Account{}
 	rows, err := s.db.Query(`
 		SELECT
 			id,
@@ -109,7 +109,7 @@ func (s *PsqlAccountStore) Get(id int) (model.Account, error) {
 			&account.MobileNumber,
 		)
 		if err != nil {
-			log.Println("Error: Failed to populate Account struct'")
+			log.Println("Error: Failed to populate Account struct")
 			log.Println(err)
 			return model.Account{}, err
 		}

@@ -8,6 +8,7 @@ type Store interface {
 	Account() AccountStore
 	Authenticate() AuthenticateStore
 	Authorize() AuthorizeStore
+	Availability() AvailabilityStore
 	Qualification() QualificationStore
 	Token() TokenStore
 }
@@ -28,6 +29,15 @@ type AuthenticateStore interface {
 
 type AuthorizeStore interface {
 	AuthorizeToken(bearerToken string, requiredPermissions []string) error
+}
+
+type AvailabilityStore interface {
+	GetAll() ([]model.Availability, error)
+	GetAllByAccountId(accountId int) ([]model.Availability, error)
+	Get(id int) (model.Availability, error)
+	CreateMultiple(availability []model.Availability) error
+	Update(availability *model.Availability) error
+	Delete(id int) error
 }
 
 type QualificationStore interface {

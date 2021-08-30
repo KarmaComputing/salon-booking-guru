@@ -22,6 +22,7 @@ func InitRouter(r *mux.Router, mainStore store.Store) {
 	v1 = router.PathPrefix("/v1").Subrouter()
 	accountRoutes()
 	authenticateRoutes()
+	availabilityRoutes()
 	qualificationRoutes()
 }
 

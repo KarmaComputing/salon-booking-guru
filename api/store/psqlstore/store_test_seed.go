@@ -13,6 +13,11 @@ var testSeeds = []string{
 	seedPermission("canUpdateAccount"),
 	seedPermission("canDeleteAccount"),
 
+	seedPermission("canReadAvailability"),
+	seedPermission("canCreateAvailability"),
+	seedPermission("canUpdateAvailability"),
+	seedPermission("canDeleteAvailability"),
+
 	seedPermission("canReadQualification"),
 	seedPermission("canCreateQualification"),
 	seedPermission("canUpdateQualification"),
@@ -25,6 +30,12 @@ var testSeeds = []string{
 	seedRolePermissionLink("Administrator", "canCreateAccount"),
 	seedRolePermissionLink("Administrator", "canUpdateAccount"),
 	seedRolePermissionLink("Administrator", "canDeleteAccount"),
+
+	seedRolePermissionLink("Administrator", "canReadAvailability"),
+	seedRolePermissionLink("Administrator", "canCreateAvailability"),
+	seedRolePermissionLink("Administrator", "canUpdateAvailability"),
+	seedRolePermissionLink("Administrator", "canDeleteAvailability"),
+
 	seedRolePermissionLink("Administrator", "canReadQualification"),
 	seedRolePermissionLink("Administrator", "canCreateQualification"),
 	seedRolePermissionLink("Administrator", "canUpdateQualification"),
@@ -34,10 +45,19 @@ var testSeeds = []string{
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
 	seedRolePermissionLink("Owner", "canDeleteAccount"),
+
+	seedRolePermissionLink("Owner", "canReadAvailability"),
+	seedRolePermissionLink("Owner", "canCreateAvailability"),
+	seedRolePermissionLink("Owner", "canUpdateAvailability"),
+	seedRolePermissionLink("Owner", "canDeleteAvailability"),
+
 	seedRolePermissionLink("Owner", "canReadQualification"),
 	seedRolePermissionLink("Owner", "canCreateQualification"),
 	seedRolePermissionLink("Owner", "canUpdateQualification"),
 	seedRolePermissionLink("Owner", "canDeleteQualification"),
+
+	seedRolePermissionLink("Staff", "canReadAccount"),
+	seedRolePermissionLink("Staff", "canReadAvailability"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
 	seedRolePermissionLink("Staff", "canReadQualification"),
@@ -96,6 +116,17 @@ var testSeeds = []string{
 	seedAccountQualificationLink(2, 2),
 	seedAccountQualificationLink(2, 3),
 	seedAccountQualificationLink(2, 4),
+
+	// availabilities
+	seedAvailability(3, "2021-05-10T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+	seedAvailability(3, "2021-05-11T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+	seedAvailability(3, "2021-05-12T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+
+	seedAvailability(4, "2021-05-10T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+	seedAvailability(4, "2021-05-11T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+	seedAvailability(4, "2021-05-12T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+	seedAvailability(4, "2021-05-13T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
+	seedAvailability(4, "2021-05-14T09:00:00.00Z", "2021-05-10T17:00:00.00Z"),
 }
 
 // Executes each seed query in succession from start to finish, populating the

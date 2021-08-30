@@ -14,6 +14,11 @@ var seeds = []string{
 	seedPermission("canUpdateAccount"),
 	seedPermission("canDeleteAccount"),
 
+	seedPermission("canReadAvailability"),
+	seedPermission("canCreateAvailability"),
+	seedPermission("canUpdateAvailability"),
+	seedPermission("canDeleteAvailability"),
+
 	seedPermission("canReadQualification"),
 	seedPermission("canCreateQualification"),
 	seedPermission("canUpdateQualification"),
@@ -24,6 +29,12 @@ var seeds = []string{
 	seedRolePermissionLink("Administrator", "canCreateAccount"),
 	seedRolePermissionLink("Administrator", "canUpdateAccount"),
 	seedRolePermissionLink("Administrator", "canDeleteAccount"),
+
+	seedRolePermissionLink("Administrator", "canReadAvailability"),
+	seedRolePermissionLink("Administrator", "canCreateAvailability"),
+	seedRolePermissionLink("Administrator", "canUpdateAvailability"),
+	seedRolePermissionLink("Administrator", "canDeleteAvailability"),
+
 	seedRolePermissionLink("Administrator", "canReadQualification"),
 	seedRolePermissionLink("Administrator", "canCreateQualification"),
 	seedRolePermissionLink("Administrator", "canUpdateQualification"),
@@ -33,10 +44,19 @@ var seeds = []string{
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
 	seedRolePermissionLink("Owner", "canDeleteAccount"),
+
+	seedRolePermissionLink("Owner", "canReadAvailability"),
+	seedRolePermissionLink("Owner", "canCreateAvailability"),
+	seedRolePermissionLink("Owner", "canUpdateAvailability"),
+	seedRolePermissionLink("Owner", "canDeleteAvailability"),
+
 	seedRolePermissionLink("Owner", "canReadQualification"),
 	seedRolePermissionLink("Owner", "canCreateQualification"),
 	seedRolePermissionLink("Owner", "canUpdateQualification"),
 	seedRolePermissionLink("Owner", "canDeleteQualification"),
+
+	seedRolePermissionLink("Staff", "canReadAccount"),
+	seedRolePermissionLink("Staff", "canReadAvailability"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
 	seedRolePermissionLink("Staff", "canReadQualification"),
@@ -179,6 +199,43 @@ func seedAccountQualificationLink(accountId int, qualificationId int) string {
 		`,
 		accountId,
 		qualificationId,
+	)
+}
+
+func seedAvailability(
+	accountId int,
+	startDate string,
+	endDate string,
+) string {
+	return fmt.Sprintf(`
+		INSERT INTO availability (
+			account_id,
+			start_date,
+			end_date
+		)
+		SELECT
+			account_id,
+			start_date,
+			end_date
+		FROM
+			availability
+		UNION
+		VALUES (
+			%d,
+			'%s'::timestamptz,
+			'%s'::timestamptz
+		)
+		EXCEPT
+		SELECT
+			account_id,
+			start_date,
+			end_date
+		FROM
+			availability
+		;`,
+		accountId,
+		startDate,
+		endDate,
 	)
 }
 
