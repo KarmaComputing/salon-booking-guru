@@ -243,7 +243,7 @@ func (s *PsqlAvailabilityStore) Update(availability *model.Availability) error {
 		UPDATE
 			availability
 		SET
-			email = $2,
+			account_id = $2,
 			start_date = $3,
 			end_date = $4
 		WHERE
