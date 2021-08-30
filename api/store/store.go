@@ -35,7 +35,6 @@ type AvailabilityStore interface {
 	GetAll() ([]model.Availability, error)
 	GetAllByAccountId(accountId int) ([]model.Availability, error)
 	Get(id int) (model.Availability, error)
-	Create(availability *model.Availability) error
 	CreateMultiple(availability []model.Availability) error
 	Update(availability *model.Availability) error
 	Delete(id int) error

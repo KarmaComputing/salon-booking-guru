@@ -161,39 +161,6 @@ func (s *PsqlAvailabilityStore) Get(id int) (model.Availability, error) {
 	return availability, nil
 }
 
-// Creates a row in the 'availability' pg table using data from the passed Availability
-// struct pointer.
-//
-// Returns any errors encountered.
-func (s *PsqlAvailabilityStore) Create(availability *model.Availability) error {
-	var id int
-	err := s.db.QueryRow(`
-		INSERT INTO availability (
-			account_id,
-			start_date,
-			end_date
-		) VALUES (
-			$1,
-			$2,
-			$3
-		)
-		RETURNING id
-		;`,
-		availability.AccountId,
-		availability.StartDate,
-		availability.EndDate,
-	).Scan(&id)
-	if err != nil {
-		log.Println("Error: Failed to create 'availability' row")
-		log.Println(err)
-		return err
-	}
-
-	availability.Id = id
-
-	return nil
-}
-
 // Creates multiple rows in the 'availability' pg table using data from the
 // passed Availability struct pointer.
 //
