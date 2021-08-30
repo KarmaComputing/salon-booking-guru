@@ -9,8 +9,8 @@ import (
 func availabilityRoutes() {
 	// GET
 	v1.HandleFunc(
-		"/availability",
-		authorize(getAllAvailability, "canReadAvailability"),
+		"/account/{id}/availability",
+		authorize(getAllAvailabilityByAccountId, "canReadAvailability"),
 	).Methods("GET")
 	v1.HandleFunc(
 		"/availability/{id}",
@@ -36,14 +36,19 @@ func availabilityRoutes() {
 	).Methods("DELETE")
 }
 
-func getAllAvailability(w http.ResponseWriter, r *http.Request) {
-	availabilitys, err := s.Availability().GetAll()
+func getAllAvailabilityByAccountId(w http.ResponseWriter, r *http.Request) {
+	id, err := getId(w, r, "id")
 	if err != nil {
-		respondMsg(w, "Error: Failed to retrieve availabilitys", http.StatusInternalServerError)
 		return
 	}
 
-	respond(w, availabilitys, http.StatusOK)
+	availabilities, err := s.Availability().GetAllByAccountId(id)
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve availabilities", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, availabilities, http.StatusOK)
 }
 
 func getAvailability(w http.ResponseWriter, r *http.Request) {

@@ -264,7 +264,7 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 				last_name = $4,
 				password = $5,
 				role_id = $6,
-				mobile_number = $7,
+				mobile_number = $7
 			WHERE
 				id = $1
 			;`,
@@ -290,7 +290,7 @@ func (s *PsqlAccountStore) Update(account *model.Account) error {
 				first_name = $3,
 				last_name = $4,
 				role_id = $5,
-				mobile_number = $6,
+				mobile_number = $6
 			WHERE
 				id = $1
 			;`,
@@ -317,11 +317,11 @@ func (s *PsqlAccountStore) Delete(id int) error {
 	s.Token().DeleteAllByAccountId(id)
 
 	_, err := s.db.Exec(`
-			DELETE FROM
-				account
-			WHERE
-				id = $1
-			;`,
+		DELETE FROM
+			account
+		WHERE
+			id = $1
+		;`,
 		id,
 	)
 	if err != nil {
@@ -332,9 +332,50 @@ func (s *PsqlAccountStore) Delete(id int) error {
 	return nil
 }
 
-// Checks if the role associated to the accountId specified has the permission
+// Deletes all account_qualification_link rows where account_id matches the
+// passed accountId, then inserts new links rows based on the passed
+// qualificationIds.
 //
-// Returns true if the account does have the permission, false otherwise.
-func (s *PsqlAccountStore) IsAuthorized(id int, permissionName string) (bool, error) {
-	return true, nil
+// Returns any errors encountered.
+func (s *PsqlAccountStore) UpsertQualification(id int, qualificationIds []int) error {
+	_, err := s.db.Exec(`
+		DELETE FROM
+			account_qualification_link
+		WHERE
+			account_id = $1
+		;`,
+		id,
+	)
+	if err != nil {
+		log.Println("Error: Failed to delete 'account_qualification_link' rows with account_id '" + strconv.Itoa(id) + "'")
+		log.Println(err)
+		return err
+	}
+
+	sqlValues := ""
+	for i, qualificationId := range qualificationIds {
+		sqlValues += fmt.Sprintf("(%d, %d)", id, qualificationId)
+		if i != len(qualificationIds)-1 {
+			sqlValues += ","
+		}
+	}
+
+	_, err = s.db.Exec(
+		fmt.Sprintf(`
+			INSERT INTO account_qualification_link (
+				account_id,
+				qualification_id
+			) VALUES
+				%s
+			;`,
+			sqlValues,
+		),
+	)
+	if err != nil {
+		log.Println("Error: Failed to insert 'account_qualification_link' rows")
+		log.Println(err)
+		return err
+	}
+
+	return nil
 }

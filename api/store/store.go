@@ -9,6 +9,7 @@ type Store interface {
 	Authenticate() AuthenticateStore
 	Authorize() AuthorizeStore
 	Availability() AvailabilityStore
+	Qualification() QualificationStore
 	Token() TokenStore
 }
 
@@ -19,7 +20,7 @@ type AccountStore interface {
 	Create(product *model.Account) error
 	Update(product *model.Account) error
 	Delete(id int) error
-	IsAuthorized(id int, permissionName string) (bool, error)
+	UpsertQualification(id int, qualificationIds []int) error
 }
 
 type AuthenticateStore interface {
@@ -32,9 +33,20 @@ type AuthorizeStore interface {
 
 type AvailabilityStore interface {
 	GetAll() ([]model.Availability, error)
+	GetAllByAccountId(accountId int) ([]model.Availability, error)
 	Get(id int) (model.Availability, error)
 	Create(availability *model.Availability) error
+	CreateMultiple(availability []model.Availability) error
 	Update(availability *model.Availability) error
+	Delete(id int) error
+}
+
+type QualificationStore interface {
+	GetAll() ([]model.Qualification, error)
+	GetAllNameByAccountId(accountId int) ([]string, error)
+	Get(id int) (model.Qualification, error)
+	Create(qualification *model.Qualification) error
+	Update(qualification *model.Qualification) error
 	Delete(id int) error
 }
 

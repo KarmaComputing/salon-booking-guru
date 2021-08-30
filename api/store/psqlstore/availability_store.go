@@ -65,7 +65,7 @@ func (s *PsqlAvailabilityStore) GetAll() ([]model.Availability, error) {
 // Get all rows in the 'availability' pg table by the given accountId.
 //
 // Returns a slice of Availability structs, and any errors encountered.
-func (s *PsqlAvailabilityStore) GetAll(accountId int) ([]model.Availability, error) {
+func (s *PsqlAvailabilityStore) GetAllByAccountId(accountId int) ([]model.Availability, error) {
 	var availabilitys []model.Availability = []model.Availability{}
 	rows, err := s.db.Query(`
 		SELECT
@@ -179,7 +179,6 @@ func (s *PsqlAvailabilityStore) Create(availability *model.Availability) error {
 		)
 		RETURNING id
 		;`,
-		availability.Id,
 		availability.AccountId,
 		availability.StartDate,
 		availability.EndDate,
@@ -214,7 +213,7 @@ func (s *PsqlAvailabilityStore) CreateMultiple(availabilities []model.Availabili
 		}
 	}
 
-	err := s.db.QueryRow(
+	_, err := s.db.Exec(
 		fmt.Sprintf(`
 			INSERT INTO availability (
 				account_id,
@@ -225,10 +224,6 @@ func (s *PsqlAvailabilityStore) CreateMultiple(availabilities []model.Availabili
 			;`,
 			sql,
 		),
-		availability.Id,
-		availability.AccountId,
-		availability.StartDate,
-		availability.EndDate,
 	)
 	if err != nil {
 		log.Println("Error: Failed to create 'availability' row")

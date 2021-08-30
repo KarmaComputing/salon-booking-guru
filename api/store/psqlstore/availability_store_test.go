@@ -2,31 +2,43 @@ package psqlstore
 
 import (
 	"errors"
-	"fmt"
-	"reflect"
-	"salon-booking-guru/store/model"
 	"testing"
 )
 
-// incomplete
 func TestAvailabilityGetAll(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	accounts, err := s.Availability().GetAll()
+	availabilities, err := s.Availability().GetAll()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if len(accounts) != 5 {
-		t.Fatal(errors.New("Number of accounts returned is invalid"))
+	if len(availabilities) != 8 {
+		t.Fatal(errors.New("Number of availabilities returned is invalid"))
+	}
+}
+
+func TestAvailabilityGetAllByAccountId(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	availabilities, err := s.Availability().GetAllByAccountId(3)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(availabilities) != 3 {
+		t.Fatal(errors.New("Number of availabilities returned is invalid"))
 	}
 }
 
 // incomplete
-func TestAvailabilityGet(t *testing.T) {
+/* func TestAvailabilityGet(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
 		t.Fatal(err)
@@ -157,12 +169,12 @@ func TestAvailabilityDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	accounts, err := s.Availability().GetAll()
+	availabilities, err := s.Availability().GetAll()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if len(accounts) != 4 {
-		t.Fatal(errors.New("Number of accounts returned is invalid"))
+	if len(availabilities) != 4 {
+		t.Fatal(errors.New("Number of availabilities returned is invalid"))
 	}
-}
+} */

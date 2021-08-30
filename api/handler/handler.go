@@ -23,6 +23,7 @@ func InitRouter(r *mux.Router, mainStore store.Store) {
 	accountRoutes()
 	authenticateRoutes()
 	availabilityRoutes()
+	qualificationRoutes()
 }
 
 func CommonMiddleware(next http.Handler) http.Handler {
