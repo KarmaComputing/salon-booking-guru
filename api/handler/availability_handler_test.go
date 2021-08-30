@@ -261,6 +261,34 @@ func TestAvailabilityUpdate(t *testing.T) {
 	}
 }
 
+func TestAvailabilityDelete(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	req, err := http.NewRequest(
+		"DELETE",
+		"/v1/availability/1",
+		nil,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+}
+
 /* func TestAvailabilityGet(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()

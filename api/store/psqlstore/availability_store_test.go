@@ -114,10 +114,31 @@ func TestAvailabilityUpdate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Issue with UTC turning into +0000
+	// Issue with UTC turning into +0000 but the results do match
 	/* if !reflect.DeepEqual(availability, availabilityGet) {
 		t.Fatal(fmt.Sprintf("%v is not equal to %v", availability, availabilityGet))
 	} */
+}
+
+func TestAvailabilityDelete(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = s.Availability().Delete(1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	availabilities, err := s.Availability().GetAll()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(availabilities) != 7 {
+		t.Fatal(errors.New("Number of availabilities returned is invalid"))
+	}
 }
 
 // incomplete
