@@ -2,7 +2,9 @@ package psqlstore
 
 import (
 	"errors"
+	"salon-booking-guru/store/model"
 	"testing"
+	"time"
 )
 
 func TestAvailabilityGetAll(t *testing.T) {
@@ -33,6 +35,45 @@ func TestAvailabilityGetAllByAccountId(t *testing.T) {
 	}
 
 	if len(availabilities) != 3 {
+		t.Fatal(errors.New("Number of availabilities returned is invalid"))
+	}
+}
+
+func TestAvailabilityCreateMultiple(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	availabilities := []model.Availability{
+		model.Availability{
+			AccountId: 1,
+			StartDate: time.Date(2021, time.Month(5), 17, 9, 0, 0, 0, time.UTC),
+			EndDate:   time.Date(2021, time.Month(5), 10, 17, 0, 0, 0, time.UTC),
+		},
+		model.Availability{
+			AccountId: 1,
+			StartDate: time.Date(2021, time.Month(5), 18, 9, 0, 0, 0, time.UTC),
+			EndDate:   time.Date(2021, time.Month(5), 10, 17, 0, 0, 0, time.UTC),
+		},
+		model.Availability{
+			AccountId: 1,
+			StartDate: time.Date(2021, time.Month(5), 19, 9, 0, 0, 0, time.UTC),
+			EndDate:   time.Date(2021, time.Month(5), 10, 17, 0, 0, 0, time.UTC),
+		},
+	}
+
+	err = s.Availability().CreateMultiple(availabilities)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	availabilitiesGet, err := s.Availability().GetAllByAccountId(1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(availabilitiesGet) != 3 {
 		t.Fatal(errors.New("Number of availabilities returned is invalid"))
 	}
 }

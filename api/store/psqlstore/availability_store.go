@@ -205,8 +205,8 @@ func (s *PsqlAvailabilityStore) CreateMultiple(availabilities []model.Availabili
 		sql += fmt.Sprintf(
 			"(%d, '%s', '%s')",
 			availability.AccountId,
-			availability.StartDate,
-			availability.EndDate,
+			availability.StartDate.Format("2006-01-02T15:04:05.00Z07:00"),
+			availability.EndDate.Format("2006-01-02T15:04:05.00Z07:00"),
 		)
 		if i != len(availabilities)-1 {
 			sql += ","
