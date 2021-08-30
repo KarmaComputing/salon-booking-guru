@@ -1,14 +1,18 @@
 package handler
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"salon-booking-guru/store/model"
 	"salon-booking-guru/store/psqlstore"
 	"testing"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -45,6 +49,108 @@ func TestAvailabilityGetAllByAccountId(t *testing.T) {
 
 	if len(availabilities) != 3 {
 		t.Fatal(errors.New("Number of availabilities returned is invalid"))
+	}
+}
+
+func TestAvailabilityCreate(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	availabilities := []model.Availability{
+		model.Availability{
+			AccountId: 1,
+			StartDate: time.Date(2021, time.Month(5), 17, 9, 0, 0, 0, time.UTC),
+			EndDate:   time.Date(2021, time.Month(5), 10, 17, 0, 0, 0, time.UTC),
+		},
+		model.Availability{
+			AccountId: 1,
+			StartDate: time.Date(2021, time.Month(5), 18, 9, 0, 0, 0, time.UTC),
+			EndDate:   time.Date(2021, time.Month(5), 10, 17, 0, 0, 0, time.UTC),
+		},
+		model.Availability{
+			AccountId: 1,
+			StartDate: time.Date(2021, time.Month(5), 19, 9, 0, 0, 0, time.UTC),
+			EndDate:   time.Date(2021, time.Month(5), 10, 17, 0, 0, 0, time.UTC),
+		},
+	}
+
+	availabilityJson, err := json.Marshal(availabilities)
+
+	req, err := http.NewRequest(
+		"POST",
+		"/v1/availability",
+		bytes.NewBuffer(availabilityJson),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err := ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var originalAvailabilities []model.Availability
+	json.Unmarshal(bodyBytes, &originalAvailabilities)
+
+	req, err = http.NewRequest(
+		"GET",
+		"/v1/account/1/availability",
+		nil,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr = httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err = ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var responseAvailabilities []model.Availability
+	json.Unmarshal(bodyBytes, &responseAvailabilities)
+
+	if len(responseAvailabilities) != 3 {
+		t.Fatal(errors.New("Number of availabilities returned is invalid"))
+	}
+
+	for i := 0; i < len(responseAvailabilities); i++ {
+		responseAvailabilities[i].Id = 0
+	}
+
+	if !reflect.DeepEqual(responseAvailabilities, originalAvailabilities) {
+		t.Fatal(
+			fmt.Sprintf(
+				"%v is not equal to %v",
+				responseAvailabilities,
+				originalAvailabilities,
+			),
+		)
 	}
 }
 

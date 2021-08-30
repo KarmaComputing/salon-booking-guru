@@ -20,7 +20,7 @@ func availabilityRoutes() {
 	// POST
 	v1.HandleFunc(
 		"/availability",
-		authorize(createAvailability, "canCreateAvailability"),
+		authorize(createMultipleAvailability, "canCreateAvailability"),
 	).Methods("POST")
 
 	// PUT
@@ -66,28 +66,30 @@ func getAvailability(w http.ResponseWriter, r *http.Request) {
 	respond(w, availability, http.StatusOK)
 }
 
-func createAvailability(w http.ResponseWriter, r *http.Request) {
-	var availability model.Availability
+func createMultipleAvailability(w http.ResponseWriter, r *http.Request) {
+	var availabilities []model.Availability
 
-	err := readBytes(w, r, &availability)
+	err := readBytes(w, r, &availabilities)
 	if err != nil {
 		respondMsg(w, "Error: Failed to create availability", http.StatusBadRequest)
 		return
 	}
 
-	err = validation.ValidateAvailability(availability)
-	if err != nil {
-		respondMsg(w, "Error: Invalid availability data", http.StatusBadRequest)
-		return
+	for _, availability := range availabilities {
+		err = validation.ValidateAvailability(availability)
+		if err != nil {
+			respondMsg(w, "Error: Invalid availability data", http.StatusBadRequest)
+			return
+		}
 	}
 
-	err = s.Availability().Create(&availability)
+	err = s.Availability().CreateMultiple(availabilities)
 	if err != nil {
 		respondMsg(w, "Error: Failed to create availability", http.StatusInternalServerError)
 		return
 	}
 
-	respond(w, availability, http.StatusOK)
+	respond(w, availabilities, http.StatusOK)
 }
 
 func updateAvailability(w http.ResponseWriter, r *http.Request) {
