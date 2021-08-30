@@ -14,18 +14,32 @@ var seeds = []string{
 	seedPermission("canUpdateAccount"),
 	seedPermission("canDeleteAccount"),
 
+	seedPermission("canReadQualification"),
+	seedPermission("canCreateQualification"),
+	seedPermission("canUpdateQualification"),
+	seedPermission("canDeleteQualification"),
+
 	// role permission links
 	seedRolePermissionLink("Administrator", "canReadAccount"),
 	seedRolePermissionLink("Administrator", "canCreateAccount"),
 	seedRolePermissionLink("Administrator", "canUpdateAccount"),
 	seedRolePermissionLink("Administrator", "canDeleteAccount"),
+	seedRolePermissionLink("Administrator", "canReadQualification"),
+	seedRolePermissionLink("Administrator", "canCreateQualification"),
+	seedRolePermissionLink("Administrator", "canUpdateQualification"),
+	seedRolePermissionLink("Administrator", "canDeleteQualification"),
 
 	seedRolePermissionLink("Owner", "canReadAccount"),
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
 	seedRolePermissionLink("Owner", "canDeleteAccount"),
+	seedRolePermissionLink("Owner", "canReadQualification"),
+	seedRolePermissionLink("Owner", "canCreateQualification"),
+	seedRolePermissionLink("Owner", "canUpdateQualification"),
+	seedRolePermissionLink("Owner", "canDeleteQualification"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
+	seedRolePermissionLink("Staff", "canReadQualification"),
 
 	// accounts
 	seedAccount(
@@ -123,6 +137,48 @@ func seedAccount(
 		lastName,
 		password,
 		roleName,
+	)
+}
+
+func seedQualification(
+	name string,
+) string {
+	return fmt.Sprintf(`
+		INSERT INTO qualification (
+			name
+		)
+		SELECT
+			name
+		FROM
+			qualification
+		UNION
+		VALUES (
+			'%s'
+		)
+		EXCEPT
+		SELECT
+			name
+		FROM
+			qualification
+		;`,
+		name,
+	)
+}
+
+func seedAccountQualificationLink(accountId int, qualificationId int) string {
+	return fmt.Sprintf(`
+		INSERT INTO account_qualification_link (account_id, qualification_id)
+		SELECT account_id, qualification_id FROM account_qualification_link
+		UNION
+		VALUES (
+			%d,
+			%d
+		)
+		EXCEPT
+		SELECT account_id, qualification_id FROM account_qualification_link;
+		`,
+		accountId,
+		qualificationId,
 	)
 }
 

@@ -86,7 +86,7 @@ var migrations = []Migration{
 	Migration{
 		`CREATE TABLE IF NOT EXISTS qualification (
 			id serial,
-			name varchar NOT NULL,
+			name varchar NOT NULL UNIQUE,
 			create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			modify_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)

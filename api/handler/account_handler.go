@@ -16,6 +16,10 @@ func accountRoutes() {
 		"/account/{id}",
 		authorize(getAccount, "canReadAccount"),
 	).Methods("GET")
+	v1.HandleFunc(
+		"/account/{id}/qualification",
+		authorize(getAllAccountQualificationName, "canReadAccount"),
+	).Methods("GET")
 
 	// POST
 	v1.HandleFunc(
@@ -27,6 +31,11 @@ func accountRoutes() {
 	v1.HandleFunc(
 		"/account",
 		authorize(updateAccount, "canUpdateAccount"),
+	).Methods("PUT")
+
+	v1.HandleFunc(
+		"/account/{id}/qualification",
+		authorize(upsertAccountQualification, "canUpdateAccount"),
 	).Methods("PUT")
 
 	// DELETE
@@ -44,6 +53,20 @@ func getAllAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond(w, accounts, http.StatusOK)
+}
+
+func getAllAccountQualificationName(w http.ResponseWriter, r *http.Request) {
+	id, err := getId(w, r, "id")
+	if err != nil {
+		return
+	}
+	qualificationNames, err := s.Qualification().GetAllNameByAccountId(id)
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve account qualification names", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, qualificationNames, http.StatusOK)
 }
 
 func getAccount(w http.ResponseWriter, r *http.Request) {
@@ -106,6 +129,33 @@ func updateAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond(w, account, http.StatusOK)
+}
+
+func upsertAccountQualification(w http.ResponseWriter, r *http.Request) {
+	id, err := getId(w, r, "id")
+	if err != nil {
+		return
+	}
+
+	var qualificationIds []int
+	err = readBytes(w, r, &qualificationIds)
+	if err != nil {
+		return
+	}
+
+	err = s.Account().UpsertQualification(id, qualificationIds)
+	if err != nil {
+		respondMsg(w, "Error: Failed to upsert account qualifications", http.StatusInternalServerError)
+		return
+	}
+
+	qualificationNames, err := s.Qualification().GetAllNameByAccountId(id)
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve upserted account qualifications", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, qualificationNames, http.StatusOK)
 }
 
 func deleteAccount(w http.ResponseWriter, r *http.Request) {

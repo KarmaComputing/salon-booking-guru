@@ -114,6 +114,7 @@ func TestAccountUpdate(t *testing.T) {
 
 	mobileNumber := "07123456789"
 	account := model.Account{
+		Id:           2,
 		Email:        "test@example.com",
 		FirstName:    "Test",
 		LastName:     "User",
@@ -122,7 +123,7 @@ func TestAccountUpdate(t *testing.T) {
 		MobileNumber: &mobileNumber,
 	}
 
-	err = s.Account().Create(&account)
+	err = s.Account().Update(&account)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -137,6 +138,33 @@ func TestAccountUpdate(t *testing.T) {
 
 	if !reflect.DeepEqual(account, accountGet) {
 		t.Fatal(fmt.Sprintf("%v is not equal to %v", account, accountGet))
+	}
+}
+
+func TestAccountUpsertQualification(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = s.Account().UpsertQualification(2, []int{1, 2})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	qualificationNames, err := s.Qualification().GetAllNameByAccountId(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedOutput := []string{
+		"Qualification 1",
+		"Qualification 2",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(fmt.Sprintf("%v is not equal to %v", qualificationNames, expectedOutput))
+
 	}
 }
 

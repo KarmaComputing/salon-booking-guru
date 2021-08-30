@@ -15,7 +15,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func authorizeAsAdmin(t *testing.T, roleName string, req *http.Request) {
+func authorizeAsAdmin(t *testing.T, req *http.Request) {
 	credentials := model.Credentials{
 		Email:    "admin@example.com",
 		Password: "password",
@@ -44,7 +44,7 @@ func TestAccountGetAll(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr := httptest.NewRecorder()
 
@@ -54,6 +54,53 @@ func TestAccountGetAll(t *testing.T) {
 			"Handler returned wrong status code: got %v, want %v",
 			status,
 			http.StatusOK,
+		)
+	}
+}
+
+func TestAccountGetAllQualificationName(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	req, err := http.NewRequest("GET", "/v1/account/2/qualification", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err := ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var qualificationNames []string
+	json.Unmarshal(bodyBytes, &qualificationNames)
+
+	expectedOutput := []string{
+		"Qualification 2",
+		"Qualification 3",
+		"Qualification 4",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(
+			fmt.Sprintf(
+				"%v is not equal to %v",
+				qualificationNames,
+				expectedOutput,
+			),
 		)
 	}
 }
@@ -68,7 +115,7 @@ func TestAccountGet(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr := httptest.NewRecorder()
 
@@ -108,7 +155,7 @@ func TestAccountCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr := httptest.NewRecorder()
 
@@ -137,7 +184,7 @@ func TestAccountCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr = httptest.NewRecorder()
 
@@ -197,7 +244,7 @@ func TestAccountCreateInvalidEmail(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr := httptest.NewRecorder()
 
@@ -218,6 +265,7 @@ func TestAccountUpdate(t *testing.T) {
 
 	mobileNumber := "07123456789"
 	account := model.Account{
+		Id:           2,
 		RoleId:       2,
 		FirstName:    "TestUpdated",
 		LastName:     "UserUpdated",
@@ -229,7 +277,7 @@ func TestAccountUpdate(t *testing.T) {
 	accountJson, err := json.Marshal(account)
 
 	req, err := http.NewRequest(
-		"POST",
+		"PUT",
 		"/v1/account",
 		bytes.NewBuffer(accountJson),
 	)
@@ -237,7 +285,7 @@ func TestAccountUpdate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr := httptest.NewRecorder()
 
@@ -266,7 +314,7 @@ func TestAccountUpdate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr = httptest.NewRecorder()
 
@@ -318,7 +366,7 @@ func TestAccountUpdateInvalidEmail(t *testing.T) {
 	accountJson, err := json.Marshal(account)
 
 	req, err := http.NewRequest(
-		"POST",
+		"PUT",
 		"/v1/account",
 		bytes.NewBuffer(accountJson),
 	)
@@ -326,7 +374,7 @@ func TestAccountUpdateInvalidEmail(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr := httptest.NewRecorder()
 
@@ -336,6 +384,38 @@ func TestAccountUpdateInvalidEmail(t *testing.T) {
 			"Handler returned wrong status code: got %v, want %v",
 			status,
 			http.StatusBadRequest,
+		)
+	}
+}
+
+func TestAccountUpsertQualification(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	qualificationIds := []int{1, 2}
+
+	qualificationIdsJson, err := json.Marshal(qualificationIds)
+
+	req, err := http.NewRequest(
+		"PUT",
+		"/v1/account/3/qualification",
+		bytes.NewBuffer(qualificationIdsJson),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
 		)
 	}
 }
@@ -354,7 +434,7 @@ func TestAccountDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	authorizeAsAdmin(t, "Administrator", req)
+	authorizeAsAdmin(t, req)
 
 	rr := httptest.NewRecorder()
 

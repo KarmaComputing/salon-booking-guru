@@ -13,6 +13,11 @@ var testSeeds = []string{
 	seedPermission("canUpdateAccount"),
 	seedPermission("canDeleteAccount"),
 
+	seedPermission("canReadQualification"),
+	seedPermission("canCreateQualification"),
+	seedPermission("canUpdateQualification"),
+	seedPermission("canDeleteQualification"),
+
 	seedPermission("canPermissionTest"),
 
 	// role permission links
@@ -20,13 +25,22 @@ var testSeeds = []string{
 	seedRolePermissionLink("Administrator", "canCreateAccount"),
 	seedRolePermissionLink("Administrator", "canUpdateAccount"),
 	seedRolePermissionLink("Administrator", "canDeleteAccount"),
+	seedRolePermissionLink("Administrator", "canReadQualification"),
+	seedRolePermissionLink("Administrator", "canCreateQualification"),
+	seedRolePermissionLink("Administrator", "canUpdateQualification"),
+	seedRolePermissionLink("Administrator", "canDeleteQualification"),
 
 	seedRolePermissionLink("Owner", "canReadAccount"),
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
 	seedRolePermissionLink("Owner", "canDeleteAccount"),
+	seedRolePermissionLink("Owner", "canReadQualification"),
+	seedRolePermissionLink("Owner", "canCreateQualification"),
+	seedRolePermissionLink("Owner", "canUpdateQualification"),
+	seedRolePermissionLink("Owner", "canDeleteQualification"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
+	seedRolePermissionLink("Staff", "canReadQualification"),
 
 	seedRolePermissionLink("PermissionTest", "canPermissionTest"),
 
@@ -71,6 +85,17 @@ var testSeeds = []string{
 		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"PermissionTest",
 	),
+
+	// qualifications
+	seedQualification("Qualification 1"),
+	seedQualification("Qualification 2"),
+	seedQualification("Qualification 3"),
+	seedQualification("Qualification 4"),
+
+	// account qualification links
+	seedAccountQualificationLink(2, 2),
+	seedAccountQualificationLink(2, 3),
+	seedAccountQualificationLink(2, 4),
 }
 
 // Executes each seed query in succession from start to finish, populating the
