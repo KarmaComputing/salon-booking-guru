@@ -1,5 +1,5 @@
 <template>
-    <DataTable :value="testAccounts" responsiveLayout="stack">
+    <DataTable :value="gridData" responsiveLayout="stack">
         <Column
             v-for="(config, i) in gridConfig"
             :field="config.field"
@@ -46,35 +46,17 @@ export default defineComponent({
             type: Object,
             default: null,
         },
+        gridData: {
+            type: Array,
+            default: () => [],
+        },
     },
     components: {
         DataTable,
         Column,
     },
     setup() {
-        const testAccounts = [
-            {
-                name: 'Jake',
-                email: 'jaketurner810@gmail.com',
-                mobile: '07557140411',
-                role: 'Employee',
-            },
-            {
-                name: 'Hannah',
-                email: 'hannaht95@gmail.com',
-                mobile: '075271125374',
-                role: 'Owner',
-            },
-            {
-                name: 'Jamie Scollay',
-                email: 'deltabrot@gmail.com',
-                mobile: '075276128374',
-                role: 'Employee',
-            },
-        ];
-        return {
-            testAccounts,
-        };
+        return {};
     },
 });
 </script>
