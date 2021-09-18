@@ -39,6 +39,52 @@ func TestProductGetAll(t *testing.T) {
 	}
 }
 
+func TestProductGetAllQualificationName(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	req, err := http.NewRequest("GET", "/v1/product/2/qualification", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+
+	bodyBytes, err := ioutil.ReadAll(rr.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var qualificationNames []string
+	json.Unmarshal(bodyBytes, &qualificationNames)
+
+	expectedOutput := []string{
+		"Qualification 2",
+		"Qualification 3",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(
+			fmt.Sprintf(
+				"%v is not equal to %v",
+				qualificationNames,
+				expectedOutput,
+			),
+		)
+	}
+}
+
 func TestProductGet(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()

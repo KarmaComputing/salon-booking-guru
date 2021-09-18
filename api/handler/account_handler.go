@@ -60,6 +60,7 @@ func getAllAccountQualificationName(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+
 	qualificationNames, err := s.Qualification().GetAllNameByAccountId(id)
 	if err != nil {
 		respondMsg(w, "Error: Failed to retrieve account qualification names", http.StatusInternalServerError)

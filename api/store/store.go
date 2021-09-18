@@ -62,6 +62,7 @@ type ProductCategoryStore interface {
 type QualificationStore interface {
 	GetAll() ([]model.Qualification, error)
 	GetAllNameByAccountId(accountId int) ([]string, error)
+	GetAllNameByProductId(productId int) ([]string, error)
 	Get(id int) (model.Qualification, error)
 	Create(qualification *model.Qualification) error
 	Update(qualification *model.Qualification) error
