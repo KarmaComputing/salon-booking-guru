@@ -12,10 +12,12 @@ func productRoutes() {
 		"/product",
 		authorize(getAllProduct, "canReadProduct"),
 	).Methods("GET")
+
 	v1.HandleFunc(
 		"/product/{id}",
 		authorize(getProduct, "canReadProduct"),
 	).Methods("GET")
+
 	v1.HandleFunc(
 		"/product/{id}/qualification",
 		authorize(getAllProductQualificationName, "canReadProduct"),
@@ -31,6 +33,11 @@ func productRoutes() {
 	v1.HandleFunc(
 		"/product",
 		authorize(updateProduct, "canUpdateProduct"),
+	).Methods("PUT")
+
+	v1.HandleFunc(
+		"/product/{id}/qualification",
+		authorize(upsertProductQualification, "canUpdateProduct"),
 	).Methods("PUT")
 
 	// DELETE
@@ -140,4 +147,31 @@ func deleteProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respondEmpty(w, http.StatusOK)
+}
+
+func upsertProductQualification(w http.ResponseWriter, r *http.Request) {
+	id, err := getId(w, r, "id")
+	if err != nil {
+		return
+	}
+
+	var qualificationIds []int
+	err = readBytes(w, r, &qualificationIds)
+	if err != nil {
+		return
+	}
+
+	err = s.Product().UpsertQualification(id, qualificationIds)
+	if err != nil {
+		respondMsg(w, "Error: Failed to upsert product qualifications", http.StatusInternalServerError)
+		return
+	}
+
+	qualificationNames, err := s.Qualification().GetAllNameByProductId(id)
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve upserted product qualifications", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, qualificationNames, http.StatusOK)
 }
