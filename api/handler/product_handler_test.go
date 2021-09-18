@@ -1,8 +1,14 @@
 package handler
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
+	"salon-booking-guru/store/model"
 	"salon-booking-guru/store/psqlstore"
 	"testing"
 
@@ -57,13 +63,18 @@ func TestProductGet(t *testing.T) {
 	}
 }
 
-/* func TestProductCreate(t *testing.T) {
+func TestProductCreate(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
 	product := model.Product{
-		Name: "Test Product",
+		ProductCategoryId: 2,
+		Name:              "Product Test",
+		Description:       "Product Test description.",
+		Price:             1.99,
+		Deposit:           0.99,
+		Duration:          0.5,
 	}
 
 	productJson, err := json.Marshal(product)
@@ -137,7 +148,7 @@ func TestProductGet(t *testing.T) {
 	}
 }
 
-func TestProductCreateInvalidName(t *testing.T) {
+/* func TestProductCreateInvalidName(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)

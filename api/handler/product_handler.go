@@ -2,6 +2,8 @@ package handler
 
 import (
 	"net/http"
+	"salon-booking-guru/store/model"
+	"salon-booking-guru/validation"
 )
 
 func productRoutes() {
@@ -16,13 +18,13 @@ func productRoutes() {
 	).Methods("GET")
 
 	// POST
-	/* v1.HandleFunc(
+	v1.HandleFunc(
 		"/product",
 		authorize(createProduct, "canCreateProduct"),
 	).Methods("POST")
 
 	// PUT
-	v1.HandleFunc(
+	/* v1.HandleFunc(
 		"/product",
 		authorize(updateProduct, "canUpdateProduct"),
 	).Methods("PUT")
@@ -59,7 +61,7 @@ func getProduct(w http.ResponseWriter, r *http.Request) {
 	respond(w, product, http.StatusOK)
 }
 
-/* func createProduct(w http.ResponseWriter, r *http.Request) {
+func createProduct(w http.ResponseWriter, r *http.Request) {
 	var product model.Product
 
 	err := readBytes(w, r, &product)
@@ -83,7 +85,7 @@ func getProduct(w http.ResponseWriter, r *http.Request) {
 	respond(w, product, http.StatusOK)
 }
 
-func updateProduct(w http.ResponseWriter, r *http.Request) {
+/* func updateProduct(w http.ResponseWriter, r *http.Request) {
 	var product model.Product
 
 	err := readBytes(w, r, &product)

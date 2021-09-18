@@ -152,7 +152,12 @@ func (s *PsqlProductStore) Create(product *model.Product) error {
 		)
 		RETURNING id
 		;`,
+		product.ProductCategoryId,
 		product.Name,
+		product.Description,
+		product.Price,
+		product.Deposit,
+		product.Duration,
 	).Scan(&id)
 	if err != nil {
 		log.Println("Error: Failed to create 'product' row")
