@@ -148,13 +148,18 @@ func TestProductCreate(t *testing.T) {
 	}
 }
 
-/* func TestProductCreateInvalidName(t *testing.T) {
+func TestProductCreateInvalidName(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
 	product := model.Product{
-		Name: "",
+		ProductCategoryId: 2,
+		Name:              "",
+		Description:       "Product Test description.",
+		Price:             1.99,
+		Deposit:           0.99,
+		Duration:          0.5,
 	}
 
 	productJson, err := json.Marshal(product)
@@ -188,8 +193,13 @@ func TestProductUpdate(t *testing.T) {
 	InitRouter(router, s)
 
 	product := model.Product{
-		Id:   2,
-		Name: "Updated Product",
+		Id:                2,
+		ProductCategoryId: 2,
+		Name:              "Updated Product",
+		Description:       "Updated Product description.",
+		Price:             1.99,
+		Deposit:           0.99,
+		Duration:          0.5,
 	}
 
 	productJson, err := json.Marshal(product)
@@ -263,7 +273,7 @@ func TestProductUpdate(t *testing.T) {
 	}
 }
 
-func TestProductUpdateInvalidName(t *testing.T) {
+/* func TestProductUpdateInvalidName(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)

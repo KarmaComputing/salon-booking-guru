@@ -189,7 +189,12 @@ func (s *PsqlProductStore) Update(product *model.Product) error {
 			id = $1
 		;`,
 		product.Id,
+		product.ProductCategoryId,
 		product.Name,
+		product.Description,
+		product.Price,
+		product.Deposit,
+		product.Duration,
 	)
 	if err != nil {
 		log.Println("Error: Failed to update 'product' row")

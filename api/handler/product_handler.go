@@ -24,13 +24,13 @@ func productRoutes() {
 	).Methods("POST")
 
 	// PUT
-	/* v1.HandleFunc(
+	v1.HandleFunc(
 		"/product",
 		authorize(updateProduct, "canUpdateProduct"),
 	).Methods("PUT")
 
 	// DELETE
-	v1.HandleFunc(
+	/* v1.HandleFunc(
 		"/product/{id}",
 		authorize(deleteProduct, "canDeleteProduct"),
 	).Methods("DELETE") */
@@ -85,7 +85,7 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 	respond(w, product, http.StatusOK)
 }
 
-/* func updateProduct(w http.ResponseWriter, r *http.Request) {
+func updateProduct(w http.ResponseWriter, r *http.Request) {
 	var product model.Product
 
 	err := readBytes(w, r, &product)
@@ -108,7 +108,7 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 	respond(w, product, http.StatusOK)
 }
 
-func deleteProduct(w http.ResponseWriter, r *http.Request) {
+/* func deleteProduct(w http.ResponseWriter, r *http.Request) {
 	id, err := getId(w, r, "id")
 	if err != nil {
 		return

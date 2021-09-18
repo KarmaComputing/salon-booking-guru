@@ -80,15 +80,20 @@ func TestProductCreate(t *testing.T) {
 	}
 }
 
-/* func TestProductUpdate(t *testing.T) {
+func TestProductUpdate(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	product := model.Product{
-		Id:   2,
-		Name: "Updated Product Name",
+		Id:                2,
+		ProductCategoryId: 2,
+		Name:              "Updated Product",
+		Description:       "Updated Product description.",
+		Price:             1.99,
+		Deposit:           0.99,
+		Duration:          0.5,
 	}
 
 	err = s.Product().Update(&product)
@@ -106,7 +111,7 @@ func TestProductCreate(t *testing.T) {
 	}
 }
 
-func TestProductDelete(t *testing.T) {
+/* func TestProductDelete(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
 		t.Fatal(err)

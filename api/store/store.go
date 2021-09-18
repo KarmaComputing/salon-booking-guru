@@ -47,6 +47,7 @@ type ProductStore interface {
 	GetAll() ([]model.Product, error)
 	Get(id int) (model.Product, error)
 	Create(product *model.Product) error
+	Update(product *model.Product) error
 }
 
 type ProductCategoryStore interface {
