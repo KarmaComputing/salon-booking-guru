@@ -46,6 +46,27 @@ func TestQualificationGetAllNameByAccountId(t *testing.T) {
 	}
 }
 
+func TestQualificationGetAllNameByProductId(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	qualificationNames, err := s.Qualification().GetAllNameByProductId(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedOutput := []string{
+		"Qualification 2",
+		"Qualification 3",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(errors.New("Qualifications returned are invalid"))
+	}
+}
+
 func TestQualificationGet(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {

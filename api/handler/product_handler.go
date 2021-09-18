@@ -16,6 +16,10 @@ func productRoutes() {
 		"/product/{id}",
 		authorize(getProduct, "canReadProduct"),
 	).Methods("GET")
+	v1.HandleFunc(
+		"/product/{id}/qualification",
+		authorize(getAllProductQualificationName, "canReadProduct"),
+	).Methods("GET")
 
 	// POST
 	v1.HandleFunc(
@@ -44,6 +48,21 @@ func getAllProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond(w, products, http.StatusOK)
+}
+
+func getAllProductQualificationName(w http.ResponseWriter, r *http.Request) {
+	id, err := getId(w, r, "id")
+	if err != nil {
+		return
+	}
+
+	qualificationNames, err := s.Qualification().GetAllNameByProductId(id)
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve account qualification names", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, qualificationNames, http.StatusOK)
 }
 
 func getProduct(w http.ResponseWriter, r *http.Request) {
