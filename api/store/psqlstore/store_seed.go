@@ -281,6 +281,61 @@ func seedProductCategory(
 	)
 }
 
+func seedProduct(
+	productCategoryId int,
+	name string,
+	description string,
+	price float64,
+	deposit float64,
+	duration float64,
+) string {
+	return fmt.Sprintf(`
+		INSERT INTO product (
+			product_category_id,
+			name,
+			description,
+			price,
+			deposit,
+			duration
+		)
+		SELECT
+			product_category_id,
+			name,
+			description,
+			price,
+			deposit,
+			duration
+		FROM
+			product
+		UNION
+		VALUES (
+			%d,
+			'%s',
+			'%s',
+			%f,
+			%f,
+			%f
+		)
+		EXCEPT
+		SELECT
+			product_category_id,
+			name,
+			description,
+			price,
+			deposit,
+			duration
+		FROM
+			product
+		;`,
+		productCategoryId,
+		name,
+		description,
+		price,
+		deposit,
+		duration,
+	)
+}
+
 // Executes each seed query in succession from start to finish, populating the
 // database with any seed data necessary.
 func (s *PsqlStore) GenerateSeedData() {

@@ -28,6 +28,11 @@ var testSeeds = []string{
 	seedPermission("canUpdateProductCategory"),
 	seedPermission("canDeleteProductCategory"),
 
+	seedPermission("canReadProduct"),
+	seedPermission("canCreateProduct"),
+	seedPermission("canUpdateProduct"),
+	seedPermission("canDeleteProduct"),
+
 	seedPermission("canReadRole"),
 	seedPermission("canPermissionTest"),
 
@@ -52,6 +57,11 @@ var testSeeds = []string{
 	seedRolePermissionLink("Administrator", "canUpdateProductCategory"),
 	seedRolePermissionLink("Administrator", "canDeleteProductCategory"),
 
+	seedRolePermissionLink("Administrator", "canReadProduct"),
+	seedRolePermissionLink("Administrator", "canCreateProduct"),
+	seedRolePermissionLink("Administrator", "canUpdateProduct"),
+	seedRolePermissionLink("Administrator", "canDeleteProduct"),
+
 	seedRolePermissionLink("Administrator", "canReadRole"),
 
 	seedRolePermissionLink("Owner", "canReadAccount"),
@@ -74,6 +84,11 @@ var testSeeds = []string{
 	seedRolePermissionLink("Owner", "canUpdateProductCategory"),
 	seedRolePermissionLink("Owner", "canDeleteProductCategory"),
 
+	seedRolePermissionLink("Owner", "canReadProduct"),
+	seedRolePermissionLink("Owner", "canCreateProduct"),
+	seedRolePermissionLink("Owner", "canUpdateProduct"),
+	seedRolePermissionLink("Owner", "canDeleteProduct"),
+
 	seedRolePermissionLink("Owner", "canReadRole"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
@@ -83,6 +98,8 @@ var testSeeds = []string{
 	seedRolePermissionLink("Staff", "canReadQualification"),
 
 	seedRolePermissionLink("Staff", "canReadProductCategory"),
+
+	seedRolePermissionLink("Staff", "canReadProduct"),
 
 	seedRolePermissionLink("PermissionTest", "canPermissionTest"),
 
@@ -154,6 +171,40 @@ var testSeeds = []string{
 	seedProductCategory("Product Category 1"),
 	seedProductCategory("Product Category 2"),
 	seedProductCategory("Product Category 3"),
+
+	// products
+	seedProduct(
+		2,
+		"Product 1",
+		"Product 1 description.",
+		14.99,
+		2.50,
+		1.5,
+	),
+	seedProduct(
+		3,
+		"Product 2",
+		"Product 2 description.",
+		24.99,
+		4.50,
+		2.5,
+	),
+	seedProduct(
+		2,
+		"Product 3",
+		"Product 3 description.",
+		34.99,
+		6.50,
+		3.5,
+	),
+	seedProduct(
+		3,
+		"Product 4",
+		"Product 4 description.",
+		44.99,
+		8.50,
+		4.5,
+	),
 }
 
 // Executes each seed query in succession from start to finish, populating the
