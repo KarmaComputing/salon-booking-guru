@@ -49,6 +49,7 @@ type ProductStore interface {
 	Create(product *model.Product) error
 	Update(product *model.Product) error
 	Delete(id int) error
+	UpsertQualification(productId int, qualificationIds []int) error
 }
 
 type ProductCategoryStore interface {

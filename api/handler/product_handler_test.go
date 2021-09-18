@@ -386,3 +386,35 @@ func TestProductDelete(t *testing.T) {
 		)
 	}
 }
+
+func TestProductUpsertQualification(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	qualificationIds := []int{1, 2}
+
+	qualificationIdsJson, err := json.Marshal(qualificationIds)
+
+	req, err := http.NewRequest(
+		"PUT",
+		"/v1/product/3/qualification",
+		bytes.NewBuffer(qualificationIdsJson),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+}

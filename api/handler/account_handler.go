@@ -12,10 +12,12 @@ func accountRoutes() {
 		"/account",
 		authorize(getAllAccount, "canReadAccount"),
 	).Methods("GET")
+
 	v1.HandleFunc(
 		"/account/{id}",
 		authorize(getAccount, "canReadAccount"),
 	).Methods("GET")
+
 	v1.HandleFunc(
 		"/account/{id}/qualification",
 		authorize(getAllAccountQualificationName, "canReadAccount"),

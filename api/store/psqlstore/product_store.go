@@ -224,3 +224,51 @@ func (s *PsqlProductStore) Delete(id int) error {
 	}
 	return nil
 }
+
+// Deletes all product_qualification_link rows where product_id matches the
+// passed productId, then inserts new links rows based on the passed
+// qualificationIds.
+//
+// Returns any errors encountered.
+func (s *PsqlProductStore) UpsertQualification(productId int, qualificationIds []int) error {
+	_, err := s.db.Exec(`
+		DELETE FROM
+			product_qualification_link
+		WHERE
+			product_id = $1
+		;`,
+		productId,
+	)
+	if err != nil {
+		log.Println("Error: Failed to delete 'product_qualification_link' rows with product_id '" + strconv.Itoa(productId) + "'")
+		log.Println(err)
+		return err
+	}
+
+	sqlValues := ""
+	for i, qualificationId := range qualificationIds {
+		sqlValues += fmt.Sprintf("(%d, %d)", productId, qualificationId)
+		if i != len(qualificationIds)-1 {
+			sqlValues += ","
+		}
+	}
+
+	_, err = s.db.Exec(
+		fmt.Sprintf(`
+			INSERT INTO product_qualification_link (
+				product_id,
+				qualification_id
+			) VALUES
+				%s
+			;`,
+			sqlValues,
+		),
+	)
+	if err != nil {
+		log.Println("Error: Failed to insert 'product_qualification_link' rows")
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
