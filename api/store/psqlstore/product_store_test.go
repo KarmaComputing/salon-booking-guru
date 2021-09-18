@@ -131,3 +131,30 @@ func TestProductDelete(t *testing.T) {
 		t.Fatal(errors.New("Number of products returned is invalid"))
 	}
 }
+
+func TestProductUpsertQualification(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = s.Product().UpsertQualification(2, []int{1, 2})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	qualificationNames, err := s.Qualification().GetAllNameByProductId(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedOutput := []string{
+		"Qualification 1",
+		"Qualification 2",
+	}
+
+	if !reflect.DeepEqual(qualificationNames, expectedOutput) {
+		t.Fatal(fmt.Sprintf("%v is not equal to %v", qualificationNames, expectedOutput))
+
+	}
+}
