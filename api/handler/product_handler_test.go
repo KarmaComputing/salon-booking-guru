@@ -273,14 +273,19 @@ func TestProductUpdate(t *testing.T) {
 	}
 }
 
-/* func TestProductUpdateInvalidName(t *testing.T) {
+func TestProductUpdateInvalidName(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
 
 	product := model.Product{
-		Id:   2,
-		Name: "",
+		Id:                2,
+		ProductCategoryId: 2,
+		Name:              "",
+		Description:       "Updated Product description.",
+		Price:             1.99,
+		Deposit:           0.99,
+		Duration:          0.5,
 	}
 
 	productJson, err := json.Marshal(product)
@@ -334,4 +339,4 @@ func TestProductDelete(t *testing.T) {
 			http.StatusOK,
 		)
 	}
-} */
+}

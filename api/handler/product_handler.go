@@ -30,10 +30,10 @@ func productRoutes() {
 	).Methods("PUT")
 
 	// DELETE
-	/* v1.HandleFunc(
+	v1.HandleFunc(
 		"/product/{id}",
 		authorize(deleteProduct, "canDeleteProduct"),
-	).Methods("DELETE") */
+	).Methods("DELETE")
 }
 
 func getAllProduct(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +108,7 @@ func updateProduct(w http.ResponseWriter, r *http.Request) {
 	respond(w, product, http.StatusOK)
 }
 
-/* func deleteProduct(w http.ResponseWriter, r *http.Request) {
+func deleteProduct(w http.ResponseWriter, r *http.Request) {
 	id, err := getId(w, r, "id")
 	if err != nil {
 		return
@@ -121,4 +121,4 @@ func updateProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respondEmpty(w, http.StatusOK)
-} */
+}

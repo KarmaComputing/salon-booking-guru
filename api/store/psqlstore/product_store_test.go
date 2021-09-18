@@ -111,7 +111,7 @@ func TestProductUpdate(t *testing.T) {
 	}
 }
 
-/* func TestProductDelete(t *testing.T) {
+func TestProductDelete(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
 		t.Fatal(err)
@@ -130,4 +130,4 @@ func TestProductUpdate(t *testing.T) {
 	if len(products) != 3 {
 		t.Fatal(errors.New("Number of products returned is invalid"))
 	}
-} */
+}
