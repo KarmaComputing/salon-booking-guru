@@ -28,6 +28,7 @@ var testSeeds = []string{
 	seedPermission("canUpdateProductCategory"),
 	seedPermission("canDeleteProductCategory"),
 
+	seedPermission("canReadRole"),
 	seedPermission("canPermissionTest"),
 
 	// role permission links
@@ -51,6 +52,8 @@ var testSeeds = []string{
 	seedRolePermissionLink("Administrator", "canUpdateProductCategory"),
 	seedRolePermissionLink("Administrator", "canDeleteProductCategory"),
 
+	seedRolePermissionLink("Administrator", "canReadRole"),
+
 	seedRolePermissionLink("Owner", "canReadAccount"),
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
@@ -70,6 +73,8 @@ var testSeeds = []string{
 	seedRolePermissionLink("Owner", "canCreateProductCategory"),
 	seedRolePermissionLink("Owner", "canUpdateProductCategory"),
 	seedRolePermissionLink("Owner", "canDeleteProductCategory"),
+
+	seedRolePermissionLink("Owner", "canReadRole"),
 
 	seedRolePermissionLink("Staff", "canReadAccount"),
 

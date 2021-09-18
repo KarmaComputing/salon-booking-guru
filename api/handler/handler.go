@@ -25,6 +25,7 @@ func InitRouter(r *mux.Router, mainStore store.Store) {
 	availabilityRoutes()
 	qualificationRoutes()
 	productCategoryRoutes()
+	roleRoutes()
 }
 
 func CommonMiddleware(next http.Handler) http.Handler {

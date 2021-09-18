@@ -11,6 +11,7 @@ type Store interface {
 	Availability() AvailabilityStore
 	ProductCategory() ProductCategoryStore
 	Qualification() QualificationStore
+	Role() RoleStore
 	Token() TokenStore
 }
 
@@ -56,6 +57,10 @@ type QualificationStore interface {
 	Create(qualification *model.Qualification) error
 	Update(qualification *model.Qualification) error
 	Delete(id int) error
+}
+
+type RoleStore interface {
+	GetAll() ([]model.Role, error)
 }
 
 type TokenStore interface {

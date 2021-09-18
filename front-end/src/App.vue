@@ -1,6 +1,10 @@
 <template>
     <AppBar />
-    <RouterView />
+    <div class="px-6">
+        <div class="container mx-auto">
+            <RouterView />
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
