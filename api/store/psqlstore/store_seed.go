@@ -336,6 +336,23 @@ func seedProduct(
 	)
 }
 
+func seedProductQualificationLink(productName string, qualificationName string) string {
+	return fmt.Sprintf(`
+		INSERT INTO product_qualification_link (product_id, qualification_id)
+		SELECT product_id, qualification_id FROM product_qualification_link
+		UNION
+		VALUES (
+			(SELECT id FROM product WHERE name = '%s'),
+			(SELECT id FROM qualification WHERE name = '%s')
+		)
+		EXCEPT
+		SELECT product_id, qualification_id FROM product_qualification_link;
+		`,
+		productName,
+		qualificationName,
+	)
+}
+
 // Executes each seed query in succession from start to finish, populating the
 // database with any seed data necessary.
 func (s *PsqlStore) GenerateSeedData() {

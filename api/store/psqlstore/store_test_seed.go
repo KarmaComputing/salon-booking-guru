@@ -205,6 +205,12 @@ var testSeeds = []string{
 		8.50,
 		4.5,
 	),
+
+	// product qualification link
+	seedProductQualificationLink("Product 2", "Qualification 2"),
+	seedProductQualificationLink("Product 2", "Qualification 3"),
+	seedProductQualificationLink("Product 3", "Qualification 2"),
+	seedProductQualificationLink("Product 3", "Qualification 3"),
 }
 
 // Executes each seed query in succession from start to finish, populating the
