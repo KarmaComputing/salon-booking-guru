@@ -10,13 +10,13 @@ func productRoutes() {
 		"/product",
 		authorize(getAllProduct, "canReadProduct"),
 	).Methods("GET")
-	/* v1.HandleFunc(
+	v1.HandleFunc(
 		"/product/{id}",
 		authorize(getProduct, "canReadProduct"),
 	).Methods("GET")
 
 	// POST
-	v1.HandleFunc(
+	/* v1.HandleFunc(
 		"/product",
 		authorize(createProduct, "canCreateProduct"),
 	).Methods("POST")
@@ -44,7 +44,7 @@ func getAllProduct(w http.ResponseWriter, r *http.Request) {
 	respond(w, products, http.StatusOK)
 }
 
-/* func getProduct(w http.ResponseWriter, r *http.Request) {
+func getProduct(w http.ResponseWriter, r *http.Request) {
 	id, err := getId(w, r, "id")
 	if err != nil {
 		return
@@ -59,7 +59,7 @@ func getAllProduct(w http.ResponseWriter, r *http.Request) {
 	respond(w, product, http.StatusOK)
 }
 
-func createProduct(w http.ResponseWriter, r *http.Request) {
+/* func createProduct(w http.ResponseWriter, r *http.Request) {
 	var product model.Product
 
 	err := readBytes(w, r, &product)

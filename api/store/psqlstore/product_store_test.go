@@ -2,6 +2,9 @@ package psqlstore
 
 import (
 	"errors"
+	"fmt"
+	"reflect"
+	"salon-booking-guru/store/model"
 	"testing"
 )
 
@@ -21,28 +24,6 @@ func TestProductGetAll(t *testing.T) {
 	}
 }
 
-/* func TestProductGetAllNameByAccountId(t *testing.T) {
-	s, err := OpenTest()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	productNames, err := s.Product().GetAllNameByAccountId(2)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expectedOutput := []string{
-		"Product 2",
-		"Product 3",
-		"Product 4",
-	}
-
-	if !reflect.DeepEqual(productNames, expectedOutput) {
-		t.Fatal(errors.New("Products returned are invalid"))
-	}
-}
-
 func TestProductGet(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
@@ -50,8 +31,13 @@ func TestProductGet(t *testing.T) {
 	}
 
 	product := model.Product{
-		Id:   2,
-		Name: "Product 2",
+		Id:                2,
+		ProductCategoryId: 3,
+		Name:              "Product 2",
+		Description:       "Product 2 description.",
+		Price:             24.99,
+		Deposit:           4.50,
+		Duration:          2.5,
 	}
 
 	productGet, err := s.Product().Get(product.Id)
@@ -64,7 +50,7 @@ func TestProductGet(t *testing.T) {
 	}
 }
 
-func TestProductCreate(t *testing.T) {
+/* func TestProductCreate(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
 		t.Fatal(err)

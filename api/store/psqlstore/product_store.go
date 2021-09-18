@@ -68,49 +68,6 @@ func (s *PsqlProductStore) GetAll() ([]model.Product, error) {
 	return products, nil
 }
 
-// Get all name fields in the 'product' pg table by account_id.
-//
-// Returns a slice of Product structs, and any errors encountered.
-func (s *PsqlProductStore) GetAllNameByAccountId(accountId int) ([]string, error) {
-	rows, err := s.db.Query(`
-		SELECT
-			name
-		FROM
-			product AS q
-		INNER JOIN
-			account_product_link AS aql
-		ON
-			aql.product_id = q.id
-		WHERE
-			aql.account_id = $1
-		LIMIT 10000
-		;`,
-		accountId,
-	)
-	if err != nil {
-		log.Println("Error: Failed to retrieve 'product' names")
-		log.Println(err)
-		return []string{}, err
-	}
-	defer rows.Close()
-
-	var productNames []string = []string{}
-	for rows.Next() {
-		var productName string
-		err = rows.Scan(
-			&productName,
-		)
-		if err != nil {
-			log.Println("Error: Failed to populate Product structs")
-			log.Println(err)
-			return []string{}, err
-		}
-		productNames = append(productNames, productName)
-	}
-
-	return productNames, nil
-}
-
 // Get a single row from the 'product' pg table where 'id' matches the passed
 // id.
 //
@@ -120,7 +77,12 @@ func (s *PsqlProductStore) Get(id int) (model.Product, error) {
 	rows, err := s.db.Query(`
 		SELECT
 			id,
-			name
+			product_category_id,
+			name,
+			description,
+			price,
+			deposit,
+			duration
 		FROM
 			product
 		WHERE
@@ -140,7 +102,12 @@ func (s *PsqlProductStore) Get(id int) (model.Product, error) {
 	for rows.Next() {
 		err = rows.Scan(
 			&product.Id,
+			&product.ProductCategoryId,
 			&product.Name,
+			&product.Description,
+			&product.Price,
+			&product.Deposit,
+			&product.Duration,
 		)
 		if err != nil {
 			log.Println("Error: Failed to populate Product struct'")
@@ -169,9 +136,19 @@ func (s *PsqlProductStore) Create(product *model.Product) error {
 	var id int
 	err := s.db.QueryRow(`
 		INSERT INTO product (
-			name
+			product_category_id,
+			name,
+			description,
+			price,
+			deposit,
+			duration
 		) VALUES (
-			$1
+			$1,
+			$2,
+			$3,
+			$4,
+			$5,
+			$6
 		)
 		RETURNING id
 		;`,
@@ -197,7 +174,12 @@ func (s *PsqlProductStore) Update(product *model.Product) error {
 		UPDATE
 			product
 		SET
-			name = $2
+			product_category_id = $2,
+			name = $3,
+			description = $4,
+			price = $5,
+			deposit = $6,
+			duration = $7
 		WHERE
 			id = $1
 		;`,

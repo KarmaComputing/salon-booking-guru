@@ -45,6 +45,7 @@ type AvailabilityStore interface {
 
 type ProductStore interface {
 	GetAll() ([]model.Product, error)
+	Get(id int) (model.Product, error)
 }
 
 type ProductCategoryStore interface {

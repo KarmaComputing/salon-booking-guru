@@ -33,7 +33,7 @@ func TestProductGetAll(t *testing.T) {
 	}
 }
 
-/* func TestProductGet(t *testing.T) {
+func TestProductGet(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
@@ -57,7 +57,7 @@ func TestProductGetAll(t *testing.T) {
 	}
 }
 
-func TestProductCreate(t *testing.T) {
+/* func TestProductCreate(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()
 	InitRouter(router, s)
