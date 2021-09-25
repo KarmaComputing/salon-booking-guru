@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 
 	"salon-booking-guru/store"
 	"salon-booking-guru/store/model"
@@ -66,6 +67,51 @@ func (s *PsqlProductStore) GetAll() ([]model.Product, error) {
 	}
 
 	return products, nil
+}
+
+// Get all rows in the 'product' pg table.
+//
+// Returns a slice of Product structs, and any errors encountered.
+func (s *PsqlProductStore) GetAllAvailableDates(productId int, startDate time.Time, endDate time.Time) ([]time.Time, error) {
+	rows, err := s.db.Query(`
+		SELECT
+			id,
+			product_category_id,
+			name,
+			description,
+			price,
+			deposit,
+			duration
+		FROM
+			product
+		WHERE
+			product_id = $1
+		LIMIT 10000
+		;`,
+		productId,
+	)
+	if err != nil {
+		log.Println("Error: Failed to retrieve 'product' rows")
+		log.Println(err)
+		return []time.Time{}, err
+	}
+	defer rows.Close()
+
+	var dates []time.Time
+	for rows.Next() {
+		var date time.Time
+		err = rows.Scan(
+			&date,
+		)
+		if err != nil {
+			log.Println("Error: Failed to populate Product structs")
+			log.Println(err)
+			return []time.Time{}, err
+		}
+		dates = append(dates, date)
+	}
+
+	return dates, nil
 }
 
 // Get a single row from the 'product' pg table where 'id' matches the passed

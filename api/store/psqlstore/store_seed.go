@@ -29,6 +29,11 @@ var seeds = []string{
 	seedPermission("canUpdateProductCategory"),
 	seedPermission("canDeleteProductCategory"),
 
+	seedPermission("canReadProduct"),
+	seedPermission("canCreateProduct"),
+	seedPermission("canUpdateProduct"),
+	seedPermission("canDeleteProduct"),
+
 	// role permission links
 	seedRolePermissionLink("Administrator", "canReadAccount"),
 	seedRolePermissionLink("Administrator", "canCreateAccount"),
@@ -50,6 +55,11 @@ var seeds = []string{
 	seedRolePermissionLink("Administrator", "canUpdateProductCategory"),
 	seedRolePermissionLink("Administrator", "canDeleteProductCategory"),
 
+	seedRolePermissionLink("Administrator", "canReadProduct"),
+	seedRolePermissionLink("Administrator", "canCreateProduct"),
+	seedRolePermissionLink("Administrator", "canUpdateProduct"),
+	seedRolePermissionLink("Administrator", "canDeleteProduct"),
+
 	seedRolePermissionLink("Owner", "canReadAccount"),
 	seedRolePermissionLink("Owner", "canCreateAccount"),
 	seedRolePermissionLink("Owner", "canUpdateAccount"),
@@ -70,6 +80,11 @@ var seeds = []string{
 	seedRolePermissionLink("Owner", "canUpdateProductCategory"),
 	seedRolePermissionLink("Owner", "canDeleteProductCategory"),
 
+	seedRolePermissionLink("Owner", "canReadProduct"),
+	seedRolePermissionLink("Owner", "canCreateProduct"),
+	seedRolePermissionLink("Owner", "canUpdateProduct"),
+	seedRolePermissionLink("Owner", "canDeleteProduct"),
+
 	seedRolePermissionLink("Staff", "canReadAccount"),
 
 	seedRolePermissionLink("Staff", "canReadAvailability"),
@@ -77,6 +92,10 @@ var seeds = []string{
 	seedRolePermissionLink("Staff", "canReadQualification"),
 
 	seedRolePermissionLink("Staff", "canReadProductCategory"),
+
+	seedRolePermissionLink("Staff", "canReadProductCategory"),
+
+	seedRolePermissionLink("Staff", "canReadProduct"),
 
 	// accounts
 	seedAccount(
@@ -92,6 +111,89 @@ var seeds = []string{
 		"Name",
 		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Owner",
+	),
+
+	// qualifications
+	seedQualification("Qualification 1"),
+	seedQualification("Qualification 2"),
+	seedQualification("Qualification 3"),
+	seedQualification("Qualification 4"),
+
+	// account qualification links
+	seedAccountQualificationLink(1, 1),
+	seedAccountQualificationLink(1, 2),
+	seedAccountQualificationLink(1, 3),
+	seedAccountQualificationLink(1, 4),
+
+	seedAccountQualificationLink(2, 1),
+	seedAccountQualificationLink(2, 2),
+
+	// availabilities
+	seedAvailability(1, "2022-05-10T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+	seedAvailability(1, "2022-05-11T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+	seedAvailability(1, "2022-05-12T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+
+	seedAvailability(2, "2022-05-10T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+	seedAvailability(2, "2022-05-11T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+	seedAvailability(2, "2022-05-12T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+	seedAvailability(2, "2022-05-13T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+	seedAvailability(2, "2022-05-14T09:00:00.00Z", "2022-05-10T17:00:00.00Z"),
+
+	// product categories
+	seedProductCategory("Product Category 1"),
+	seedProductCategory("Product Category 2"),
+	seedProductCategory("Product Category 3"),
+
+	// products
+	seedProduct(
+		1,
+		"Product 1",
+		"Product 1 description.",
+		14.99,
+		2.50,
+		1.5,
+	),
+	seedProduct(
+		2,
+		"Product 2",
+		"Product 2 description.",
+		24.99,
+		4.50,
+		2.5,
+	),
+	seedProduct(
+		2,
+		"Product 3",
+		"Product 3 description.",
+		34.99,
+		6.50,
+		3.5,
+	),
+	seedProduct(
+		3,
+		"Product 4",
+		"Product 4 description.",
+		44.99,
+		8.50,
+		4.5,
+	),
+
+	// product qualification link
+	seedProductQualificationLink("Product 1", "Qualification 1"),
+	seedProductQualificationLink("Product 1", "Qualification 3"),
+	seedProductQualificationLink("Product 2", "Qualification 1"),
+	seedProductQualificationLink("Product 2", "Qualification 2"),
+
+	// booking
+	seedBooking(
+		1,
+		1,
+		"stripe_id",
+		"Customer 1",
+		"customer@email.com",
+		"07123456789",
+		"2022-05-10T09:00:00.00Z",
+		3.5,
 	),
 }
 
@@ -350,6 +452,73 @@ func seedProductQualificationLink(productName string, qualificationName string) 
 		`,
 		productName,
 		qualificationName,
+	)
+}
+
+func seedBooking(
+	productId int,
+	accountId int,
+	customerStripeId string,
+	customerName string,
+	customerEmail string,
+	customerMobile string,
+	date string,
+	duration float64,
+) string {
+	return fmt.Sprintf(`
+		INSERT INTO booking (
+			product_id,
+			account_id,
+			customer_stripe_id,
+			customer_name,
+			customer_email,
+			customer_mobile,
+			date,
+			duration
+		)
+		SELECT
+			product_id,
+			account_id,
+			customer_stripe_id,
+			customer_name,
+			customer_email,
+			customer_mobile,
+			date,
+			duration
+		FROM
+			booking
+		UNION
+		VALUES (
+			%d,
+			%d,
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%s'::timestamptz,
+			%f
+		)
+		EXCEPT
+		SELECT
+			product_id,
+			account_id,
+			customer_stripe_id,
+			customer_name,
+			customer_email,
+			customer_mobile,
+			date,
+			duration
+		FROM
+			booking
+		;`,
+		productId,
+		accountId,
+		customerStripeId,
+		customerName,
+		customerEmail,
+		customerMobile,
+		date,
+		duration,
 	)
 }
 
