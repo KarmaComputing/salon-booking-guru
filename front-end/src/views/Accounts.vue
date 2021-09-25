@@ -26,7 +26,7 @@
 
     <!-- editor modal -->
     <BinaryDialog
-        header="Edit Account"
+        header="Account Editor"
         v-model:isVisible="isEditorVisible"
         :confirmCallback="saveAccount"
         :declineCallback="() => setIsEditorVisible(false)"
