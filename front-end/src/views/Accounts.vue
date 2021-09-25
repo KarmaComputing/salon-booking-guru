@@ -79,7 +79,7 @@
 
     <!-- delete modal -->
     <ConfirmDialog
-        header="Delete ConfirmDialogation"
+        header="Delete Confirmation"
         v-model:isVisible="isDeleteModalVisible"
         :confirmCallback="confirmDeleteAccount"
         :declineCallback="setIsDeleteModalVisible"
