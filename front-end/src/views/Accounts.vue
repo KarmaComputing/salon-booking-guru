@@ -9,6 +9,7 @@
             :actionButtonConfig="actionButtonConfig"
             :gridConfig="accountGridConfig"
             :gridData="accountSummaries"
+            :isLoading="isGridLoading"
             ref="grid"
         />
     </div>
@@ -21,6 +22,7 @@
         :declineCallback="() => setIsEditorVisible(false)"
         confirmLabel="SAVE"
         confirmClass="p-button-success"
+        :isLoading="isEditorLoading"
     >
         <AccountEditor
             ref="accountEditor"
@@ -84,8 +86,12 @@ export default defineComponent({
         // reactive
         const accountSummaries = ref();
         const roles = ref();
+
         const isEditorVisible = ref(false);
         const isDeleteVisible = ref(false);
+
+        const isGridLoading = ref(true);
+        const isEditorLoading = ref(false);
         const isDeleteLoading = ref(false);
 
         // computed
@@ -95,7 +101,9 @@ export default defineComponent({
 
         // methods
         const refreshGrid = async () => {
+            isGridLoading.value = true;
             accountSummaries.value = await getAllAccountSummary();
+            isGridLoading.value = false;
         };
 
         const setIsEditorVisible = (value: boolean) => {
@@ -109,15 +117,17 @@ export default defineComponent({
         const confirmDeleteAccount = async () => {
             isDeleteLoading.value = true;
             await deleteAccount(selectedAccount.value.id);
-            isDeleteLoading.value = false;
             isDeleteVisible.value = false;
             refreshGrid();
+            isDeleteLoading.value = false;
         };
 
         const saveAccount = async () => {
+            isEditorLoading.value = true;
             await accountEditor?.value?.save();
             refreshGrid();
             setIsEditorVisible(false);
+            isEditorLoading.value = false;
         };
 
         // lifecycle
@@ -149,6 +159,8 @@ export default defineComponent({
             actionButtonConfig,
             isEditorVisible,
             isDeleteVisible,
+            isGridLoading,
+            isEditorLoading,
             isDeleteLoading,
             setIsDeleteVisible,
             setIsEditorVisible,

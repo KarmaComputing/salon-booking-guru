@@ -1,5 +1,5 @@
 <template>
-    <div v-if="account">
+    <div v-if="!isLoading">
         <div class="space-y-4 w-full">
             <div class="flex flex-col w-full">
                 <label>First name</label>
@@ -56,6 +56,9 @@
             />
         </div>
     </div>
+    <div class="flex justify-center">
+        <ProgressSpinner v-if="isLoading" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -72,6 +75,7 @@ import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import Password from 'primevue/password';
 import InputSwitch from 'primevue/inputswitch';
+import ProgressSpinner from 'primevue/progressspinner';
 
 export default defineComponent({
     components: {
@@ -79,6 +83,7 @@ export default defineComponent({
         Dropdown,
         Password,
         InputSwitch,
+        ProgressSpinner,
     },
     props: {
         accountId: {
@@ -93,8 +98,11 @@ export default defineComponent({
     setup(props) {
         // hooks
         const { getAccount, updateAccount } = useService();
+
+        // reactive
         const account = ref({} as Account);
         const isChangePassword = ref(false);
+        const isLoading = ref(true);
 
         // methods
         const save = async () => {
@@ -106,13 +114,16 @@ export default defineComponent({
 
         // lifecycle
         onMounted(async () => {
+            isLoading.value = true;
             account.value = await getAccount(props.accountId);
+            isLoading.value = false;
         });
 
         return {
             account,
             save,
             isChangePassword,
+            isLoading,
         };
     },
 });
