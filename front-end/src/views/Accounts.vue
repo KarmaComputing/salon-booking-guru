@@ -19,16 +19,13 @@
         header="Edit Account"
         :modal="true"
     >
-        <div>
-            {{ selectedAccount.data }}
-        </div>
         <div class="flex justify-center">
             <div class="space-y-5 w-11/12">
                 <span class="p-float-label">
                     <InputText
                         class="w-full p-inputtext-sm p-shadow-2"
                         type="text"
-                        v-model="value"
+                        v-model="selectedAccount.data.firstName"
                     />
                     <label for="username">First name</label>
                 </span>
@@ -36,7 +33,7 @@
                     <InputText
                         class="w-full p-inputtext-sm p-shadow-2"
                         type="text"
-                        v-model="value"
+                        v-model="selectedAccount.data.lastName"
                     />
                     <label for="username">Last name</label>
                 </span>
@@ -44,7 +41,7 @@
                     <InputText
                         class="w-full p-inputtext-sm p-shadow-2"
                         type="text"
-                        v-model="value"
+                        v-model="selectedAccount.data.email"
                     />
                     <label for="username">Email</label>
                 </span>
@@ -52,7 +49,7 @@
                     <InputText
                         class="w-full p-inputtext-sm p-shadow-2"
                         type="text"
-                        v-model="value"
+                        v-model="selectedAccount.data.mobileNumber"
                     />
                     <label for="username">Mobile number</label>
                 </span>

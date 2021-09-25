@@ -65,15 +65,7 @@ export default defineComponent({
         Column,
     },
     setup() {
-        // reactive
-        const isModalVisible = ref(false);
-
-        // methods
-        const setIsModalVisible = () => {
-            isModalVisible.value = !isModalVisible.value;
-        };
-
-        return { setIsModalVisible, isModalVisible };
+        return {};
     },
 });
 </script>
