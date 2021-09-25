@@ -83,6 +83,7 @@
         v-model:isVisible="isDeleteModalVisible"
         :confirmCallback="confirmDeleteAccount"
         :declineCallback="setIsDeleteModalVisible"
+        :isLoading="isDeleteLoading"
     >
         <div>
             Are you sure you want to delete account
@@ -134,6 +135,7 @@ export default defineComponent({
         const isModalVisible = ref(false);
         const isDeleteModalVisible = ref(false);
         const accounts = ref();
+        const isDeleteLoading = ref(false);
 
         // computed
         const selectedAccount = computed((): Account => {
@@ -141,6 +143,10 @@ export default defineComponent({
         });
 
         // methods
+        const refreshGrid = async () => {
+            accounts.value = await getAllAccount();
+        };
+
         const setIsModalVisible = (account: any) => {
             isModalVisible.value = !isModalVisible.value;
         };
@@ -150,14 +156,16 @@ export default defineComponent({
         };
 
         const confirmDeleteAccount = async () => {
+            isDeleteLoading.value = true;
             await deleteAccount(selectedAccount.value.id);
+            isDeleteLoading.value = false;
             isDeleteModalVisible.value = false;
-            accounts.value = await getAllAccount();
+            refreshGrid();
         };
 
         // lifecycle
         onMounted(async () => {
-            accounts.value = await getAllAccount();
+            refreshGrid();
         });
 
         const actionButtonConfig = [
@@ -182,6 +190,7 @@ export default defineComponent({
             actionButtonConfig,
             isModalVisible,
             isDeleteModalVisible,
+            isDeleteLoading,
             setIsDeleteModalVisible,
             selectedAccount,
             confirmDeleteAccount,

@@ -14,12 +14,15 @@
                     label="CANCEL"
                     class="p-button-text p-button-plain"
                     @click="declineCallback"
+                    v-if="!isLoading"
                 />
                 <Button
                     label="CONFIRM"
                     class="p-button-danger"
                     @click="confirmCallback"
+                    v-if="!isLoading"
                 />
+                <ProgressSpinner v-if="isLoading" />
             </div>
         </template>
     </Dialog>
@@ -31,9 +34,9 @@ import { defineComponent } from 'vue';
 
 // primevue
 import Dialog from 'primevue/dialog';
+import ProgressSpinner from 'primevue/progressspinner';
 
 export default defineComponent({
-    emits: ['update:isVisible'],
     props: {
         header: {
             type: String,
@@ -58,6 +61,7 @@ export default defineComponent({
     },
     components: {
         Dialog,
+        ProgressSpinner,
     },
     setup(props, { emit }) {
         // methods
@@ -71,3 +75,10 @@ export default defineComponent({
     },
 });
 </script>
+
+<style scoped>
+.p-progress-spinner {
+    width: 40px;
+    height: 40px;
+}
+</style>
