@@ -22,7 +22,11 @@
         confirmLabel="SAVE"
         confirmClass="p-button-success"
     >
-        <AccountEditor ref="accountEditor" :accountId="selectedAccount.id" />
+        <AccountEditor
+            ref="accountEditor"
+            :accountId="selectedAccount.id"
+            :roles="roles"
+        />
     </BinaryDialog>
 
     <!-- delete modal -->
@@ -70,7 +74,8 @@ export default defineComponent({
     },
     setup() {
         // hooks
-        const { getAllAccountSummary, deleteAccount } = useService();
+        const { getAllAccountSummary, deleteAccount, getAllRole } =
+            useService();
 
         // refs
         const grid = ref<InstanceType<typeof Grid>>();
@@ -78,6 +83,7 @@ export default defineComponent({
 
         // reactive
         const accountSummaries = ref();
+        const roles = ref();
         const isEditorVisible = ref(false);
         const isDeleteVisible = ref(false);
         const isDeleteLoading = ref(false);
@@ -117,6 +123,7 @@ export default defineComponent({
         // lifecycle
         onMounted(async () => {
             refreshGrid();
+            roles.value = await getAllRole();
         });
 
         const actionButtonConfig = [
@@ -148,6 +155,7 @@ export default defineComponent({
             selectedAccount,
             confirmDeleteAccount,
             saveAccount,
+            roles,
         };
     },
 });
