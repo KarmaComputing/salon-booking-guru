@@ -5,7 +5,7 @@
             bg-blue-600
             text-white
             z-10
-            mb-8
+            mb-6
             sticky
             top-0
             left-0

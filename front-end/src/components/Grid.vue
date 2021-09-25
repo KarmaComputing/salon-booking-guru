@@ -15,14 +15,13 @@
                             class="p-button-rounded"
                             :icon="config.icon"
                             :class="config.style"
-                            @click="config.callback"
+                            @click="config.callback(slotProps)"
                         />
                         <RouterLink v-if="config.route" :to="config.route">
                             <Button
                                 class="p-button-rounded"
                                 :icon="config.icon"
                                 :class="config.style"
-                                @click="config.callback(slotProps.data)"
                             />
                         </RouterLink>
                     </div>
@@ -68,7 +67,15 @@ export default defineComponent({
         Column,
     },
     setup() {
-        return {};
+        // reactive
+        const isModalVisible = ref(false);
+
+        // methods
+        const setIsModalVisible = () => {
+            isModalVisible.value = !isModalVisible.value;
+        };
+
+        return { setIsModalVisible, isModalVisible };
     },
 });
 </script>
