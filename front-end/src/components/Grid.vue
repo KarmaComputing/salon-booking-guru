@@ -6,16 +6,26 @@
             :key="i"
             :header="config.title"
         />
-        <Column v-if="actionButtonConfig">
-            <template #body>
+        <Column v-if="actionButtonConfig" header="Actions">
+            <template #body="slotProps">
                 <div class="flex space-x-2">
-                    <Button
-                        v-for="(config, i) in actionButtonConfig"
-                        :key="i"
-                        :icon="config.icon"
-                        :class="config.style"
-                        @click="config.callback"
-                    />
+                    <div v-for="(config, i) in actionButtonConfig" :key="i">
+                        <Button
+                            v-if="!config.route"
+                            class="p-button-rounded"
+                            :icon="config.icon"
+                            :class="config.style"
+                            @click="config.callback"
+                        />
+                        <RouterLink v-if="config.route" :to="config.route">
+                            <Button
+                                class="p-button-rounded"
+                                :icon="config.icon"
+                                :class="config.style"
+                                @click="config.callback(slotProps.data)"
+                            />
+                        </RouterLink>
+                    </div>
                 </div>
             </template>
         </Column>
@@ -24,11 +34,13 @@
 
 <script lang="ts">
 // vue
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 // primevue
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+
+// services
 
 export default defineComponent({
     props: {

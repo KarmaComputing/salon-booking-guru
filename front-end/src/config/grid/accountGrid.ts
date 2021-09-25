@@ -1,7 +1,7 @@
 export default [
     {
         title: 'Name',
-        field: 'name',
+        field: 'firstName',
     },
     {
         title: 'Email',
@@ -9,10 +9,10 @@ export default [
     },
     {
         title: 'Mobile',
-        field: 'mobile',
+        field: 'mobileNumber',
     },
     {
         title: 'Role',
-        field: 'role',
+        field: 'roleId',
     },
 ];

@@ -10,6 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.21.3",
     "core-js": "^3.6.5",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",

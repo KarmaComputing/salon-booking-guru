@@ -12,7 +12,7 @@
 import { defineComponent } from 'vue';
 
 // components
-import AppBar from '@/components/AppBar.vue';
+import AppBar from './components/AppBar.vue';
 
 export default defineComponent({
     components: {

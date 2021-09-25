@@ -1,21 +1,23 @@
 <template>
-    <div class="text-2xl border-b pb-2 mb-8">Accounts</div>
+    <div>
+        <div class="text-2xl border-b pb-2 mb-8">Accounts</div>
 
-    <div class="pb-4 space-y-2">
-        <Button class="p-shadow-2" label="ADD ACCOUNT" icon="pi pi-plus" />
+        <div class="pb-4 space-y-2">
+            <Button class="p-shadow-2" label="ADD ACCOUNT" icon="pi pi-plus" />
+        </div>
+
+        <Grid
+            class="p-shadow-2 mb-4"
+            :actionButtonConfig="actionButtonConfig"
+            :gridConfig="accountGridConfig"
+            :gridData="accounts"
+        />
     </div>
-
-    <Grid
-        class="p-shadow-2 mb-4"
-        :actionButtonConfig="actionButtonConfig"
-        :gridConfig="accountGridConfig"
-        :gridData="testAccounts"
-    />
 </template>
 
 <script lang="ts">
 // vue
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 // components
 import Grid from '@/components/Grid.vue';
@@ -23,24 +25,39 @@ import Grid from '@/components/Grid.vue';
 // config
 import accountGridConfig from '@/config/grid/accountGrid';
 
+// services
+import { useAccountService } from '@/api/services/accountService';
+
 export default defineComponent({
     components: {
         Grid,
     },
     setup() {
-        // properties
+        // hooks
+        const { getAllAccount } = useAccountService();
+
+        // reactive
+        const accounts = ref();
+
+        // methods
+        const editCallback = (data: string) => {
+            console.log(data);
+        };
+
+        // lifecycle
+        onMounted(async () => {
+            accounts.value = await getAllAccount();
+        });
+
         const actionButtonConfig = [
             {
                 icon: 'pi pi-clock',
-                callback: () => {
-                    console.log('check availability');
-                },
+                route: '/account/availability',
             },
             {
                 icon: 'pi pi-pencil',
-                callback: () => {
-                    console.log('edit');
-                },
+                route: '/account/editor',
+                callback: editCallback,
             },
             {
                 icon: 'pi pi-trash',
@@ -50,31 +67,10 @@ export default defineComponent({
             },
         ];
 
-        const testAccounts = [
-            {
-                name: 'Jake',
-                email: 'jaketurner810@gmail.com',
-                mobile: '07557140411',
-                role: 'Employee',
-            },
-            {
-                name: 'Hannah',
-                email: 'hannaht95@gmail.com',
-                mobile: '075271125374',
-                role: 'Owner',
-            },
-            {
-                name: 'Jamie Scollay',
-                email: 'deltabrot@gmail.com',
-                mobile: '075276128374',
-                role: 'Employee',
-            },
-        ];
-
         return {
             accountGridConfig,
             actionButtonConfig,
-            testAccounts,
+            accounts,
         };
     },
 });
