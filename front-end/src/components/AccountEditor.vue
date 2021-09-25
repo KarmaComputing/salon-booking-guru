@@ -1,54 +1,81 @@
 <template>
-    <div class="flex justify-center">
-        <div class="pt-2 space-y-5 w-11/12">
-            <span class="p-float-label">
-                <InputText class="w-full p-inputtext-sm" type="text" />
-                <label for="username">First name</label>
-            </span>
-            <span class="p-float-label">
-                <InputText class="w-full p-inputtext-sm" type="text" />
-                <label for="username">Last name</label>
-            </span>
-            <span class="p-float-label">
-                <InputText class="w-full p-inputtext-sm" type="text" />
-                <label for="username">Email</label>
-            </span>
-            <span class="p-float-label">
-                <InputText class="w-full p-inputtext-sm" type="text" />
-                <label for="username">Mobile number</label>
-            </span>
-            <Dropdown
-                class="w-full p-inputtext-sm"
-                :options="cities"
-                optionLabel="name"
-                placeholder="Select a role"
-            />
-            <Password v-model="value3" toggleMask></Password>
-
-            <div class="space-x-2">
-                <Button label="Cancel" class="p-button-raised" />
-                <Button label="Save" class="p-button-raised p-button-danger" />
+    <div v-if="account">
+        <div class="space-y-4 w-full">
+            <div class="flex flex-col w-full">
+                <label>First name</label>
+                <InputText
+                    class="w-full p-inputtext-sm"
+                    type="text"
+                    v-model="account.firstName"
+                />
             </div>
+            <div class="flex flex-col w-full">
+                <label>Last name</label>
+                <InputText
+                    class="w-full p-inputtext-sm"
+                    type="text"
+                    v-model="account.lastName"
+                />
+            </div>
+            <div class="flex flex-col w-full">
+                <label>Email</label>
+                <InputText
+                    class="w-full p-inputtext-sm"
+                    type="text"
+                    v-model="account.email"
+                />
+            </div>
+            <div class="flex flex-col w-full">
+                <label>Mobile number</label>
+                <InputText
+                    class="w-full p-inputtext-sm"
+                    type="text"
+                    v-model="account.mobileNumber"
+                />
+            </div>
+            <div class="flex flex-col w-full">
+                <label>Role</label>
+                <Dropdown
+                    class="w-full p-inputtext-sm"
+                    :options="cities"
+                    optionLabel="name"
+                    placeholder="Select a role"
+                />
+            </div>
+            <div class="flex items-center justify-between">
+                <label>Change Password</label>
+                <InputSwitch v-model="isChangePassword" />
+            </div>
+            <Password
+                v-if="isChangePassword"
+                v-model="account.password"
+                toggleMask
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 // vue
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+
+import { Account } from '@/api/models';
+
+// services
+import { useService } from '@/api/services';
 
 // primevue
 import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
-import Button from 'primevue/button';
 import Password from 'primevue/password';
+import InputSwitch from 'primevue/inputswitch';
 
 export default defineComponent({
     components: {
         InputText,
         Dropdown,
-        Button,
         Password,
+        InputSwitch,
     },
     props: {
         accountId: {
@@ -56,8 +83,30 @@ export default defineComponent({
             default: null,
         },
     },
-    setup() {
-        return {};
+    setup(props) {
+        // hooks
+        const { getAccount, updateAccount } = useService();
+        const account = ref({} as Account);
+        const isChangePassword = ref(false);
+
+        // methods
+        const save = async () => {
+            if (!isChangePassword.value) {
+                account.value.password = '';
+            }
+            await updateAccount(account.value);
+        };
+
+        // lifecycle
+        onMounted(async () => {
+            account.value = await getAccount(props.accountId);
+        });
+
+        return {
+            account,
+            save,
+            isChangePassword,
+        };
     },
 });
 </script>

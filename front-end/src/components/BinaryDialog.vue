@@ -1,6 +1,6 @@
 <template>
     <Dialog
-        class="w-128 m-6"
+        class="p-dialog-sm w-full m-6"
         :visible="isVisible"
         @update:visible="updateIsVisible($event)"
         :header="header"
@@ -17,8 +17,8 @@
                     v-if="!isLoading"
                 />
                 <Button
-                    label="CONFIRM"
-                    class="p-button-danger"
+                    :label="confirmLabel"
+                    :class="confirmClass"
                     @click="confirmCallback"
                     v-if="!isLoading"
                 />
@@ -58,6 +58,14 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        confirmLabel: {
+            type: String,
+            default: 'CONFIRM',
+        },
+        confirmClass: {
+            type: String,
+            default: 'p-button-danger',
+        },
     },
     components: {
         Dialog,
@@ -76,9 +84,13 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .p-progress-spinner {
     width: 40px;
     height: 40px;
+}
+
+.p-dialog-sm {
+    max-width: 500px;
 }
 </style>

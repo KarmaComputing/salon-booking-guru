@@ -16,17 +16,19 @@
     </div>
 
     <!-- editor modal -->
-    <Dialog
-        class="w-11/12"
-        v-model:visible="isModalVisible"
+    <BinaryDialog
         header="Edit Account"
-        :modal="true"
+        v-model:isVisible="isModalVisible"
+        :confirmCallback="accountEditor?.save"
+        :declineCallback="setIsModalVisible"
+        confirmLabel="SAVE"
+        confirmClass="p-button-success"
     >
-        <AccountEditor :accountId="selectedAccount.id" />
-    </Dialog>
+        <AccountEditor ref="accountEditor" :accountId="selectedAccount.id" />
+    </BinaryDialog>
 
     <!-- delete modal -->
-    <ConfirmDialog
+    <BinaryDialog
         header="Delete Confirmation"
         v-model:isVisible="isDeleteModalVisible"
         :confirmCallback="confirmDeleteAccount"
@@ -37,7 +39,7 @@
             Are you sure you want to delete account
             <span class="font-semibold"> {{ selectedAccount.email }} </span>?
         </div>
-    </ConfirmDialog>
+    </BinaryDialog>
 </template>
 
 <script lang="ts">
@@ -45,13 +47,12 @@
 import { defineComponent, onMounted, ref, computed } from 'vue';
 
 // primevue
-import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 
 // components
 import Grid from '@/components/Grid.vue';
 import AccountEditor from '@/components/AccountEditor.vue';
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import BinaryDialog from '@/components/BinaryDialog.vue';
 
 // config
 import accountGridConfig from '@/config/grid/accountGrid';
@@ -65,10 +66,9 @@ import { Account } from '@/api/models';
 export default defineComponent({
     components: {
         Grid,
-        Dialog,
         Button,
         AccountEditor,
-        ConfirmDialog,
+        BinaryDialog,
     },
     setup() {
         // hooks
@@ -76,6 +76,7 @@ export default defineComponent({
 
         // refs
         const grid = ref(null);
+        const accountEditor = ref(null);
 
         // reactive
         const isModalVisible = ref(false);
@@ -93,7 +94,7 @@ export default defineComponent({
             accounts.value = await getAllAccount();
         };
 
-        const setIsModalVisible = (account: any) => {
+        const setIsModalVisible = () => {
             isModalVisible.value = !isModalVisible.value;
         };
 
@@ -131,6 +132,7 @@ export default defineComponent({
 
         return {
             grid,
+            accountEditor,
             accounts,
             accountGridConfig,
             actionButtonConfig,
@@ -138,6 +140,7 @@ export default defineComponent({
             isDeleteModalVisible,
             isDeleteLoading,
             setIsDeleteModalVisible,
+            setIsModalVisible,
             selectedAccount,
             confirmDeleteAccount,
         };
