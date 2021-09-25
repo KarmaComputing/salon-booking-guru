@@ -16,9 +16,9 @@
     <!-- editor modal -->
     <BinaryDialog
         header="Edit Account"
-        v-model:isVisible="isModalVisible"
+        v-model:isVisible="isEditorVisible"
         :confirmCallback="saveAccount"
-        :declineCallback="setIsModalVisible"
+        :declineCallback="() => setIsEditorVisible(false)"
         confirmLabel="SAVE"
         confirmClass="p-button-success"
     >
@@ -28,9 +28,9 @@
     <!-- delete modal -->
     <BinaryDialog
         header="Delete Confirmation"
-        v-model:isVisible="isDeleteModalVisible"
+        v-model:isVisible="isDeleteVisible"
         :confirmCallback="confirmDeleteAccount"
-        :declineCallback="setIsDeleteModalVisible"
+        :declineCallback="() => setIsDeleteVisible(false)"
         :isLoading="isDeleteLoading"
     >
         <div>
@@ -77,8 +77,8 @@ export default defineComponent({
         const accountEditor = ref<InstanceType<typeof AccountEditor>>();
 
         // reactive
-        const isModalVisible = ref(false);
-        const isDeleteModalVisible = ref(false);
+        const isEditorVisible = ref(false);
+        const isDeleteVisible = ref(false);
         const accountSummaries = ref();
         const isDeleteLoading = ref(false);
 
@@ -92,26 +92,26 @@ export default defineComponent({
             accountSummaries.value = await getAllAccountSummary();
         };
 
-        const setIsModalVisible = () => {
-            isModalVisible.value = !isModalVisible.value;
+        const setIsEditorVisible = (value: boolean) => {
+            isEditorVisible.value = value;
         };
 
-        const setIsDeleteModalVisible = () => {
-            isDeleteModalVisible.value = !isDeleteModalVisible.value;
+        const setIsDeleteVisible = (value: boolean) => {
+            isDeleteVisible.value = value;
         };
 
         const confirmDeleteAccount = async () => {
             isDeleteLoading.value = true;
             await deleteAccount(selectedAccount.value.id);
             isDeleteLoading.value = false;
-            isDeleteModalVisible.value = false;
+            isDeleteVisible.value = false;
             refreshGrid();
         };
 
         const saveAccount = async () => {
             await accountEditor?.value?.save();
             refreshGrid();
-            setIsModalVisible();
+            setIsEditorVisible(false);
         };
 
         // lifecycle
@@ -126,11 +126,11 @@ export default defineComponent({
             },
             {
                 icon: 'pi pi-pencil',
-                callback: setIsModalVisible,
+                callback: () => setIsEditorVisible(true),
             },
             {
                 icon: 'pi pi-trash',
-                callback: setIsDeleteModalVisible,
+                callback: () => setIsDeleteVisible(true),
             },
         ];
 
@@ -140,11 +140,11 @@ export default defineComponent({
             accountSummaries,
             accountGridConfig,
             actionButtonConfig,
-            isModalVisible,
-            isDeleteModalVisible,
+            isEditorVisible,
+            isDeleteVisible,
             isDeleteLoading,
-            setIsDeleteModalVisible,
-            setIsModalVisible,
+            setIsDeleteVisible,
+            setIsEditorVisible,
             selectedAccount,
             confirmDeleteAccount,
             saveAccount,
