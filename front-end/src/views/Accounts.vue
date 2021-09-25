@@ -2,7 +2,12 @@
     <div>
         <div class="text-2xl border-b pb-2 mb-4">Accounts</div>
         <div class="pb-4 space-y-2">
-            <Button class="p-shadow-2" label="ADD ACCOUNT" icon="pi pi-plus" />
+            <Button
+                class="p-shadow-2"
+                label="ADD ACCOUNT"
+                icon="pi pi-plus"
+                @click="setIsAddVisible"
+            />
         </div>
         <Grid
             class="p-shadow-2 mb-4"
@@ -12,6 +17,18 @@
             ref="grid"
         />
     </div>
+
+    <!-- add accoutn modal -->
+    <BinaryDialog
+        header="Add Account"
+        v-model:isVisible="isAddVisible"
+        :confirmCallback="addAccount"
+        :declineCallback="() => setIsAddVisible(false)"
+        confirmLabel="SAVE"
+        confirmClass="p-button-success"
+    >
+        <AccountEditor ref="accountEditor" />
+    </BinaryDialog>
 
     <!-- editor modal -->
     <BinaryDialog
@@ -78,6 +95,8 @@ export default defineComponent({
 
         // reactive
         const accountSummaries = ref();
+
+        const isAddVisible = ref(false);
         const isEditorVisible = ref(false);
         const isDeleteVisible = ref(false);
         const isDeleteLoading = ref(false);
@@ -100,6 +119,10 @@ export default defineComponent({
             isDeleteVisible.value = value;
         };
 
+        const setIsAddVisible = (value: boolean) => {
+            isAddVisible.value = value;
+        };
+
         const confirmDeleteAccount = async () => {
             isDeleteLoading.value = true;
             await deleteAccount(selectedAccount.value.id);
@@ -110,6 +133,12 @@ export default defineComponent({
 
         const saveAccount = async () => {
             await accountEditor?.value?.save();
+            refreshGrid();
+            setIsEditorVisible(false);
+        };
+
+        const addAccount = async () => {
+            await accountEditor?.value?.add();
             refreshGrid();
             setIsEditorVisible(false);
         };
@@ -140,14 +169,17 @@ export default defineComponent({
             accountSummaries,
             accountGridConfig,
             actionButtonConfig,
+            isAddVisible,
             isEditorVisible,
             isDeleteVisible,
             isDeleteLoading,
             setIsDeleteVisible,
             setIsEditorVisible,
+            setIsAddVisible,
             selectedAccount,
             confirmDeleteAccount,
             saveAccount,
+            addAccount,
         };
     },
 });

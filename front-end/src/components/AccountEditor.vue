@@ -86,11 +86,15 @@ export default defineComponent({
     },
     setup(props) {
         // hooks
-        const { getAccount, updateAccount } = useService();
+        const { getAccount, updateAccount, createAccount } = useService();
         const account = ref({} as Account);
         const isChangePassword = ref(false);
 
         // methods
+        const add = async () => {
+            await createAccount(account.value);
+        };
+
         const save = async () => {
             if (!isChangePassword.value) {
                 account.value.password = '';
@@ -106,6 +110,7 @@ export default defineComponent({
         return {
             account,
             save,
+            add,
             isChangePassword,
         };
     },
