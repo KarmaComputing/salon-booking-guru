@@ -11,8 +11,11 @@
             :actionButtonConfig="actionButtonConfig"
             :gridConfig="accountGridConfig"
             :gridData="accounts"
+            ref="grid"
         />
     </div>
+
+    <!-- editor modal -->
     <Dialog
         class="w-11/12"
         v-model:visible="isModalVisible"
@@ -73,23 +76,33 @@
             </div>
         </div>
     </Dialog>
+
+    <!-- delete modal -->
     <Dialog
         class="w-11/12"
         v-model:visible="isDeleteModalVisible"
         header="Delete Confirmation"
         :modal="true"
     >
-        <div class="mb-4">Are you sure you want to delete this account?</div>
+        <div class="mb-4">
+            Are you sure you want to delete account
+            <span class="font-semibold">{{ selectedAccount.email }}</span
+            >?
+        </div>
         <div class="space-x-2">
             <Button label="No" class="p-button-raised" />
-            <Button label="Yes" class="p-button-raised p-button-danger" />
+            <Button
+                label="Yes"
+                class="p-button-raised p-button-danger"
+                @click="confirmDeleteAccount"
+            />
         </div>
     </Dialog>
 </template>
 
 <script lang="ts">
 // vue
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, computed } from 'vue';
 
 // primevue
 import Dialog from 'primevue/dialog';
@@ -106,6 +119,9 @@ import accountGridConfig from '@/config/grid/accountGrid';
 // services
 import { useService } from '@/api/services';
 
+// models
+import { Account } from '@/api/models';
+
 export default defineComponent({
     components: {
         Grid,
@@ -116,23 +132,34 @@ export default defineComponent({
     },
     setup() {
         // hooks
-        const { getAllAccount } = useService();
+        const { getAllAccount, deleteAccount } = useService();
+
+        // refs
+        const grid = ref(null);
 
         // reactive
         const isModalVisible = ref(false);
         const isDeleteModalVisible = ref(false);
         const accounts = ref();
-        const selectedAccount = ref();
+
+        // computed
+        const selectedAccount = computed((): Account => {
+            return (grid?.value as any).selectedRow as Account;
+        });
 
         // methods
         const setIsModalVisible = (account: any) => {
             isModalVisible.value = !isModalVisible.value;
-            selectedAccount.value = account;
-            console.log(account.data.firstName);
         };
 
         const setIsDeleteModalVisible = () => {
             isDeleteModalVisible.value = !isDeleteModalVisible.value;
+        };
+
+        const confirmDeleteAccount = async () => {
+            await deleteAccount(selectedAccount.value.id);
+            isDeleteModalVisible.value = false;
+            accounts.value = await getAllAccount();
         };
 
         // lifecycle
@@ -156,12 +183,14 @@ export default defineComponent({
         ];
 
         return {
+            grid,
+            accounts,
             accountGridConfig,
             actionButtonConfig,
-            accounts,
             isModalVisible,
             isDeleteModalVisible,
             selectedAccount,
+            confirmDeleteAccount,
         };
     },
 });

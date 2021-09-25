@@ -15,7 +15,7 @@
                             class="p-button-rounded"
                             :icon="config.icon"
                             :class="config.style"
-                            @click="config.callback(slotProps)"
+                            @click="triggerAction(config.callback, slotProps)"
                         />
                         <RouterLink v-if="config.route" :to="config.route">
                             <Button
@@ -66,14 +66,18 @@ export default defineComponent({
     },
     setup() {
         // reactive
-        const isModalVisible = ref(false);
+        const selectedRow = ref<any>(null);
 
         // methods
-        const setIsModalVisible = () => {
-            isModalVisible.value = !isModalVisible.value;
+        const triggerAction = (callback: any, slotProps: any) => {
+            selectedRow.value = slotProps.data;
+            callback();
         };
 
-        return { setIsModalVisible, isModalVisible };
+        return {
+            triggerAction,
+            selectedRow,
+        };
     },
 });
 </script>
