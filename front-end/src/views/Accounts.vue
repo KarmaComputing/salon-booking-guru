@@ -26,26 +26,18 @@
     </Dialog>
 
     <!-- delete modal -->
-    <Dialog
-        class="w-11/12"
-        v-model:visible="isDeleteModalVisible"
-        header="Delete Confirmation"
-        :modal="true"
+    <ConfirmDialog
+        header="Delete ConfirmDialogation"
+        v-model:isVisible="isDeleteModalVisible"
+        :confirmCallback="confirmDeleteAccount"
+        :declineCallback="setIsDeleteModalVisible"
+        :isLoading="isDeleteLoading"
     >
-        <div class="mb-4">
+        <div>
             Are you sure you want to delete account
-            <span class="font-semibold">{{ selectedAccount.email }}</span
-            >?
+            <span class="font-semibold"> {{ selectedAccount.email }} </span>?
         </div>
-        <div class="space-x-2">
-            <Button label="No" class="p-button-raised" />
-            <Button
-                label="Yes"
-                class="p-button-raised p-button-danger"
-                @click="confirmDeleteAccount"
-            />
-        </div>
-    </Dialog>
+    </ConfirmDialog>
 </template>
 
 <script lang="ts">
@@ -59,6 +51,7 @@ import Button from 'primevue/button';
 // components
 import Grid from '@/components/Grid.vue';
 import AccountEditor from '@/components/AccountEditor.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 
 // config
 import accountGridConfig from '@/config/grid/accountGrid';
@@ -75,6 +68,7 @@ export default defineComponent({
         Dialog,
         Button,
         AccountEditor,
+        ConfirmDialog,
     },
     setup() {
         // hooks
@@ -87,6 +81,7 @@ export default defineComponent({
         const isModalVisible = ref(false);
         const isDeleteModalVisible = ref(false);
         const accounts = ref();
+        const isDeleteLoading = ref(false);
 
         // computed
         const selectedAccount = computed((): Account => {
@@ -94,7 +89,11 @@ export default defineComponent({
         });
 
         // methods
-        const setIsModalVisible = () => {
+        const refreshGrid = async () => {
+            accounts.value = await getAllAccount();
+        };
+
+        const setIsModalVisible = (account: any) => {
             isModalVisible.value = !isModalVisible.value;
         };
 
@@ -103,14 +102,16 @@ export default defineComponent({
         };
 
         const confirmDeleteAccount = async () => {
+            isDeleteLoading.value = true;
             await deleteAccount(selectedAccount.value.id);
+            isDeleteLoading.value = false;
             isDeleteModalVisible.value = false;
-            accounts.value = await getAllAccount();
+            refreshGrid();
         };
 
         // lifecycle
         onMounted(async () => {
-            accounts.value = await getAllAccount();
+            refreshGrid();
         });
 
         const actionButtonConfig = [
@@ -135,6 +136,8 @@ export default defineComponent({
             actionButtonConfig,
             isModalVisible,
             isDeleteModalVisible,
+            isDeleteLoading,
+            setIsDeleteModalVisible,
             selectedAccount,
             confirmDeleteAccount,
         };
