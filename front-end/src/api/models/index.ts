@@ -1,5 +1,6 @@
 export type { Account } from './account';
 export type { AccountInfo } from './accountInfo';
+export type { AccountSummary } from './accountSummary';
 export type { AuthenticateResponse } from './authenticateResponse';
 export type { Availability } from './availability';
 export type { Credentials } from './credentials';
