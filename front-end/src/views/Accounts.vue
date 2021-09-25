@@ -79,24 +79,30 @@
 
     <!-- delete modal -->
     <Dialog
-        class="w-11/12"
+        class="w-128 m-6"
         v-model:visible="isDeleteModalVisible"
         header="Delete Confirmation"
         :modal="true"
     >
-        <div class="mb-4">
+        <div>
             Are you sure you want to delete account
-            <span class="font-semibold">{{ selectedAccount.email }}</span
-            >?
+            <span class="font-semibold"> {{ selectedAccount.email }} </span>?
         </div>
-        <div class="space-x-2">
-            <Button label="No" class="p-button-raised" />
-            <Button
-                label="Yes"
-                class="p-button-raised p-button-danger"
-                @click="confirmDeleteAccount"
-            />
-        </div>
+
+        <template #footer>
+            <div class="flex justify-end space-x-2">
+                <Button
+                    label="CANCEL"
+                    class="p-button-text p-button-plain"
+                    @click="setIsDeleteModalVisible"
+                />
+                <Button
+                    label="CONFIRM"
+                    class="p-button-danger"
+                    @click="confirmDeleteAccount"
+                />
+            </div>
+        </template>
     </Dialog>
 </template>
 
@@ -189,6 +195,7 @@ export default defineComponent({
             actionButtonConfig,
             isModalVisible,
             isDeleteModalVisible,
+            setIsDeleteModalVisible,
             selectedAccount,
             confirmDeleteAccount,
         };

@@ -12,14 +12,14 @@
                     <div v-for="(config, i) in actionButtonConfig" :key="i">
                         <Button
                             v-if="!config.route"
-                            class="p-button-rounded"
+                            class="p-button-rounded p-button-text"
                             :icon="config.icon"
                             :class="config.style"
                             @click="triggerAction(config.callback, slotProps)"
                         />
                         <RouterLink v-if="config.route" :to="config.route">
                             <Button
-                                class="p-button-rounded"
+                                class="p-button-rounded p-button-text"
                                 :icon="config.icon"
                                 :class="config.style"
                             />
