@@ -1,11 +1,9 @@
 <template>
     <div>
         <div class="text-2xl border-b pb-2 mb-4">Accounts</div>
-
         <div class="pb-4 space-y-2">
             <Button class="p-shadow-2" label="ADD ACCOUNT" icon="pi pi-plus" />
         </div>
-
         <Grid
             class="p-shadow-2 mb-4"
             :actionButtonConfig="actionButtonConfig"
@@ -19,7 +17,7 @@
     <BinaryDialog
         header="Edit Account"
         v-model:isVisible="isModalVisible"
-        :confirmCallback="accountEditor?.save"
+        :confirmCallback="saveAccount"
         :declineCallback="setIsModalVisible"
         confirmLabel="SAVE"
         confirmClass="p-button-success"
@@ -75,8 +73,8 @@ export default defineComponent({
         const { getAllAccount, deleteAccount } = useService();
 
         // refs
-        const grid = ref(null);
-        const accountEditor = ref(null);
+        const grid = ref<InstanceType<typeof Grid>>();
+        const accountEditor = ref<InstanceType<typeof AccountEditor>>();
 
         // reactive
         const isModalVisible = ref(false);
@@ -86,7 +84,7 @@ export default defineComponent({
 
         // computed
         const selectedAccount = computed((): Account => {
-            return (grid?.value as any).selectedRow as Account;
+            return grid?.value?.selectedRow as Account;
         });
 
         // methods
@@ -108,6 +106,12 @@ export default defineComponent({
             isDeleteLoading.value = false;
             isDeleteModalVisible.value = false;
             refreshGrid();
+        };
+
+        const saveAccount = async () => {
+            await accountEditor?.value?.save();
+            refreshGrid();
+            setIsModalVisible();
         };
 
         // lifecycle
@@ -143,6 +147,7 @@ export default defineComponent({
             setIsModalVisible,
             selectedAccount,
             confirmDeleteAccount,
+            saveAccount,
         };
     },
 });
