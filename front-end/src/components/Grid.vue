@@ -1,5 +1,9 @@
 <template>
-    <DataTable :value="gridData" responsiveLayout="stack">
+    <DataTable
+        class="rounded overflow-hidden"
+        :value="gridData"
+        responsiveLayout="stack"
+    >
         <Column
             v-for="(config, i) in gridConfig"
             :field="config.field"

@@ -26,7 +26,7 @@
             />
         </div>
 
-        <Button class="w-full" label="Login" type="submit" />
+        <Button class="w-full" label="Log In" type="submit" />
     </form>
 </template>
 

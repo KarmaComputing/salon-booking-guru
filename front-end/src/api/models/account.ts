@@ -1,7 +1,7 @@
 export interface Account {
+    id: number;
     email: string;
     firstName: string;
-    id: number;
     lastName: string;
     mobileNumber: number;
     password: string;
