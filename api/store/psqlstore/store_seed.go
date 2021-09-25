@@ -93,6 +93,14 @@ var seeds = []string{
 		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
 		"Owner",
 	),
+
+	seedAccount(
+		"changemehello@owner.com",
+		"Owner",
+		"Name",
+		"$2y$10$tIU8Z5tQXN7oBoeG24hzQuucWjVHyw/6UuDUtA88Ae8rlIhA.hc7e",
+		"Owner",
+	),
 }
 
 func seedRole(

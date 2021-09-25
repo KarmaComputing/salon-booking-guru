@@ -18,6 +18,7 @@ type Store interface {
 
 type AccountStore interface {
 	GetAll() ([]model.Account, error)
+	GetAllSummary() ([]model.AccountSummary, error)
 	Get(id int) (model.Account, error)
 	GetInfo(id int) (model.AccountInfo, error)
 	Create(product *model.Account) error

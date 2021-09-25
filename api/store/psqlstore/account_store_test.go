@@ -24,6 +24,22 @@ func TestAccountGetAll(t *testing.T) {
 	}
 }
 
+func TestAccountGetAllSummary(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	accountSummaries, err := s.Account().GetAllSummary()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(accountSummaries) != 5 {
+		t.Fatal(errors.New("Number of account summaries returned is invalid"))
+	}
+}
+
 func TestAccountGet(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {
