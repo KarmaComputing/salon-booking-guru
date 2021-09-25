@@ -19,10 +19,15 @@
                         class="p-button-text w-full"
                         @click="isNavVisible = false"
                     >
-                        <i :class="link.icon" class="mr-3 w-5 h-5" />
+                        <i :class="link.icon" class="mr-3 w-5" />
                         <span class="">{{ link.label }}</span>
                     </Button>
                 </RouterLink>
+                <Divider />
+                <Button class="p-button-text w-full" @click="logOutClose">
+                    <i class="far fa-sign-out mr-3 w-5" />
+                    <span>Log out</span>
+                </Button>
             </div>
         </Sidebar>
     </div>
@@ -31,6 +36,9 @@
 <script lang="ts">
 // vue
 import { ref } from 'vue';
+
+// services
+import { useService } from '@/api/services';
 
 // primevue
 import Sidebar from 'primevue/sidebar';
@@ -47,12 +55,25 @@ export default {
         Divider,
     },
     setup() {
-        const isNavVisible = ref(false);
+        // hooks
+        const { logOut } = useService();
+
+        // properties
         const links = navLinks;
+
+        // reactive
+        const isNavVisible = ref(false);
+
+        // methods
+        const logOutClose = () => {
+            logOut();
+            isNavVisible.value = false;
+        };
 
         return {
             isNavVisible,
             links,
+            logOutClose,
         };
     },
 };

@@ -104,7 +104,7 @@ import Grid from '@/components/Grid.vue';
 import accountGridConfig from '@/config/grid/accountGrid';
 
 // services
-import { useAccountService } from '@/api/services/accountService';
+import { useService } from '@/api/services';
 
 export default defineComponent({
     components: {
@@ -116,7 +116,7 @@ export default defineComponent({
     },
     setup() {
         // hooks
-        const { getAllAccount } = useAccountService();
+        const { getAllAccount } = useService();
 
         // reactive
         const isModalVisible = ref(false);
