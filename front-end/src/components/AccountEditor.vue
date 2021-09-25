@@ -37,7 +37,9 @@
                 <label>Role</label>
                 <Dropdown
                     class="w-full p-inputtext-sm"
-                    :options="cities"
+                    v-model="account.roleId"
+                    :options="roles"
+                    optionValue="id"
                     optionLabel="name"
                     placeholder="Select a role"
                 />
@@ -82,6 +84,10 @@ export default defineComponent({
         accountId: {
             type: Number,
             default: null,
+        },
+        roles: {
+            type: Array,
+            default: () => [],
         },
     },
     setup(props) {

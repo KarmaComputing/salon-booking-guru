@@ -38,6 +38,9 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 			mobile_number
 		FROM
 			account
+		ORDER BY
+			id
+		ASC
 		LIMIT 10000
 		;`,
 	)
@@ -87,6 +90,9 @@ func (s *PsqlAccountStore) GetAllSummary() ([]model.AccountSummary, error) {
 			role
 		ON
 			account.role_id = role.id
+		ORDER BY
+			id
+		ASC
 		LIMIT 10000
 		;`,
 	)
