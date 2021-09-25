@@ -77,9 +77,9 @@ export default defineComponent({
         const accountEditor = ref<InstanceType<typeof AccountEditor>>();
 
         // reactive
+        const accountSummaries = ref();
         const isEditorVisible = ref(false);
         const isDeleteVisible = ref(false);
-        const accountSummaries = ref();
         const isDeleteLoading = ref(false);
 
         // computed
