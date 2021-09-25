@@ -5,7 +5,7 @@ import { useStore } from 'vuex';
 import { useAxios } from '@/hooks/axiosHook';
 
 // models
-import { Account } from '@/api/models';
+import { Account, AccountSummary } from '@/api/models';
 
 export const useAccountService = () => {
     const { apiUrl } = useStore().state;
@@ -13,6 +13,11 @@ export const useAccountService = () => {
 
     const getAllAccount = async (): Promise<Account[]> => {
         const res = await axios.get(`${apiUrl}/account`);
+        return res.data;
+    };
+
+    const getAllAccountSummary = async (): Promise<AccountSummary[]> => {
+        const res = await axios.get(`${apiUrl}/account/summary`);
         return res.data;
     };
 
@@ -58,6 +63,7 @@ export const useAccountService = () => {
 
     return {
         getAllAccount,
+        getAllAccountSummary,
         getAccount,
         getAccountQualificationNames,
         createAccount,

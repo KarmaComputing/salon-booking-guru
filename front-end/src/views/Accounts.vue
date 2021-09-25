@@ -8,7 +8,7 @@
             class="p-shadow-2 mb-4"
             :actionButtonConfig="actionButtonConfig"
             :gridConfig="accountGridConfig"
-            :gridData="accounts"
+            :gridData="accountSummaries"
             ref="grid"
         />
     </div>
@@ -70,7 +70,7 @@ export default defineComponent({
     },
     setup() {
         // hooks
-        const { getAllAccount, deleteAccount } = useService();
+        const { getAllAccountSummary, deleteAccount } = useService();
 
         // refs
         const grid = ref<InstanceType<typeof Grid>>();
@@ -79,7 +79,7 @@ export default defineComponent({
         // reactive
         const isModalVisible = ref(false);
         const isDeleteModalVisible = ref(false);
-        const accounts = ref();
+        const accountSummaries = ref();
         const isDeleteLoading = ref(false);
 
         // computed
@@ -89,7 +89,7 @@ export default defineComponent({
 
         // methods
         const refreshGrid = async () => {
-            accounts.value = await getAllAccount();
+            accountSummaries.value = await getAllAccountSummary();
         };
 
         const setIsModalVisible = () => {
@@ -137,7 +137,7 @@ export default defineComponent({
         return {
             grid,
             accountEditor,
-            accounts,
+            accountSummaries,
             accountGridConfig,
             actionButtonConfig,
             isModalVisible,

@@ -14,6 +14,11 @@ func accountRoutes() {
 	).Methods("GET")
 
 	v1.HandleFunc(
+		"/account/summary",
+		authorize(getAllAccountSummary, "canReadAccount"),
+	).Methods("GET")
+
+	v1.HandleFunc(
 		"/account/{id}",
 		authorize(getAccount, "canReadAccount"),
 	).Methods("GET")
@@ -55,6 +60,16 @@ func getAllAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond(w, accounts, http.StatusOK)
+}
+
+func getAllAccountSummary(w http.ResponseWriter, r *http.Request) {
+	accountSummaries, err := s.Account().GetAllSummary()
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve account summaries", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, accountSummaries, http.StatusOK)
 }
 
 func getAllAccountQualificationName(w http.ResponseWriter, r *http.Request) {

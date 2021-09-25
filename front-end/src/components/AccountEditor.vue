@@ -47,6 +47,7 @@
                 <InputSwitch v-model="isChangePassword" />
             </div>
             <Password
+                class="w-full"
                 v-if="isChangePassword"
                 v-model="account.password"
                 toggleMask
