@@ -29,7 +29,7 @@ export default defineComponent({
         const config = [
             {
                 title: 'Name',
-                field: 'name',
+                field: 'firstName',
             },
             {
                 title: 'Email',
@@ -37,20 +37,27 @@ export default defineComponent({
             },
             {
                 title: 'Mobile',
-                field: 'mobile',
+                field: 'mobileNumber',
             },
             {
                 title: 'Role',
-                field: 'role',
+                field: 'roleId',
             },
         ];
+
+        const editCallback = (data: string) => {
+            console.log(data);
+        };
 
         const actionButtonConfig = [
             {
                 icon: 'pi pi-clock',
+                route: '/account/availability',
             },
             {
                 icon: 'pi pi-pencil',
+                route: '/account/editor',
+                callback: editCallback,
             },
             {
                 icon: 'pi pi-trash',

@@ -1,21 +1,31 @@
 <template>
-    <DataTable :value="testAccounts" responsiveLayout="stack">
+    <DataTable :value="accounts" responsiveLayout="stack">
         <Column
             v-for="(config, i) in gridConfig"
             :field="config.field"
             :key="i"
             :header="config.title"
         />
-        <Column v-if="actionButtonConfig">
-            <template #body>
+        <Column v-if="actionButtonConfig" header="Actions">
+            <template #body="slotProps">
                 <div class="flex space-x-2">
-                    <Button
-                        v-for="(config, i) in actionButtonConfig"
-                        :key="i"
-                        :icon="config.icon"
-                        :class="config.style"
-                        @click="config.callback"
-                    />
+                    <div v-for="(config, i) in actionButtonConfig" :key="i">
+                        <Button
+                            v-if="!config.route"
+                            class="p-button-rounded"
+                            :icon="config.icon"
+                            :class="config.style"
+                            @click="config.callback"
+                        />
+                        <RouterLink v-if="config.route" :to="config.route">
+                            <Button
+                                class="p-button-rounded"
+                                :icon="config.icon"
+                                :class="config.style"
+                                @click="config.callback(slotProps.data)"
+                            />
+                        </RouterLink>
+                    </div>
                 </div>
             </template>
         </Column>
@@ -24,11 +34,14 @@
 
 <script lang="ts">
 // vue
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 // primevue
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+
+// services
+import { useAccountService } from '../api/services/accountService';
 
 export default defineComponent({
     props: {
@@ -52,28 +65,19 @@ export default defineComponent({
         Column,
     },
     setup() {
-        const testAccounts = [
-            {
-                name: 'Jake',
-                email: 'jaketurner810@gmail.com',
-                mobile: '07557140411',
-                role: 'Employee',
-            },
-            {
-                name: 'Hannah',
-                email: 'hannaht95@gmail.com',
-                mobile: '075271125374',
-                role: 'Owner',
-            },
-            {
-                name: 'Jamie Scollay',
-                email: 'deltabrot@gmail.com',
-                mobile: '075276128374',
-                role: 'Employee',
-            },
-        ];
+        // services
+        const { getAllAccount } = useAccountService();
+
+        // reactive
+        const accounts = ref();
+
+        // methods
+        onMounted(async () => {
+            accounts.value = await getAllAccount();
+        });
+
         return {
-            testAccounts,
+            accounts,
         };
     },
 });

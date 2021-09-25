@@ -1,6 +1,8 @@
 <template>
-    <AppBar />
-    <RouterView />
+    <div>
+        <AppBar />
+        <RouterView />
+    </div>
 </template>
 
 <script lang="ts">
@@ -8,7 +10,7 @@
 import { defineComponent } from 'vue';
 
 // components
-import AppBar from '@/components/AppBar.vue';
+import AppBar from './components/AppBar.vue';
 
 export default defineComponent({
     components: {
