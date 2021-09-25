@@ -3,6 +3,7 @@
         class="rounded overflow-hidden"
         :value="gridData"
         responsiveLayout="stack"
+        :loading="isLoading"
     >
         <Column
             v-for="(config, i) in gridConfig"
@@ -62,6 +63,10 @@ export default defineComponent({
         gridData: {
             type: Array,
             default: () => [],
+        },
+        isLoading: {
+            type: Boolean,
+            default: false,
         },
     },
     components: {

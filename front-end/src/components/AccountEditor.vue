@@ -1,5 +1,5 @@
 <template>
-    <div v-if="account">
+    <div v-if="!isLoading">
         <div class="space-y-4 w-full">
             <div class="flex flex-col w-full">
                 <label>First name</label>
@@ -44,17 +44,27 @@
                     placeholder="Select a role"
                 />
             </div>
-            <div class="flex items-center justify-between">
-                <label>Change Password</label>
-                <InputSwitch v-model="isChangePassword" />
+            <div class="flex flex-col w-full">
+                <div
+                    class="flex items-center justify-between mb-2"
+                    v-if="accountId"
+                >
+                    <label>Change Password</label>
+                    <InputSwitch v-model="isChangePassword" />
+                </div>
+
+                <label v-if="!accountId">Password</label>
+                <Password
+                    class="w-full"
+                    v-if="isChangePassword || !accountId"
+                    v-model="account.password"
+                    toggleMask
+                />
             </div>
-            <Password
-                class="w-full"
-                v-if="isChangePassword"
-                v-model="account.password"
-                toggleMask
-            />
         </div>
+    </div>
+    <div class="flex justify-center">
+        <ProgressSpinner v-if="isLoading" />
     </div>
 </template>
 
@@ -72,6 +82,7 @@ import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import Password from 'primevue/password';
 import InputSwitch from 'primevue/inputswitch';
+import ProgressSpinner from 'primevue/progressspinner';
 
 export default defineComponent({
     components: {
@@ -79,6 +90,7 @@ export default defineComponent({
         Dropdown,
         Password,
         InputSwitch,
+        ProgressSpinner,
     },
     props: {
         accountId: {
@@ -93,31 +105,41 @@ export default defineComponent({
     setup(props) {
         // hooks
         const { getAccount, updateAccount, createAccount } = useService();
+
+        // reactive
         const account = ref({} as Account);
         const isChangePassword = ref(false);
+        const isLoading = ref(true);
 
         // methods
-        const add = async () => {
-            await createAccount(account.value);
-        };
-
         const save = async () => {
             if (!isChangePassword.value) {
                 account.value.password = '';
             }
-            await updateAccount(account.value);
+
+            if (props.accountId) {
+                await updateAccount(account.value);
+            } else {
+                await createAccount(account.value);
+            }
         };
 
         // lifecycle
         onMounted(async () => {
-            account.value = await getAccount(props.accountId);
+            if (props.accountId) {
+                isLoading.value = true;
+                account.value = await getAccount(props.accountId);
+                isLoading.value = false;
+            } else {
+                isLoading.value = false;
+            }
         });
 
         return {
             account,
             save,
-            add,
             isChangePassword,
+            isLoading,
         };
     },
 });

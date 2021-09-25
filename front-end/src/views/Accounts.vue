@@ -6,7 +6,12 @@
                 class="p-shadow-2"
                 label="ADD ACCOUNT"
                 icon="pi pi-plus"
-                @click="setIsAddVisible"
+                @click="
+                    () => {
+                        selectedAccount = {};
+                        setIsEditorVisible(true);
+                    }
+                "
             />
         </div>
         <Grid
@@ -14,21 +19,10 @@
             :actionButtonConfig="actionButtonConfig"
             :gridConfig="accountGridConfig"
             :gridData="accountSummaries"
+            :isLoading="isGridLoading"
             ref="grid"
         />
     </div>
-
-    <!-- add accoutn modal -->
-    <BinaryDialog
-        header="Add Account"
-        v-model:isVisible="isAddVisible"
-        :confirmCallback="addAccount"
-        :declineCallback="() => setIsAddVisible(false)"
-        confirmLabel="SAVE"
-        confirmClass="p-button-success"
-    >
-        <AccountEditor ref="accountEditor" />
-    </BinaryDialog>
 
     <!-- editor modal -->
     <BinaryDialog
@@ -38,6 +32,7 @@
         :declineCallback="() => setIsEditorVisible(false)"
         confirmLabel="SAVE"
         confirmClass="p-button-success"
+        :isLoading="isEditorLoading"
     >
         <AccountEditor
             ref="accountEditor"
@@ -102,18 +97,31 @@ export default defineComponent({
         const accountSummaries = ref();
         const isAddVisible = ref(false);
         const roles = ref();
+
         const isEditorVisible = ref(false);
         const isDeleteVisible = ref(false);
+
+        const isGridLoading = ref(true);
+        const isEditorLoading = ref(false);
         const isDeleteLoading = ref(false);
 
         // computed
-        const selectedAccount = computed((): Account => {
-            return grid?.value?.selectedRow as Account;
+        const selectedAccount = computed({
+            get: (): Account => {
+                return grid?.value?.selectedRow as Account;
+            },
+            set: (value: Account) => {
+                if (grid.value) {
+                    grid.value.selectedRow = value;
+                }
+            },
         });
 
         // methods
         const refreshGrid = async () => {
+            isGridLoading.value = true;
             accountSummaries.value = await getAllAccountSummary();
+            isGridLoading.value = false;
         };
 
         const setIsEditorVisible = (value: boolean) => {
@@ -131,21 +139,17 @@ export default defineComponent({
         const confirmDeleteAccount = async () => {
             isDeleteLoading.value = true;
             await deleteAccount(selectedAccount.value.id);
-            isDeleteLoading.value = false;
             isDeleteVisible.value = false;
             refreshGrid();
+            isDeleteLoading.value = false;
         };
 
         const saveAccount = async () => {
+            isEditorLoading.value = true;
             await accountEditor?.value?.save();
             refreshGrid();
             setIsEditorVisible(false);
-        };
-
-        const addAccount = async () => {
-            await accountEditor?.value?.add();
-            refreshGrid();
-            setIsEditorVisible(false);
+            isEditorLoading.value = false;
         };
 
         // lifecycle
@@ -178,6 +182,8 @@ export default defineComponent({
             isAddVisible,
             isEditorVisible,
             isDeleteVisible,
+            isGridLoading,
+            isEditorLoading,
             isDeleteLoading,
             setIsDeleteVisible,
             setIsEditorVisible,
@@ -185,7 +191,6 @@ export default defineComponent({
             selectedAccount,
             confirmDeleteAccount,
             saveAccount,
-            addAccount,
             roles,
         };
     },
