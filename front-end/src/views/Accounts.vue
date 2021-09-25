@@ -78,32 +78,17 @@
     </Dialog>
 
     <!-- delete modal -->
-    <Dialog
-        class="w-128 m-6"
-        v-model:visible="isDeleteModalVisible"
+    <Confirm
         header="Delete Confirmation"
-        :modal="true"
+        v-model:isVisible="isDeleteModalVisible"
+        :confirmCallback="confirmDeleteAccount"
+        :declineCallback="setIsDeleteModalVisible"
     >
         <div>
             Are you sure you want to delete account
             <span class="font-semibold"> {{ selectedAccount.email }} </span>?
         </div>
-
-        <template #footer>
-            <div class="flex justify-end space-x-2">
-                <Button
-                    label="CANCEL"
-                    class="p-button-text p-button-plain"
-                    @click="setIsDeleteModalVisible"
-                />
-                <Button
-                    label="CONFIRM"
-                    class="p-button-danger"
-                    @click="confirmDeleteAccount"
-                />
-            </div>
-        </template>
-    </Dialog>
+    </Confirm>
 </template>
 
 <script lang="ts">
@@ -118,6 +103,7 @@ import Button from 'primevue/button';
 
 // components
 import Grid from '@/components/Grid.vue';
+import Confirm from '@/components/Confirm.vue';
 
 // config
 import accountGridConfig from '@/config/grid/accountGrid';
@@ -135,6 +121,7 @@ export default defineComponent({
         InputText,
         Dropdown,
         Button,
+        Confirm,
     },
     setup() {
         // hooks
