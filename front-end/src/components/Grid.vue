@@ -1,5 +1,10 @@
 <template>
-    <DataTable :value="gridData" responsiveLayout="stack">
+    <DataTable
+        class="rounded overflow-hidden"
+        :value="gridData"
+        responsiveLayout="stack"
+        :loading="isLoading"
+    >
         <Column
             v-for="(config, i) in gridConfig"
             :field="config.field"
@@ -12,17 +17,16 @@
                     <div v-for="(config, i) in actionButtonConfig" :key="i">
                         <Button
                             v-if="!config.route"
-                            class="p-button-rounded"
+                            class="p-button-rounded p-button-text"
                             :icon="config.icon"
                             :class="config.style"
-                            @click="config.callback"
+                            @click="triggerAction(config.callback, slotProps)"
                         />
                         <RouterLink v-if="config.route" :to="config.route">
                             <Button
-                                class="p-button-rounded"
+                                class="p-button-rounded p-button-text"
                                 :icon="config.icon"
                                 :class="config.style"
-                                @click="config.callback(slotProps.data)"
                             />
                         </RouterLink>
                     </div>
@@ -34,7 +38,7 @@
 
 <script lang="ts">
 // vue
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 // primevue
 import DataTable from 'primevue/datatable';
@@ -60,13 +64,29 @@ export default defineComponent({
             type: Array,
             default: () => [],
         },
+        isLoading: {
+            type: Boolean,
+            default: false,
+        },
     },
     components: {
         DataTable,
         Column,
     },
     setup() {
-        return {};
+        // reactive
+        const selectedRow = ref<any>(null);
+
+        // methods
+        const triggerAction = (callback: any, slotProps: any) => {
+            selectedRow.value = slotProps.data;
+            callback();
+        };
+
+        return {
+            triggerAction,
+            selectedRow,
+        };
     },
 });
 </script>

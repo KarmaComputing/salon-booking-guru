@@ -1,17 +1,7 @@
 <template>
     <div
-        class="
-            p-shadow-4
-            bg-blue-600
-            text-white
-            z-10
-            mb-8
-            sticky
-            top-0
-            left-0
-            px-6
-            w-full
-        "
+        class="p-shadow-4 text-white z-10 mb-6 sticky top-0 left-0 px-6 w-full"
+        style="background: #3f51b5"
     >
         <div class="container mx-auto flex justify-between items-center">
             <RouterLink class="text-2xl py-4" to="/">

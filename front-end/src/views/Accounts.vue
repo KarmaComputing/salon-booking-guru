@@ -1,26 +1,72 @@
 <template>
     <div>
-        <div class="text-2xl border-b pb-2 mb-8">Accounts</div>
-
+        <div class="text-2xl border-b pb-2 mb-4">Accounts</div>
         <div class="pb-4 space-y-2">
-            <Button class="p-shadow-2" label="ADD ACCOUNT" icon="pi pi-plus" />
+            <Button
+                class="p-shadow-2"
+                label="ADD ACCOUNT"
+                icon="pi pi-plus"
+                @click="
+                    () => {
+                        selectedAccount = {};
+                        setIsEditorVisible(true);
+                    }
+                "
+            />
         </div>
-
         <Grid
             class="p-shadow-2 mb-4"
             :actionButtonConfig="actionButtonConfig"
             :gridConfig="accountGridConfig"
-            :gridData="accounts"
+            :gridData="accountSummaries"
+            :isLoading="isGridLoading"
+            ref="grid"
         />
     </div>
+
+    <!-- editor modal -->
+    <BinaryDialog
+        header="Edit Account"
+        v-model:isVisible="isEditorVisible"
+        :confirmCallback="saveAccount"
+        :declineCallback="() => setIsEditorVisible(false)"
+        confirmLabel="SAVE"
+        confirmClass="p-button-success"
+        :isLoading="isEditorLoading"
+    >
+        <AccountEditor
+            ref="accountEditor"
+            :accountId="selectedAccount.id"
+            :roles="roles"
+        />
+    </BinaryDialog>
+
+    <!-- delete modal -->
+    <BinaryDialog
+        header="Delete Confirmation"
+        v-model:isVisible="isDeleteVisible"
+        :confirmCallback="confirmDeleteAccount"
+        :declineCallback="() => setIsDeleteVisible(false)"
+        :isLoading="isDeleteLoading"
+    >
+        <div>
+            Are you sure you want to delete account
+            <span class="font-semibold"> {{ selectedAccount.email }} </span>?
+        </div>
+    </BinaryDialog>
 </template>
 
 <script lang="ts">
 // vue
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, computed } from 'vue';
+
+// primevue
+import Button from 'primevue/button';
 
 // components
 import Grid from '@/components/Grid.vue';
+import AccountEditor from '@/components/AccountEditor.vue';
+import BinaryDialog from '@/components/BinaryDialog.vue';
 
 // config
 import accountGridConfig from '@/config/grid/accountGrid';
@@ -28,25 +74,88 @@ import accountGridConfig from '@/config/grid/accountGrid';
 // services
 import { useService } from '@/api/services';
 
+// models
+import { Account } from '@/api/models';
+
 export default defineComponent({
     components: {
         Grid,
+        Button,
+        AccountEditor,
+        BinaryDialog,
     },
     setup() {
         // hooks
-        const { getAllAccount } = useService();
+        const { getAllAccountSummary, deleteAccount, getAllRole } =
+            useService();
+
+        // refs
+        const grid = ref<InstanceType<typeof Grid>>();
+        const accountEditor = ref<InstanceType<typeof AccountEditor>>();
 
         // reactive
-        const accounts = ref();
+        const accountSummaries = ref();
+        const isAddVisible = ref(false);
+        const roles = ref();
+
+        const isEditorVisible = ref(false);
+        const isDeleteVisible = ref(false);
+
+        const isGridLoading = ref(true);
+        const isEditorLoading = ref(false);
+        const isDeleteLoading = ref(false);
+
+        // computed
+        const selectedAccount = computed({
+            get: (): Account => {
+                return grid?.value?.selectedRow as Account;
+            },
+            set: (value: Account) => {
+                if (grid.value) {
+                    grid.value.selectedRow = value;
+                }
+            },
+        });
 
         // methods
-        const editCallback = (data: string) => {
-            console.log(data);
+        const refreshGrid = async () => {
+            isGridLoading.value = true;
+            accountSummaries.value = await getAllAccountSummary();
+            isGridLoading.value = false;
+        };
+
+        const setIsEditorVisible = (value: boolean) => {
+            isEditorVisible.value = value;
+        };
+
+        const setIsDeleteVisible = (value: boolean) => {
+            isDeleteVisible.value = value;
+        };
+
+        const setIsAddVisible = (value: boolean) => {
+            isAddVisible.value = value;
+        };
+
+        const confirmDeleteAccount = async () => {
+            isDeleteLoading.value = true;
+            await deleteAccount(selectedAccount.value.id);
+            isDeleteVisible.value = false;
+            refreshGrid();
+            isDeleteLoading.value = false;
+        };
+
+        const saveAccount = async () => {
+            isEditorLoading.value = true;
+            await accountEditor?.value?.save();
+            refreshGrid();
+            setIsEditorVisible(false);
+            isEditorLoading.value = false;
         };
 
         // lifecycle
         onMounted(async () => {
-            accounts.value = await getAllAccount();
+            refreshGrid();
+            roles.value = await getAllRole();
         });
 
         const actionButtonConfig = [
@@ -56,21 +165,33 @@ export default defineComponent({
             },
             {
                 icon: 'pi pi-pencil',
-                route: '/account/editor',
-                callback: editCallback,
+                callback: () => setIsEditorVisible(true),
             },
             {
                 icon: 'pi pi-trash',
-                callback: () => {
-                    console.log('delete');
-                },
+                callback: () => setIsDeleteVisible(true),
             },
         ];
 
         return {
+            grid,
+            accountEditor,
+            accountSummaries,
             accountGridConfig,
             actionButtonConfig,
-            accounts,
+            isAddVisible,
+            isEditorVisible,
+            isDeleteVisible,
+            isGridLoading,
+            isEditorLoading,
+            isDeleteLoading,
+            setIsDeleteVisible,
+            setIsEditorVisible,
+            setIsAddVisible,
+            selectedAccount,
+            confirmDeleteAccount,
+            saveAccount,
+            roles,
         };
     },
 });

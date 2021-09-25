@@ -1,5 +1,11 @@
 export type { Account } from './account';
 export type { AccountInfo } from './accountInfo';
+export type { AccountSummary } from './accountSummary';
 export type { AuthenticateResponse } from './authenticateResponse';
+export type { Availability } from './availability';
 export type { Credentials } from './credentials';
+export type { Product } from './product';
+export type { ProductCategory } from './productCategory';
+export type { Qualification } from './qualification';
+export type { Role } from './role';
 export type { Token } from './token';

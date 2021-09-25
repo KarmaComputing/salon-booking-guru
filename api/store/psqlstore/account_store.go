@@ -38,6 +38,9 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 			mobile_number
 		FROM
 			account
+		ORDER BY
+			id
+		ASC
 		LIMIT 10000
 		;`,
 	)
@@ -62,6 +65,57 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 			log.Println("Error: Failed to populate Account structs")
 			log.Println(err)
 			return []model.Account{}, err
+		}
+		accounts = append(accounts, account)
+	}
+
+	return accounts, nil
+}
+
+// Get all rows in the 'account' pg table in summary form.
+//
+// Returns a slice of AccountSummary structs, and any errors encountered.
+func (s *PsqlAccountStore) GetAllSummary() ([]model.AccountSummary, error) {
+	var accounts []model.AccountSummary = []model.AccountSummary{}
+	rows, err := s.db.Query(`
+		SELECT
+			account.id,
+			first_name || ' ' || last_name as name,
+			email,
+			mobile_number,
+			role.name
+		FROM
+			account
+		INNER JOIN
+			role
+		ON
+			account.role_id = role.id
+		ORDER BY
+			id
+		ASC
+		LIMIT 10000
+		;`,
+	)
+	if err != nil {
+		log.Println("Error: Failed to retrieve 'account' rows")
+		log.Println(err)
+		return []model.AccountSummary{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var account model.AccountSummary
+		err = rows.Scan(
+			&account.Id,
+			&account.Name,
+			&account.Email,
+			&account.MobileNumber,
+			&account.RoleName,
+		)
+		if err != nil {
+			log.Println("Error: Failed to populate AccountSummary structs")
+			log.Println(err)
+			return []model.AccountSummary{}, err
 		}
 		accounts = append(accounts, account)
 	}

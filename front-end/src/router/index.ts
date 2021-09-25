@@ -19,12 +19,6 @@ const routes: Array<RouteRecordRaw> = [
             import(/* webpackChunkName: "core" */ '@/views/Accounts.vue'),
     },
     {
-        path: '/account/editor',
-        name: 'AccountEditor',
-        component: () =>
-            import(/* webpackChunkName: "core" */ '@/views/AccountEditor.vue'),
-    },
-    {
         path: '/account/availability',
         name: 'AccountAvailability',
         component: () =>
