@@ -1,9 +1,13 @@
 <template>
     <div>
-        <div class="text-2xl border-b pb-2 mb-8">Accounts</div>
+        <div class="text-2xl border-b pb-2 mb-8">Product Categories</div>
 
         <div class="pb-4 space-y-2">
-            <Button class="p-shadow-2" label="ADD ACCOUNT" icon="pi pi-plus" />
+            <Button
+                class="p-shadow-2"
+                label="ADD PRODUCT CATEGORY"
+                icon="pi pi-plus"
+            />
         </div>
 
         <Grid
@@ -26,7 +30,7 @@ import Grid from '@/components/Grid.vue';
 import accountGridConfig from '@/config/grid/accountGrid';
 
 // services
-import { useService } from '@/api/services';
+import { useAccountService } from '@/api/services/accountService';
 
 export default defineComponent({
     components: {
@@ -34,7 +38,7 @@ export default defineComponent({
     },
     setup() {
         // hooks
-        const { getAllAccount } = useService();
+        const { getAllAccount } = useAccountService();
 
         // reactive
         const accounts = ref();

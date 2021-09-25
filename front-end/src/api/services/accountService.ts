@@ -1,15 +1,18 @@
-// axios
-import axios, { AxiosError } from 'axios';
-import { Account } from '../models/account';
+// vue
+import { useStore } from 'vuex';
+
+// hooks
+import { useAxios } from '@/hooks/axiosHook';
+
+// models
+import { Account } from '@/api/models';
 
 export const useAccountService = () => {
+    const { apiUrl } = useStore().state;
+    const axios = useAxios();
+
     const getAllAccount = async (): Promise<Account[]> => {
-        const res = await axios.get('http://127.0.0.1:8085/v1/account', {
-            headers: {
-                Authorization:
-                    'Bearer KjzaAHGT+WSMPgXSSyXdXxiFERriP2Jw8+xYWFOwAqaxxi4s5ZwRxc6cXElJ54vE5TYkoaZekCA1jU1dUi/VVg==',
-            },
-        });
+        const res = await axios.get(`${apiUrl}/account`);
         return res.data;
     };
 

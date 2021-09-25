@@ -17,18 +17,29 @@
             <RouterLink class="text-2xl py-4" to="/">
                 Salon Booking Guru
             </RouterLink>
-            <SideNavigation />
+            <SideNavigation v-if="store.getters.authToken" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
+// vue
 import { defineComponent } from 'vue';
-import SideNavigation from '../components/SideNavigation.vue';
+import { useStore } from 'vuex';
+
+// components
+import SideNavigation from '@/components/SideNavigation.vue';
 
 export default defineComponent({
     components: {
         SideNavigation,
+    },
+    setup() {
+        const store = useStore();
+
+        return {
+            store,
+        };
     },
 });
 </script>

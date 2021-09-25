@@ -34,13 +34,11 @@
 
 <script lang="ts">
 // vue
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 // primevue
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-
-// services
 
 export default defineComponent({
     props: {
