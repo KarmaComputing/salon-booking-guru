@@ -6,9 +6,8 @@
         rowName="product"
         deleteRowValue="name"
         :gridConfig="gridConfig"
-        :getData="getAllProduct"
-        :deleteData="deleteProduct"
-        :editorComponent="ProductEditor"
+        :editorConfig="editorConfig"
+        :dataServices="dataServices"
     />
 </template>
 
@@ -18,13 +17,13 @@ import { defineComponent } from 'vue';
 
 // components
 import GridEditor from '@/components/GridEditor.vue';
-import ProductEditor from '@/components/ProductEditor.vue';
 
 // services
 import { useService } from '@/api/services';
 
 // configs
-import gridConfig from '@/config/grid/productGrid.ts';
+import gridConfig from '@/config/grid/productGrid';
+import editorConfig from '@/config/editor/productEditor';
 
 export default defineComponent({
     components: {
@@ -32,13 +31,15 @@ export default defineComponent({
     },
     setup() {
         // hooks
-        const { getAllProduct, deleteProduct } = useService();
+        const { generateDataServices } = useService();
+
+        // properties
+        const dataServices = generateDataServices('Product');
 
         return {
-            getAllProduct,
-            deleteProduct,
+            dataServices,
             gridConfig,
-            ProductEditor,
+            editorConfig,
         };
     },
 });

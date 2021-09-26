@@ -7,7 +7,7 @@ import { useQualificationService } from './qualificationService';
 import { useRoleService } from './roleService';
 
 export const useService = () => {
-    return {
+    let services: any = {
         ...useAccountService(),
         ...useAuthenticateService(),
         ...useAvailabilityService(),
@@ -16,4 +16,18 @@ export const useService = () => {
         ...useQualificationService(),
         ...useRoleService(),
     };
+
+    const generateDataServices = (modelName: string, isSummary: boolean) => {
+        return {
+            getAll: services[`getAll${modelName}${isSummary ? 'Summary' : ''}`],
+            get: services[`get${modelName}`],
+            create: services[`create${modelName}`],
+            update: services[`update${modelName}`],
+            delete: services[`delete${modelName}`],
+        };
+    };
+
+    services = { ...services, generateDataServices };
+
+    return services as any;
 };

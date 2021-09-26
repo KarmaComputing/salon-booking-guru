@@ -7,3 +7,15 @@ export interface Product {
     deposit: number;
     duration: number;
 }
+
+export const emptyProduct = (): Product => {
+    return {
+        id: 0,
+        productCategoryId: 0,
+        name: '',
+        description: '',
+        price: 0,
+        deposit: 0,
+        duration: 0,
+    };
+};

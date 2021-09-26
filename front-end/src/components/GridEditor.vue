@@ -34,7 +34,14 @@
         confirmClass="p-button-success"
         :isLoading="isEditorLoading"
     >
-        <component ref="editor" :is="editorComponent" :id="selectedRow.id" />
+        <Editor
+            ref="editor"
+            :editorConfig="hydratedEditorConfig"
+            :selectedRow="selectedRow"
+            :getData="dataServices.get"
+            :createData="dataServices.create"
+            :updateData="dataServices.update"
+        />
     </BinaryDialog>
 
     <!-- delete modal -->
@@ -64,6 +71,10 @@ import Button from 'primevue/button';
 // components
 import Grid from '@/components/Grid.vue';
 import BinaryDialog from '@/components/BinaryDialog.vue';
+import Editor from '@/components/Editor.vue';
+
+// services
+import { useService } from '@/api/services';
 
 export default defineComponent({
     props: {
@@ -91,12 +102,12 @@ export default defineComponent({
             type: Object,
             default: () => ({}),
         },
-        getData: {
-            type: Function,
+        editorConfig: {
+            type: Object,
             default: () => ({}),
         },
-        deleteData: {
-            type: Function,
+        dataServices: {
+            type: Object,
             default: () => ({}),
         },
         editorComponent: {
@@ -108,11 +119,11 @@ export default defineComponent({
         Grid,
         Button,
         BinaryDialog,
+        Editor,
     },
     setup(props) {
         // refs
         const grid = ref<InstanceType<typeof Grid>>();
-        // const editor = ref<InstanceType<typeof AccountEditor>>();
         const editor = ref<InstanceType<any>>();
 
         // reactive
@@ -124,6 +135,8 @@ export default defineComponent({
         const isGridLoading = ref(true);
         const isEditorLoading = ref(false);
         const isDeleteLoading = ref(false);
+
+        const hydratedEditorConfig = ref<any>([]);
 
         // computed
         const selectedRow = computed({
@@ -140,7 +153,7 @@ export default defineComponent({
         // methods
         const refreshGrid = async () => {
             isGridLoading.value = true;
-            gridData.value = await props.getData();
+            gridData.value = await props.dataServices.getAll();
             isGridLoading.value = false;
         };
 
@@ -155,7 +168,7 @@ export default defineComponent({
         const confirmDeleteRow = async () => {
             isDeleteLoading.value = true;
             try {
-                await props.deleteData(selectedRow.value.id);
+                await props.dataServices.delete(selectedRow.value.id);
                 isDeleteVisible.value = false;
                 refreshGrid();
             } catch (e) {
@@ -183,6 +196,19 @@ export default defineComponent({
         // lifecycle
         onMounted(async () => {
             refreshGrid();
+
+            // hydrate dropdown property in editorConfig
+            hydratedEditorConfig.value = props.editorConfig;
+            props.editorConfig.forEach(
+                async (config: typeof props.editorConfig, i: number) => {
+                    if (config.type === 'dropdown') {
+                        hydratedEditorConfig.value[i].dropdown.options =
+                            await useService()[
+                                config.dropdown.getDataService
+                            ]();
+                    }
+                },
+            );
         });
 
         const actionButtonConfig = [
@@ -211,6 +237,7 @@ export default defineComponent({
             selectedRow,
             confirmDeleteRow,
             saveRow,
+            hydratedEditorConfig,
         };
     },
 });

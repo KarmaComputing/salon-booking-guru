@@ -6,9 +6,8 @@
         rowName="qualification"
         deleteRowValue="name"
         :gridConfig="gridConfig"
-        :getData="getAllQualification"
-        :deleteData="deleteQualification"
-        :editorComponent="QualificationEditor"
+        :editorConfig="editorConfig"
+        :dataServices="dataServices"
     />
 </template>
 
@@ -18,13 +17,13 @@ import { defineComponent } from 'vue';
 
 // components
 import GridEditor from '@/components/GridEditor.vue';
-import QualificationEditor from '@/components/QualificationEditor.vue';
 
 // services
 import { useService } from '@/api/services';
 
 // configs
 import gridConfig from '@/config/grid/qualificationGrid.ts';
+import editorConfig from '@/config/editor/qualificationEditor.ts';
 
 export default defineComponent({
     components: {
@@ -32,13 +31,15 @@ export default defineComponent({
     },
     setup() {
         // hooks
-        const { getAllQualification, deleteQualification } = useService();
+        const { generateDataServices } = useService();
+
+        // properties
+        const dataServices = generateDataServices('Qualification');
 
         return {
-            getAllQualification,
-            deleteQualification,
+            dataServices,
             gridConfig,
-            QualificationEditor,
+            editorConfig,
         };
     },
 });
