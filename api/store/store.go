@@ -46,6 +46,7 @@ type AvailabilityStore interface {
 
 type ProductStore interface {
 	GetAll() ([]model.Product, error)
+	GetAllSummary() ([]model.ProductSummary, error)
 	Get(id int) (model.Product, error)
 	Create(product *model.Product) error
 	Update(product *model.Product) error

@@ -10,7 +10,26 @@
             :field="config.field"
             :key="i"
             :header="config.title"
-        />
+        >
+            <template #body="slotProps">
+                <!-- plain -->
+                <span v-if="!config.cellRenderer">
+                    {{ slotProps.data[config.field] }}
+                </span>
+
+                <!-- cell renderer -->
+                <span v-if="config.cellRenderer">
+                    <component
+                        :is="config.cellRenderer"
+                        :data="slotProps.data"
+                        :field="config.field"
+                    >
+                        {{ slotProps.data[config.field] }}
+                    </component>
+                </span>
+            </template>
+        </Column>
+
         <Column v-if="actionButtonConfig" header="Actions">
             <template #body="slotProps">
                 <div class="flex space-x-2">

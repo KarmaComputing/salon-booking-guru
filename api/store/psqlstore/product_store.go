@@ -68,6 +68,58 @@ func (s *PsqlProductStore) GetAll() ([]model.Product, error) {
 	return products, nil
 }
 
+// Get all rows in the 'product' pg table in summary form.
+//
+// Returns a slice of ProductSummary structs, and any errors encountered.
+func (s *PsqlProductStore) GetAllSummary() ([]model.ProductSummary, error) {
+	var productSummaries []model.ProductSummary
+	rows, err := s.db.Query(`
+		SELECT
+			p.id,
+			pc.name,
+			p.name,
+			p.description,
+			p.price,
+			p.deposit,
+			p.duration
+		FROM
+			product AS p
+		INNER JOIN
+			product_category AS pc
+		ON
+			p.product_category_id = pc.id
+		LIMIT 10000
+		;`,
+	)
+	if err != nil {
+		log.Println("Error: Failed to retrieve 'productSummary' rows")
+		log.Println(err)
+		return []model.ProductSummary{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var productSummary model.ProductSummary
+		err = rows.Scan(
+			&productSummary.Id,
+			&productSummary.ProductCategoryName,
+			&productSummary.Name,
+			&productSummary.Description,
+			&productSummary.Price,
+			&productSummary.Deposit,
+			&productSummary.Duration,
+		)
+		if err != nil {
+			log.Println("Error: Failed to populate ProductSummary structs")
+			log.Println(err)
+			return []model.ProductSummary{}, err
+		}
+		productSummaries = append(productSummaries, productSummary)
+	}
+
+	return productSummaries, nil
+}
+
 // Get a single row from the 'product' pg table where 'id' matches the passed
 // id.
 //
