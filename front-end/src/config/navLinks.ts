@@ -1,14 +1,14 @@
 export const navLinks = [
     {
         icon: 'pi pi-user',
-        label: 'Account',
+        label: 'My Account',
         route: '/',
     },
-    {
+    /* {
         icon: 'pi pi-calendar',
         label: 'Availability',
         route: '/',
-    },
+    }, */
     {
         icon: 'pi pi-users',
         label: 'Accounts',
@@ -16,22 +16,22 @@ export const navLinks = [
     },
     {
         icon: 'far fa-user-md',
-        label: 'Treatments',
+        label: 'Products',
         route: '/',
     },
     {
         icon: 'pi pi-calendar',
-        label: 'Treatment category',
-        route: '/',
+        label: 'Product categories',
+        route: '/product-categories',
     },
     {
         icon: 'far fa-graduation-cap',
         label: 'Qualifications',
-        route: '/',
+        route: '/qualifications',
     },
-    {
+    /* {
         icon: 'pi pi-cog',
         label: 'Settings',
         route: '/',
-    },
+    }, */
 ];
