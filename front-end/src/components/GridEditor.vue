@@ -113,7 +113,7 @@ export default defineComponent({
         // refs
         const grid = ref<InstanceType<typeof Grid>>();
         // const editor = ref<InstanceType<typeof AccountEditor>>();
-        const editor = ref<InstanceType<typeof props.editorComponent>>();
+        const editor = ref<InstanceType<any>>();
 
         // reactive
         const gridData = ref([]);

@@ -17,7 +17,7 @@ export const navLinks = [
     {
         icon: 'far fa-user-md',
         label: 'Products',
-        route: '/',
+        route: '/products',
     },
     {
         icon: 'pi pi-calendar',
