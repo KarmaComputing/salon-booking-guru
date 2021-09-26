@@ -24,6 +24,22 @@ func TestProductGetAll(t *testing.T) {
 	}
 }
 
+func TestProductGetAllSummary(t *testing.T) {
+	s, err := OpenTest()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	products, err := s.Product().GetAllSummary()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(products) != 4 {
+		t.Fatal(errors.New("Number of product summaries returned is invalid"))
+	}
+}
+
 func TestProductGet(t *testing.T) {
 	s, err := OpenTest()
 	if err != nil {

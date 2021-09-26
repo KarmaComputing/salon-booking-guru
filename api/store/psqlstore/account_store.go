@@ -76,7 +76,7 @@ func (s *PsqlAccountStore) GetAll() ([]model.Account, error) {
 //
 // Returns a slice of AccountSummary structs, and any errors encountered.
 func (s *PsqlAccountStore) GetAllSummary() ([]model.AccountSummary, error) {
-	var accounts []model.AccountSummary = []model.AccountSummary{}
+	var accountSummaries []model.AccountSummary = []model.AccountSummary{}
 	rows, err := s.db.Query(`
 		SELECT
 			account.id,
@@ -104,23 +104,23 @@ func (s *PsqlAccountStore) GetAllSummary() ([]model.AccountSummary, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var account model.AccountSummary
+		var accountSummary model.AccountSummary
 		err = rows.Scan(
-			&account.Id,
-			&account.Name,
-			&account.Email,
-			&account.MobileNumber,
-			&account.RoleName,
+			&accountSummary.Id,
+			&accountSummary.Name,
+			&accountSummary.Email,
+			&accountSummary.MobileNumber,
+			&accountSummary.RoleName,
 		)
 		if err != nil {
 			log.Println("Error: Failed to populate AccountSummary structs")
 			log.Println(err)
 			return []model.AccountSummary{}, err
 		}
-		accounts = append(accounts, account)
+		accountSummaries = append(accountSummaries, accountSummary)
 	}
 
-	return accounts, nil
+	return accountSummaries, nil
 }
 
 // Get a single row from the 'account' pg table where 'id' matches the passed

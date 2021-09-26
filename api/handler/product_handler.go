@@ -14,6 +14,11 @@ func productRoutes() {
 	).Methods("GET")
 
 	v1.HandleFunc(
+		"/product/summary",
+		authorize(getAllProductSummary, "canReadProduct"),
+	).Methods("GET")
+
+	v1.HandleFunc(
 		"/product/{id}",
 		authorize(getProduct, "canReadProduct"),
 	).Methods("GET")
@@ -55,6 +60,16 @@ func getAllProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond(w, products, http.StatusOK)
+}
+
+func getAllProductSummary(w http.ResponseWriter, r *http.Request) {
+	productSummaries, err := s.Product().GetAllSummary()
+	if err != nil {
+		respondMsg(w, "Error: Failed to retrieve product summaries", http.StatusInternalServerError)
+		return
+	}
+
+	respond(w, productSummaries, http.StatusOK)
 }
 
 func getAllProductQualificationName(w http.ResponseWriter, r *http.Request) {

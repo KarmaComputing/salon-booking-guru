@@ -5,7 +5,7 @@ import { useStore } from 'vuex';
 import { useAxios } from '@/hooks/axiosHook';
 
 // models
-import { Product } from '@/api/models';
+import { Product, ProductSummary } from '@/api/models';
 
 export const useProductService = () => {
     const { apiUrl } = useStore().state;
@@ -13,6 +13,11 @@ export const useProductService = () => {
 
     const getAllProduct = async (): Promise<Product[]> => {
         const res = await axios.get(`${apiUrl}/product`);
+        return res.data;
+    };
+
+    const getAllProductSummary = async (): Promise<ProductSummary[]> => {
+        const res = await axios.get(`${apiUrl}/product/summary`);
         return res.data;
     };
 
@@ -58,6 +63,7 @@ export const useProductService = () => {
 
     return {
         getAllProduct,
+        getAllProductSummary,
         getProduct,
         getProductQualificationNames,
         createProduct,

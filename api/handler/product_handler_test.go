@@ -39,6 +39,30 @@ func TestProductGetAll(t *testing.T) {
 	}
 }
 
+func TestProductGetAllSummary(t *testing.T) {
+	s, err := psqlstore.OpenTest()
+	router := mux.NewRouter()
+	InitRouter(router, s)
+
+	req, err := http.NewRequest("GET", "/v1/product/summary", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	authorizeAsAdmin(t, req)
+
+	rr := httptest.NewRecorder()
+
+	router.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf(
+			"Handler returned wrong status code: got %v, want %v",
+			status,
+			http.StatusOK,
+		)
+	}
+}
+
 func TestProductGetAllQualificationName(t *testing.T) {
 	s, err := psqlstore.OpenTest()
 	router := mux.NewRouter()

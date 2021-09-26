@@ -34,7 +34,7 @@ export default defineComponent({
         const { generateDataServices } = useService();
 
         // properties
-        const dataServices = generateDataServices('Product');
+        const dataServices = generateDataServices('Product', true);
 
         return {
             dataServices,
