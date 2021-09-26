@@ -95,7 +95,6 @@ export default defineComponent({
 
         // reactive
         const accountSummaries = ref();
-        const isAddVisible = ref(false);
         const roles = ref();
 
         const isEditorVisible = ref(false);
@@ -132,15 +131,17 @@ export default defineComponent({
             isDeleteVisible.value = value;
         };
 
-        const setIsAddVisible = (value: boolean) => {
-            isAddVisible.value = value;
-        };
-
         const confirmDeleteAccount = async () => {
             isDeleteLoading.value = true;
-            await deleteAccount(selectedAccount.value.id);
-            isDeleteVisible.value = false;
-            refreshGrid();
+            try {
+                await deleteAccount(selectedAccount.value.id);
+                isDeleteVisible.value = false;
+                refreshGrid();
+            } catch (e) {
+                window.console.log(e);
+                // fail toast here
+            }
+
             isDeleteLoading.value = false;
         };
 
@@ -179,7 +180,6 @@ export default defineComponent({
             accountSummaries,
             accountGridConfig,
             actionButtonConfig,
-            isAddVisible,
             isEditorVisible,
             isDeleteVisible,
             isGridLoading,
@@ -187,7 +187,6 @@ export default defineComponent({
             isDeleteLoading,
             setIsDeleteVisible,
             setIsEditorVisible,
-            setIsAddVisible,
             selectedAccount,
             confirmDeleteAccount,
             saveAccount,
