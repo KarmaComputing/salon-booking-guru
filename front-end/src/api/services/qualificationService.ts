@@ -12,36 +12,38 @@ export const useQualificationService = () => {
     const axios = useAxios();
 
     const getAllQualification = async (): Promise<Qualification[]> => {
-        const res = await axios.get(`${apiUrl}/qualificaton`);
+        const res = await axios.get(`${apiUrl}/qualification`);
         return res.data;
     };
 
     const getQualification = async (
-        qualificatonId: number,
+        qualificationId: number,
     ): Promise<Qualification> => {
-        const res = await axios.get(`${apiUrl}/qualificaton/${qualificatonId}`);
+        const res = await axios.get(
+            `${apiUrl}/qualification/${qualificationId}`,
+        );
         return res.data;
     };
 
     const createQualification = async (
-        qualificaton: Qualification,
+        qualification: Qualification,
     ): Promise<Qualification> => {
-        const res = await axios.post(`${apiUrl}/qualificaton`, qualificaton);
+        const res = await axios.post(`${apiUrl}/qualification`, qualification);
         return res.data;
     };
 
     const updateQualification = async (
-        qualificaton: Qualification,
+        qualification: Qualification,
     ): Promise<Qualification> => {
-        const res = await axios.put(`${apiUrl}/qualificaton`, qualificaton);
+        const res = await axios.put(`${apiUrl}/qualification`, qualification);
         return res.data;
     };
 
     const deleteQualification = async (
-        qualificatonId: number,
+        qualificationId: number,
     ): Promise<Qualification> => {
         const res = await axios.deleteId(
-            `${apiUrl}/qualificaton/${qualificatonId}`,
+            `${apiUrl}/qualification/${qualificationId}`,
         );
         return res.data;
     };

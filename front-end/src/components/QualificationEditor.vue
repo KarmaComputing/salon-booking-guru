@@ -6,7 +6,7 @@
                 <InputText
                     class="w-full p-inputtext-sm"
                     type="text"
-                    v-model="productCategory.name"
+                    v-model="qualification.name"
                 />
             </div>
         </div>
@@ -20,7 +20,7 @@
 // vue
 import { defineComponent, onMounted, ref } from 'vue';
 
-import { ProductCategory } from '@/api/models';
+import { Qualification } from '@/api/models';
 
 // services
 import { useService } from '@/api/services';
@@ -39,29 +39,23 @@ export default defineComponent({
             type: Number,
             default: null,
         },
-        roles: {
-            type: Array,
-            default: () => [],
-        },
     },
     setup(props) {
         // hooks
-        const {
-            getProductCategory,
-            createProductCategory,
-            updateProductCategory,
-        } = useService();
+        const { getQualification, updateQualification, createQualification } =
+            useService();
 
         // reactive
-        const productCategory = ref({} as ProductCategory);
+        const qualification = ref({} as Qualification);
+        const isChangePassword = ref(false);
         const isLoading = ref(true);
 
         // methods
         const save = async () => {
             if (props.id) {
-                await updateProductCategory(productCategory.value);
+                await updateQualification(qualification.value);
             } else {
-                await createProductCategory(productCategory.value);
+                await createQualification(qualification.value);
             }
         };
 
@@ -69,7 +63,7 @@ export default defineComponent({
         onMounted(async () => {
             if (props.id) {
                 isLoading.value = true;
-                productCategory.value = await getProductCategory(props.id);
+                qualification.value = await getQualification(props.id);
                 isLoading.value = false;
             } else {
                 isLoading.value = false;
@@ -77,7 +71,7 @@ export default defineComponent({
         });
 
         return {
-            productCategory,
+            qualification,
             save,
             isLoading,
         };

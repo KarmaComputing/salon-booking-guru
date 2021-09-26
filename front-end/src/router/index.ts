@@ -35,6 +35,12 @@ const routes: Array<RouteRecordRaw> = [
             ),
     },
     {
+        path: '/qualifications',
+        name: 'Qualifications',
+        component: () =>
+            import(/* webpackChunkName: "core" */ '@/views/Qualifications.vue'),
+    },
+    {
         path: '/log-in',
         name: 'LogIn',
         component: () =>
