@@ -1,4 +1,5 @@
 <template>
+    <Toast />
     <div>
         <div class="text-2xl border-b pb-2 mb-4">{{ title }}</div>
         <div class="pb-4 space-y-2">
@@ -67,6 +68,7 @@ import { defineComponent, onMounted, ref, computed } from 'vue';
 
 // primevue
 import Button from 'primevue/button';
+import Toast from 'primevue/toast';
 
 // components
 import Grid from '@/components/Grid.vue';
@@ -75,6 +77,7 @@ import Editor from '@/components/Editor.vue';
 
 // services
 import { useService } from '@/api/services';
+import { useToast } from 'primevue/usetoast';
 
 export default defineComponent({
     props: {
@@ -120,6 +123,7 @@ export default defineComponent({
         Button,
         BinaryDialog,
         Editor,
+        Toast,
     },
     setup(props) {
         // refs
@@ -138,6 +142,8 @@ export default defineComponent({
 
         const hydratedEditorConfig = ref<any>([]);
 
+        const toast = useToast();
+
         // computed
         const selectedRow = computed({
             get: () => {
@@ -151,6 +157,20 @@ export default defineComponent({
         });
 
         // methods
+        const showToast = (
+            severity: string,
+            summary: string,
+            detail: string,
+            life: number,
+        ) => {
+            toast.add({
+                severity: severity,
+                summary: summary,
+                detail: detail,
+                life: life,
+            });
+        };
+
         const refreshGrid = async () => {
             isGridLoading.value = true;
             gridData.value = await props.dataServices.getAll();
@@ -171,23 +191,39 @@ export default defineComponent({
                 await props.dataServices.delete(selectedRow.value.id);
                 isDeleteVisible.value = false;
                 refreshGrid();
+                showToast(
+                    'success',
+                    'Success',
+                    'Account successfully deleted',
+                    3000,
+                );
             } catch (e) {
                 window.console.log(e);
-                // fail toast here
+                showToast('error', 'Error', 'Failed to delete account', 3000);
             }
 
             isDeleteLoading.value = false;
         };
 
-        const saveRow = async () => {
+        const saveRow = async (type: string) => {
             isEditorLoading.value = true;
             try {
                 await editor?.value?.save();
                 refreshGrid();
                 setIsEditorVisible(false);
+                var toastMessage = '';
+
+                if (selectedRow.value.id) {
+                    toastMessage = 'Account successfully updated';
+                } else {
+                    toastMessage = 'Account successfully added';
+                }
+
+                showToast('success', 'Success', toastMessage, 3000);
             } catch (e) {
                 window.console.log(e);
-                // fail toast here
+                setIsEditorVisible(false);
+                showToast('error', 'Error', 'Failed to edit account', 3000);
             }
 
             isEditorLoading.value = false;
@@ -242,3 +278,9 @@ export default defineComponent({
     },
 });
 </script>
+
+<style>
+.p-toast {
+    width: auto;
+}
+</style>

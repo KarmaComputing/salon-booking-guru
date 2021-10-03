@@ -22,8 +22,8 @@ import GridEditor from '@/components/GridEditor.vue';
 import { useService } from '@/api/services';
 
 // configs
-import gridConfig from '@/config/grid/accountGrid.ts';
-import editorConfig from '@/config/editor/accountEditor.ts';
+import gridConfig from '@/config/grid/accountGrid';
+import editorConfig from '@/config/editor/accountEditor';
 
 export default defineComponent({
     components: {

@@ -9,6 +9,7 @@ import store from './store';
 import 'primeicons/primeicons.css';
 import 'primevue/resources/primevue.min.css';
 import 'primevue/resources/themes/md-light-indigo/theme.css';
+import ToastService from 'primevue/toastservice';
 import PrimeVue from 'primevue/config';
 
 // primeflex
@@ -23,6 +24,7 @@ const app = createApp(App);
 // uses
 app.use(store);
 app.use(router);
+app.use(ToastService);
 app.use(PrimeVue, { ripple: true });
 
 // components
