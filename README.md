@@ -10,7 +10,7 @@ Online salon client booking and management system.
 
 [Read Documentation](https://karmacomputing.github.io/salon-booking-guru/)
 
-## Contribte to the docs
+## Contribute to the docs
 
 To edit documentation locally
 script:
