@@ -1,0 +1,1402 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Online salon client booking and management system">
+      
+      
+      
+      
+        <link rel="canonical" href="https://example.com/deployment/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Deploy - Salon Booking Guru</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deployment" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Salon Booking Guru" class="md-header__button md-logo" aria-label="Salon Booking Guru" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Salon Booking Guru
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deploy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/KarmaComputing/salon-booking-guru/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Salon Booking Guru" class="md-nav__button md-logo" aria-label="Salon Booking Guru" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Salon Booking Guru
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/KarmaComputing/salon-booking-guru/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICK_START_GUIDE/" class="md-nav__link">
+        Quick-Start Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CODE_OF_CONDUCT/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DATABASE/" class="md-nav__link">
+        Database
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WIREFRAMES/" class="md-nav__link">
+        Wireframes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Deploy
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Deploy
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-a-dokku-server" class="md-nav__link">
+    Deploy a Dokku server
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dokku-installation" class="md-nav__link">
+    Dokku Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Dokku Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-dokku-swap-on-small-vps-optional" class="md-nav__link">
+    Create dokku swap on small VPS (optional)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-the-vps-install-dokku" class="md-nav__link">
+    On the VPS install Dokku:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visit-in-you-web-browser-to-complete-install" class="md-nav__link">
+    Visit in you web browser to complete install
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dokku-configuration" class="md-nav__link">
+    Dokku configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-database-api-front-end-apps-in-dokku" class="md-nav__link">
+    Create database, api, &amp; front-end apps in Dokku
+  </a>
+  
+    <nav class="md-nav" aria-label="Create database, api, &amp; front-end apps in Dokku">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    Database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#front-end" class="md-nav__link">
+    Front-end
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-shared-network" class="md-nav__link">
+    Create shared network
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-database-credentials" class="md-nav__link">
+    Set database credentials
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-configuration" class="md-nav__link">
+    Dockerfile configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configure-dokku-git-pre-recieve-hook-to-build-correct-dockerfile" class="md-nav__link">
+    Configure Dokku git pre-recieve hook to build correct Dockerfile
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Dokku git pre-recieve hook to build correct Dockerfile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database_1" class="md-nav__link">
+    Database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api_1" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#front-end_1" class="md-nav__link">
+    Front-end
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-dokku-apps-with-git-push" class="md-nav__link">
+    Verify dokku apps with git push
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify dokku apps with git push">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-add-remotes" class="md-nav__link">
+    Git add remotes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-initial-apps" class="md-nav__link">
+    Deploy initial apps
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy initial apps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploy-database" class="md-nav__link">
+    Deploy database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-api" class="md-nav__link">
+    Deploy API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-front-end" class="md-nav__link">
+    Deploy front-end
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-lets-encrypt-tls-certificate" class="md-nav__link">
+    Automatic Let's Encrypt TLS Certificate
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Let's Encrypt TLS Certificate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-lets-encrypt-plugin" class="md-nav__link">
+    Install Let's Encrypt plugin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-automatic-certs-for-api-and-frontend" class="md-nav__link">
+    Setup automatic certs for api and frontend
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup automatic certs for api and frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#certificate-generation" class="md-nav__link">
+    Certificate generation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dokku-apps-command-not-found" class="md-nav__link">
+    Dokku apps command not found
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-the-database-is-connected-ok" class="md-nav__link">
+    How do I know the database is connected OK
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I know the database is connected OK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-force-a-rebuildreload-of-an-app" class="md-nav__link">
+    How to force a rebuild/reload of an app
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-denied-when-pushing-from-local" class="md-nav__link">
+    Access denied when pushing from local
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-options-not-set-building-wrong-dockerfile" class="md-nav__link">
+    Docker options not set / building wrong Dockerfile
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions-setup" class="md-nav__link">
+    Github Actions setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Github Actions setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#credentials" class="md-nav__link">
+    Credentials
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardening" class="md-nav__link">
+    Hardening
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disable-password-based-authentication" class="md-nav__link">
+    Disable Password based authentication
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-a-dokku-server" class="md-nav__link">
+    Deploy a Dokku server
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dokku-installation" class="md-nav__link">
+    Dokku Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Dokku Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-dokku-swap-on-small-vps-optional" class="md-nav__link">
+    Create dokku swap on small VPS (optional)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-the-vps-install-dokku" class="md-nav__link">
+    On the VPS install Dokku:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visit-in-you-web-browser-to-complete-install" class="md-nav__link">
+    Visit in you web browser to complete install
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dokku-configuration" class="md-nav__link">
+    Dokku configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-database-api-front-end-apps-in-dokku" class="md-nav__link">
+    Create database, api, &amp; front-end apps in Dokku
+  </a>
+  
+    <nav class="md-nav" aria-label="Create database, api, &amp; front-end apps in Dokku">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    Database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#front-end" class="md-nav__link">
+    Front-end
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-shared-network" class="md-nav__link">
+    Create shared network
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-database-credentials" class="md-nav__link">
+    Set database credentials
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-configuration" class="md-nav__link">
+    Dockerfile configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configure-dokku-git-pre-recieve-hook-to-build-correct-dockerfile" class="md-nav__link">
+    Configure Dokku git pre-recieve hook to build correct Dockerfile
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Dokku git pre-recieve hook to build correct Dockerfile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database_1" class="md-nav__link">
+    Database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api_1" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#front-end_1" class="md-nav__link">
+    Front-end
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-dokku-apps-with-git-push" class="md-nav__link">
+    Verify dokku apps with git push
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify dokku apps with git push">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-add-remotes" class="md-nav__link">
+    Git add remotes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-initial-apps" class="md-nav__link">
+    Deploy initial apps
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy initial apps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploy-database" class="md-nav__link">
+    Deploy database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-api" class="md-nav__link">
+    Deploy API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-front-end" class="md-nav__link">
+    Deploy front-end
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-lets-encrypt-tls-certificate" class="md-nav__link">
+    Automatic Let's Encrypt TLS Certificate
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Let's Encrypt TLS Certificate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-lets-encrypt-plugin" class="md-nav__link">
+    Install Let's Encrypt plugin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-automatic-certs-for-api-and-frontend" class="md-nav__link">
+    Setup automatic certs for api and frontend
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup automatic certs for api and frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#certificate-generation" class="md-nav__link">
+    Certificate generation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dokku-apps-command-not-found" class="md-nav__link">
+    Dokku apps command not found
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-the-database-is-connected-ok" class="md-nav__link">
+    How do I know the database is connected OK
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I know the database is connected OK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-force-a-rebuildreload-of-an-app" class="md-nav__link">
+    How to force a rebuild/reload of an app
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-denied-when-pushing-from-local" class="md-nav__link">
+    Access denied when pushing from local
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-options-not-set-building-wrong-dockerfile" class="md-nav__link">
+    Docker options not set / building wrong Dockerfile
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions-setup" class="md-nav__link">
+    Github Actions setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Github Actions setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#credentials" class="md-nav__link">
+    Credentials
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardening" class="md-nav__link">
+    Hardening
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disable-password-based-authentication" class="md-nav__link">
+    Disable Password based authentication
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/KarmaComputing/salon-booking-guru/edit/main/docs/deployment.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="deployment">Deployment</h1>
+<p>Automatic deployment using Dokku and GitHub Actions</p>
+<h2 id="deploy-a-dokku-server">Deploy a Dokku server</h2>
+<p>Requirements:</p>
+<ul>
+<li>Ubuntu 20.04 LTS</li>
+<li><a href="https://dokku.com/">Dokku v0.24.10</a></li>
+<li>A domain name with a <a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types">DNS A record</a> pointing to your dokku server (optional)</li>
+</ul>
+<h2 id="dokku-installation">Dokku Installation</h2>
+<h3 id="create-dokku-swap-on-small-vps-optional">Create dokku swap on small VPS (optional)</h3>
+<p>For small (cheap) VPS's Dokku will run out of RAM quickly. 
+Create a 5GB swap is one way to mitigate this.</p>
+<pre><code>sudo fallocate -l 5g /mnt/5GiB.swap
+sudo chmod 600 /mnt/5GiB.swap
+sudo mkswap /mnt/5GiB.swap
+sudo swapon /mnt/5GiB.swap
+echo '/mnt/5GiB.swap swap swap defaults 0 0' | sudo tee -a /etc/fstab
+free -mh
+</code></pre>
+<h3 id="on-the-vps-install-dokku">On the VPS install Dokku:</h3>
+<pre><code class="language-bash">wget https://raw.githubusercontent.com/dokku/dokku/v0.24.10/bootstrap.sh;
+sudo DOKKU_TAG=v0.24.10 bash bootstrap.sh
+# This process may take over 10 minutes
+</code></pre>
+<h3 id="visit-in-you-web-browser-to-complete-install">Visit in you web browser to complete install</h3>
+<p>Visit <code>http://&lt;your-server-ip&gt;</code>, and complete installation.</p>
+<blockquote>
+<p>Be sure to click 'Use virtualhost naming for apps:</p>
+</blockquote>
+<p><img alt="Dokku install step screenshot" src="../dokku-installation.png" /></p>
+<p>After you click 'Finish' you'll be redirected to Dokku documentation- you can close that for now, but do read it.</p>
+<h2 id="dokku-configuration">Dokku configuration</h2>
+<p>Setup domain (optional)</p>
+<blockquote>
+<p>If dokku was able to resolve the hostname during install then the dokku domain will have already been added
+  check with:</p>
+</blockquote>
+<pre><code class="language-bash">
+su dokku
+dokku domains:report --global
+=====&gt; Global domains information
+       Domains global enabled:        true                     
+       Domains global vhosts:         domain.example.com
+</code></pre>
+<p>If not, check your DNS A record is correctly pointing to your server, then configure dokku manually:</p>
+<pre><code class="language-bash">su dokku
+dokku domains:add-global &lt;your-domain&gt;
+</code></pre>
+<h2 id="create-database-api-front-end-apps-in-dokku">Create database, api, &amp; front-end apps in Dokku</h2>
+<h4 id="database">Database</h4>
+<pre><code class="language-bash">sudo -iu dokku
+dokku apps:create salon-booking-guru-database
+dokku git:initialize salon-booking-guru-database
+dokku git:set salon-booking-guru-database deploy-branch main;
+dokku docker-options:add salon-booking-guru-database build --file=/home/dokku/salon-booking-guru-database/Dockerfile;
+
+</code></pre>
+<h4 id="api">API</h4>
+<pre><code class="language-bash">sudo -iu dokku
+dokku apps:create salon-booking-guru-api
+dokku git:initialize salon-booking-guru-api
+dokku git:set salon-booking-guru-api deploy-branch main;
+dokku docker-options:add salon-booking-guru-api build --file=/home/dokku/salon-booking-guru-api/Dockerfile;
+
+</code></pre>
+<h4 id="front-end">Front-end</h4>
+<pre><code class="language-bash">sudo -iu dokku
+dokku apps:create salon-booking-guru-front-end
+dokku git:initialize salon-booking-guru-front-end
+dokku git:set salon-booking-guru-front-end deploy-branch main;
+dokku docker-options:add salon-booking-guru-front-end build --file=/home/dokku/salon-booking-guru-front-end/Dockerfile;
+
+</code></pre>
+<h2 id="create-shared-network">Create shared network</h2>
+<blockquote>
+<p>This is so the <code>api</code> and <code>database</code> may connect to eachother.</p>
+</blockquote>
+<pre><code class="language-bash">dokku network:create sharednetwork
+</code></pre>
+<p>Attach <code>database</code> and <code>api</code> to the <code>sharednetwork</code>, note that the <code>front-end</code> does <em>not</em> need to be connected to the <code>sharednetwork</code>.</p>
+<pre><code class="language-bash">dokku network:set salon-booking-guru-database attach-post-create sharednetwork
+dokku network:set salon-booking-guru-api attach-post-create sharednetwork
+</code></pre>
+<h2 id="set-database-credentials">Set database credentials</h2>
+<p>Database credentials get injected into the apps envrionment upon startup. See <a href="https://12factor.net/config">12factor app - config</a>.</p>
+<pre><code class="language-bash">dokku config:set salon-booking-guru-api SALON_BOOKING_GURU_DB_HOST=salon-booking-guru-database.web SALON_BOOKING_GURU_DB_PORT=5432 SALON_BOOKING_GURU_DB_PASSWORD=&quot;changeme&quot; SALON_BOOKING_GURU_DB_DBNAME=&quot;salon_booking_guru&quot; SALON_BOOKING_GURU_DB_USER=&quot;postgres&quot;
+...
+-----&gt; Setting config vars
+       SALON_BOOKING_GURU_DB_DBNAME:    salon_booking_guru
+       SALON_BOOKING_GURU_DB_HOST:      salon-booking-guru-database.web
+       SALON_BOOKING_GURU_DB_PASSWORD:  changeme
+       SALON_BOOKING_GURU_DB_PORT:      5432
+       SALON_BOOKING_GURU_DB_USER:      postgres
+-----&gt; Restarting app salon-booking-guru-api
+-----&gt; Releasing salon-booking-guru-api...
+...
+-----&gt; Shutting down old containers in 60 seconds
+=====&gt; Application deployed:
+       http://salon-booking-guru-api.dokku.karmacomputing.co.uk
+       http://salon-booking-guru-api.dokku.karmacomputing.co.uk:8085
+       https://salon-booking-guru-api.dokku.karmacomputing.co.uk
+
+</code></pre>
+<h2 id="dockerfile-configuration">Dockerfile configuration</h2>
+<p>For dokku v0.24.10 Dockerfile deployment is only recognised when there is a <code>Dockerfile</code> in the root directory of the repository. However this repo has components in subdirectories:</p>
+<blockquote>
+<p>In an <a href="https://github.com/dokku/dokku/issues/4691#issuecomment-882772065">upcomping release</a> of Dokku mono repos will be supported.</p>
+</blockquote>
+<p>To workaround this that there is an empty Dockerfile in the root. This forces dokku to treat the apps as docker 
+deployments (Dokku supports multiple deployment types).</p>
+<p>Additionally, the git hook(s) need to be altered for each app</p>
+<h3 id="configure-dokku-git-pre-recieve-hook-to-build-correct-dockerfile">Configure Dokku git pre-recieve hook to build correct Dockerfile</h3>
+<blockquote>
+<p>This is <a href="https://github.com/dokku/dokku/issues/4691#issuecomment-882772065">needed</a> since when docku builds containers the build context is hardcoded to the 
+root of the repo.</p>
+</blockquote>
+<p>Add a pre-recieve hook on the dokku server to fetch the <code>Dockerfile</code> into the repo:</p>
+<h5 id="database_1">Database</h5>
+<pre><code class="language-bash">vi salon-booking-guru-database/hooks/pre-receive
+</code></pre>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -e
+set -o pipefail
+
+curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/database/Dockerfile &gt; /home/dokku/salon-booking-guru-database/Dockerfile
+
+cat | DOKKU_ROOT=&quot;/home/dokku&quot; dokku git-hook salon-booking-guru-database
+</code></pre>
+<h5 id="api_1">API</h5>
+<pre><code class="language-bash">vi salon-booking-guru-api/hooks/pre-receive
+</code></pre>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -e
+set -o pipefail
+
+curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/api/Dockerfile &gt; /home/dokku/salon-booking-guru-api/Dockerfile
+
+cat | DOKKU_ROOT=&quot;/home/dokku&quot; dokku git-hook salon-booking-guru-api
+</code></pre>
+<h5 id="front-end_1">Front-end</h5>
+<pre><code class="language-bash">vi salon-booking-guru-front-end/hooks/pre-receive
+</code></pre>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -e
+set -o pipefail
+
+curl https://raw.githubusercontent.com/KarmaComputing/salon-booking-guru/main/front-end/Dockerfile &gt; /home/dokku/salon-booking-guru-front-end/Dockerfile
+
+cat | DOKKU_ROOT=&quot;/home/dokku&quot; dokku git-hook salon-booking-guru-front-end
+</code></pre>
+<h3 id="verify-dokku-apps-with-git-push">Verify dokku apps with git push</h3>
+<p>To make sure everything is in order, you can manually push to Dokku from your local</p>
+<p>The steps are to:</p>
+<ol>
+<li>Add a git remote for each component (database, api, front-end)</li>
+<li>Perform a git push</li>
+<li>Observe the containers running</li>
+</ol>
+<h4 id="git-add-remotes">Git add remotes</h4>
+<blockquote>
+<p><strong>On your local machine</strong>.</p>
+</blockquote>
+<pre><code class="language-bash">DOKKU_IP=&lt;dokku-ip&gt; # change to your ip address
+</code></pre>
+<pre><code class="language-bash">git remote add dokku-database dokku@$DOKKU_IP:salon-booking-guru-database
+git remote add dokku-api dokku@$DOKKU_IP:salon-booking-guru-api
+git remote add dokku-front-end dokku@$DOKKU_IP:salon-booking-guru-front-end
+</code></pre>
+<p>You can verify remotes with</p>
+<pre><code class="language-bash">git remote -v show
+</code></pre>
+<h2 id="deploy-initial-apps">Deploy initial apps</h2>
+<p>From your local machine, star the deployment of the <code>database</code>. <code>api</code> and <code>front-end</code> apps.</p>
+<h3 id="deploy-database">Deploy database</h3>
+<p>You will see dokku deploy the database</p>
+<pre><code class="language-bash">git push dokku-database main
+
+
+Enumerating objects: 594, done.
+-----&gt; Cleaning up...
+-----&gt; Building salon-booking-guru-database from Dockerfile
+remote: dos2unix: converting file Dockerfile to Unix format...
+remote: build context to Docker daemon   1.77MB
+Step 1/6 : FROM postgres:13.3-alpine
+...
+=====&gt; Application deployed:
+       http://salon-booking-guru-database.dokku.karmacomputing.co.uk
+       http://salon-booking-guru-database.dokku.karmacomputing.co.uk:5432
+
+To &lt;ip&gt;:salon-booking-guru-database
+ * [new branch]      main -&gt; main
+</code></pre>
+<h3 id="deploy-api">Deploy API</h3>
+<pre><code class="language-bash">git push dokku-api
+
+Enumerating objects: 594, done.
+Counting objects: 100% (594/594), done.
+...
+-----&gt; Renaming containers
+       Renaming container (04b1f4740169) youthful_cori to salon-booking-guru-api.web.1
+-----&gt; Checking for postdeploy task
+       No postdeploy task found, skipping
+=====&gt; Application deployed:
+       http://salon-booking-guru-api.dokku.karmacomputing.co.uk
+       http://salon-booking-guru-api.dokku.karmacomputing.co.uk:8085
+</code></pre>
+<h3 id="deploy-front-end">Deploy front-end</h3>
+<blockquote>
+<p>Note front-end build may take over 5 <a href="https://github.com/KarmaComputing/salon-booking-guru/issues/119">minutes to build</a></p>
+</blockquote>
+<pre><code class="language-bash">git push dokku-front-end
+...
+-----&gt; Checking for postdeploy task
+       No postdeploy task found, skipping
+=====&gt; Application deployed:
+       http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk
+</code></pre>
+<p>Verify front-end app loading:</p>
+<pre><code>http://salon-booking-guru-front-end.dokku.karmacomputing.co.uk/
+</code></pre>
+<h2 id="automatic-lets-encrypt-tls-certificate">Automatic Let's Encrypt TLS Certificate</h2>
+<blockquote>
+<p>Via <a href="https://github.com/dokku/dokku-letsencrypt">dokku-letsencrypt</a></p>
+</blockquote>
+<h3 id="install-lets-encrypt-plugin">Install Let's Encrypt plugin</h3>
+<pre><code># as root on dokku
+sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+</code></pre>
+<h2 id="setup-automatic-certs-for-api-and-frontend">Setup automatic certs for api and frontend</h2>
+<blockquote>
+<p>Must use a valid email address</p>
+</blockquote>
+<pre><code class="language-bash">sudo -iu dokku
+dokku config:set --global DOKKU_LETSENCRYPT_EMAIL=your@email.tld
+</code></pre>
+<h3 id="certificate-generation">Certificate generation</h3>
+<pre><code class="language-bash"># API
+dokku letsencrypt:enable salon-booking-guru-front-end
+# Front-end
+dokku proxy:ports-add salon-booking-guru-api http:80:8085
+dokku letsencrypt:enable salon-booking-guru-api
+dokku proxy:ports-add salon-booking-guru-api https:443:8085
+
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h4 id="dokku-apps-command-not-found">Dokku <code>apps command not found</code></h4>
+<p>Check ~/.ssh/authorized keys / root to ensure the ssh command includes</p>
+<pre><code>command=&quot;`cat /home/dokku/.sshcommand` $SSH_ORIGINAL_COMMAND&quot; ssh-rsa &lt;the key&gt;
+</code></pre>
+<h4 id="how-do-i-know-the-database-is-connected-ok">How do I know the database is connected OK</h4>
+<p>See <a href="https://github.com/KarmaComputing/salon-booking-guru/issues/95">healthcheck endpoint</a>.</p>
+<p>Tail the logs of the app, and observe <code>Connection to the database established</code>.</p>
+<pre><code>dokku@dokku:~$ dokku logs -t salon-booking-guru-api
+2021-08-01T20:48:32.183932807Z app[web.1]: 2021/08/01 20:48:32 Listening on :8085
+2021-08-01T20:48:32.521738711Z app[web.1]: 2021/08/01 20:48:32 Connection to the database established
+</code></pre>
+<h5 id="how-to-force-a-rebuildreload-of-an-app">How to force a rebuild/reload of an app</h5>
+<p>Example rebuilding the database and api see <a href="https://dokku.com/docs/processes/process-management/#rebuilding-apps">Dokku rebuilding apps</a></p>
+<pre><code class="language-bash">dokku ps:rebuild salon-booking-guru-database
+dokku ps:rebuild salon-booking-guru-api
+</code></pre>
+<h5 id="access-denied-when-pushing-from-local">Access denied when pushing from local</h5>
+<p>It's possible your ssh key is not configued with dokku. Either use <code>ssk-copy-id</code> or:</p>
+<pre><code class="language-bash">cat ~/.ssh/id_rsa.pub | ssh root@&lt;your-vps-ip-address&gt; dokku ssh-keys:add mylocal
+</code></pre>
+<h5 id="docker-options-not-set-building-wrong-dockerfile">Docker options not set / building wrong Dockerfile</h5>
+<blockquote>
+<p>Check  the docker-options. <code>dokku docker-options:report salon-booking-guru-front-end</code>
+  If you need to reset them:</p>
+<ol>
+<li>take a copy of <em>all</em> existing settings
+   <code>dokku docker-options:report salon-booking-guru-front-end</code></li>
+<li>Clear the options <code>dokku docker-options:clear</code></li>
+<li>Add the settings back you want for each stage
+     e.g. <code>dokku docker-options:add salon-booking-guru-front-end deploy --restart=on-failure:10</code></li>
+</ol>
+</blockquote>
+<p>If you get the following error: <code>remote: unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/dokku/salon-booking-guru/api: no such file or directory</code>. This means that the Dockerfile is not already on the Dokku servers repository, make sure that its already there and check the pre-recieve hook so that it has the correct URL to the Dockerfile. It must start with <code>raw.githubusercontent.com</code>.</p>
+<h2 id="github-actions-setup">Github Actions setup</h2>
+<h3 id="credentials">Credentials</h3>
+<p>The Github Dokku action needs to be able to ssh into the Dokku server.</p>
+<p>On the dokku server, generate a keypaid for Github to use;</p>
+<pre><code>su dokku
+ssh-keygen # Press enter, generate key without passphrase
+</code></pre>
+<p>Allow the key to be used by Github</p>
+<pre><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+<p>Copy the private key to Gituub secrets e.g. <code>https://github.com/&lt;org&gt;/&lt;repo&gt;/settings/secrets/actions</code>
+as <code>SSH_PRIVATE_KEY</code>.</p>
+<pre><code>cat ~/.ssh/id_rsa # Copy into GitHub secrets as SSH_PRIVATE_KEY
+</code></pre>
+<p>Also set <code>DOKKU_HOST</code> to the ip address or hostname of your dokku server.</p>
+<h2 id="hardening">Hardening</h2>
+<h4 id="disable-password-based-authentication">Disable Password based authentication</h4>
+<ul>
+<li>Verify your ssh access working with key based access (<code>ssh root@&lt;your-ip&gt;</code>) # login without a password</li>
+<li>Disable ssh password based authentication </li>
+<li>Open <code>/etc/ssh/sshd_config</code> </li>
+<li>Change the line <code>#PasswordAuthentication yes</code> to <code>PasswordAuthentication no</code></li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../WIREFRAMES/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Wireframes" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Wireframes
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

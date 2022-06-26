@@ -1,0 +1,134 @@
+@startuml
+
+' ** Config **
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+' ** Entities **
+
+entity "account" as account {
+    *id : integer <<PK>>
+    --
+    *role_id : integer <<FK>>
+    *first_name : varchar
+    *last_name : varchar
+    *email : varchar(254)
+    *password : varchar(64)
+    *mobile_number : varchar()
+}
+
+entity "role" as role {
+    *id : integer <<PK>>
+    --
+    *name : varchar(50)
+}
+
+entity "permission" as permission {
+    *id : integer <<PK>>
+    --
+    *name : varchar(50)
+}
+
+entity "role_permission_link" as role_permission_link {
+    *id : integer <<PK>>
+    --
+    *role_id : integer <<FK>>
+    *permission_id : integer <<FK>>
+}
+
+entity "token" as token {
+    *id : integer <<PK>>
+    --
+    *account_id : integer <<FK>>
+    *token : varchar(60)
+}
+
+entity "product" as product {
+    *id : integer <<generate>>
+    --
+    *product_category_id : integer <<FK>>
+    *name : varchar
+    *description : varchar
+    *price : real
+    *deposit : real
+    *duration : real
+}
+
+entity "qualification" as qualification {
+    *id : integer <<PK>>
+    --
+    *name : varchar
+}
+
+entity "product_qualification_link" as product_qualification_link {
+    *id : integer <<generate>>
+    --
+    *product_id : integer <<FK>>
+    *qualification_id : integer <<FK>>
+}
+
+entity "account_qualification_link" as account_qualification_link {
+    *id : integer <<generate>>
+    --
+    *account_id : integer <<FK>>
+    *qualification_id : integer <<FK>>
+}
+
+entity "product_category" as product_category {
+    *id : integer <<generate>>
+    --
+    *name : varchar
+}
+
+entity "booking" as booking {
+    *id : integer <<generate>>
+    --
+    *product_id : integer <<FK>>
+    *account_id : integer <<FK>>
+    *customer_stripe_id + any necessary stripe data : integer
+    *customer_name : string
+    *customer_email : string
+    *customer_mobile : string
+    *date : date
+    *duration : real
+}
+
+entity "availability" as availability {
+    *id : integer <<generate>>
+    --
+    *account_id : integer <<FK>>
+    *start_date : date
+    *end_date : date
+}
+
+' ** Entity Relationships **
+
+' Zero or One:  |o..
+' Exactly One:  ||..
+' Zero or Many: }o..
+' One or Many:  }|..
+
+account }o..|| role
+account ||..o{ token
+account ||..o{ availability
+
+role_permission_link }o..o{ role
+role_permission_link }o..o{ permission
+
+product_qualification_link }o..o{ product
+product_qualification_link }o..o{ qualification
+
+account_qualification_link }o..o{ account
+account_qualification_link }o..o{ qualification
+
+product }o..|| product_category
+
+booking }o..|| product
+
+booking }o..|| account
+
+@enduml
